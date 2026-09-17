@@ -24,7 +24,6 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
 				minSdk = libs.version("android-minSdk").toInt()
 				compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
 				
-				// Without this there is NO JVM test target — see Step 8.
 				withHostTest { }
 			}
 			
