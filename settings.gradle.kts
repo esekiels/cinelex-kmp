@@ -1,6 +1,7 @@
 rootProject.name = "Cinelex"
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
@@ -28,5 +29,12 @@ dependencyResolutionManagement {
 }
 
 include(":androidApp")
-include(":sharedLogic")
-include(":sharedUI")
+
+include(":shared:common")
+include(":shared:model")
+include(":shared:network")
+include(":shared:database")
+include(":shared:datastore")
+include(":shared:data")
+include(":shared:testing")
+include(":shared:umbrella")
