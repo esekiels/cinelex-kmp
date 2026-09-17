@@ -11,14 +11,19 @@ kotlin {
     }
 }
 dependencies {
-    val composeBom = platform(libs.compose.bom)
-    implementation(composeBom)
-    debugImplementation(composeBom)
-
-    implementation(libs.androidx.activity.compose)
-
-    implementation(libs.compose.uiToolingPreview)
-    debugImplementation(libs.compose.uiTooling)
+	implementation(projects.shared.data)
+	implementation(projects.shared.common)
+	
+	implementation(libs.androidx.core.ktx)
+	implementation(libs.androidx.activity.compose)
+	implementation(libs.androidx.lifecycle.runtimeCompose)
+	implementation(libs.androidx.lifecycle.viewmodelCompose)
+	
+	implementation(platform(libs.compose.bom))
+	implementation(libs.compose.ui)
+	implementation(libs.compose.material3)
+	implementation(libs.compose.uiToolingPreview)
+	debugImplementation(libs.compose.uiTooling)
 }
 
 android {

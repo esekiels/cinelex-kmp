@@ -1,33 +1,25 @@
 import SwiftUI
-import SharedLogic
+import Shared
 
 struct ContentView: View {
-    @State private var showContent = false
-    var body: some View {
-        VStack {
-            Button("Click me!") {
-                withAnimation {
-                    showContent = !showContent
-                }
-            }
+    private let platformName = CinelexSDK.shared.platformName
 
-            if showContent {
-                VStack(spacing: 16) {
-                    Image(systemName: "swift")
-                        .font(.system(size: 200))
-                        .foregroundColor(.accentColor)
-                    Text("SwiftUI: \(Greeting().greet())")
-                }
-                .transition(.move(edge: .top).combined(with: .opacity))
-            }
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "film")
+                .font(.system(size: 64))
+                .foregroundStyle(.tint)
+            Text("SwiftUI is talking to:")
+            Text(platformName).bold()
+            Text("shared v\(CinelexSDK.shared.VERSION)")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+    ContentView()
 }
