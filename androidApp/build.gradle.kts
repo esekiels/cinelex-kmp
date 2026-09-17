@@ -11,6 +11,9 @@ kotlin {
     }
 }
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    debugImplementation(composeBom)
 
     implementation(libs.androidx.activity.compose)
 
