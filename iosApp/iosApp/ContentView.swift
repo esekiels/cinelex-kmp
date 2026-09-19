@@ -5,6 +5,7 @@ import Shared
 extension Movie: @retroactive Identifiable {}
 
 struct ContentView: View {
+    
     private let platformName = CinelexSDK.shared.platformName
 
     private let movie = Movie(
