@@ -1,0 +1,29 @@
+/*
+ * Cinelex
+ * ApiFixtures
+ *
+ * Created by Esekiel Surbakti on 19/09/26
+ */
+
+package co.esekiels.cinelex.network
+
+internal const val MOVIE_RESPONSE: String = """
+{
+  "page": 1,
+  "total_pages": 1,
+  "results": [
+    {
+      "id": 278,
+      "title": "The Shawshank Redemption",
+      "backdrop_path": "/zfbjgQE1uSd9wiPTX4VzsLi0rGG.jpg",
+      "poster_path": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+    },
+    {
+      "id": 238,
+      "title": "The Godfather",
+      "backdrop_path": "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
+      "poster_path": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg"
+    }
+  ]
+}
+"""
