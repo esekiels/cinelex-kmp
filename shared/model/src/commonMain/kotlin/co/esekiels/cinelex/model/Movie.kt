@@ -25,7 +25,7 @@ data class Movie(
 	@SerialName("vote_count")
 	val voteCount: Int = 0,
 	@SerialName("genre_ids")
-	val genreIds: List<Int>? = null
+	val genreIds: List<Int>? = null,
 ) {
 	val posterUrl: String? get() = posterPath?.let { "$IMAGE_BASE_URL$it" }
 	val backdropUrl: String? get() = backdropPath?.let { "$IMAGE_BASE_URL$it" }

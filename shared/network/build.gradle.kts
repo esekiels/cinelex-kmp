@@ -5,11 +5,12 @@ plugins {
 	alias(libs.plugins.kotlinSerialization)
 }
 
-val tmdbToken: String = Properties().run {
-	val file = rootProject.file("local.properties")
-	if (file.exists()) file.inputStream().use { load(it) }
-	getProperty("TMDB_TOKEN") ?: System.getenv("TMDB_TOKEN").orEmpty()
-}
+val tmdbToken: String =
+	Properties().run {
+		val file = rootProject.file("local.properties")
+		if (file.exists()) file.inputStream().use { load(it) }
+		getProperty("TMDB_TOKEN") ?: System.getenv("TMDB_TOKEN").orEmpty()
+	}
 
 val generateBuildKonfig by tasks.registering {
 	val outputDir = layout.buildDirectory.dir("generated/buildkonfig/kotlin")
@@ -21,15 +22,15 @@ val generateBuildKonfig by tasks.registering {
 		pkgDir.mkdirs()
 		pkgDir.resolve("BuildKonfig.kt").writeText(
 			"""
-            package co.esekiels.cinelex.network
+			package co.esekiels.cinelex.network
 
-            // GENERATED — do not edit. See shared/network/build.gradle.kts.
-            internal object BuildKonfig {
-                const val BASE_URL: String = "https://api.themoviedb.org/3/"
-                const val TMDB_TOKEN: String = "$token"
-            }
+			// GENERATED — do not edit. See shared/network/build.gradle.kts.
+			internal object BuildKonfig {
+			    const val BASE_URL: String = "https://api.themoviedb.org/3/"
+			    const val TMDB_TOKEN: String = "$token"
+			}
 
-            """.trimIndent(),
+			""".trimIndent(),
 		)
 	}
 }

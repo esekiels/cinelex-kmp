@@ -15,14 +15,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import co.esekiels.cinelex.common.platform
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		enableEdgeToEdge()
+		super.onCreate(savedInstanceState)
 
-        setContent {
-	        SmokeScreen()
-        }
-    }
+		setContent {
+			SmokeScreen()
+		}
+	}
 }
 
 @Composable

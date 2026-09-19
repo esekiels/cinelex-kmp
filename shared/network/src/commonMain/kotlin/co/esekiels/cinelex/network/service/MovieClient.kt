@@ -11,8 +11,12 @@ import co.esekiels.cinelex.network.ApiResponse
 import co.esekiels.cinelex.network.model.MovieResponse
 import co.esekiels.cinelex.network.safeApiCall
 
-class MovieClient(private val service: MovieService) {
-
-    suspend fun fetchMovies(category: String, language: String, page: Int = 1): ApiResponse<MovieResponse> =
-        safeApiCall { service.fetchMovies(category, language, page) }
+class MovieClient(
+	private val service: MovieService,
+) {
+	suspend fun fetchMovies(
+		category: String,
+		language: String,
+		page: Int = 1,
+	): ApiResponse<MovieResponse> = safeApiCall { service.fetchMovies(category, language, page) }
 }

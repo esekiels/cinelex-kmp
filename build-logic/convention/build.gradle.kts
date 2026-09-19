@@ -20,6 +20,8 @@ dependencies {
 	compileOnly(libs.android.gradlePlugin)
 	compileOnly(libs.kotlin.gradlePlugin)
 	compileOnly(libs.ksp.gradlePlugin)
+	compileOnly(libs.detekt.gradlePlugin)
+	compileOnly(libs.ktlint.gradlePlugin)
 }
 
 gradlePlugin {
@@ -27,6 +29,10 @@ gradlePlugin {
 		register("kmpLibrary") {
 			id = "esekiels.cinelex.kmp.library"
 			implementationClass = "KmpLibraryConventionPlugin"
+		}
+		register("quality") {
+			id = "esekiels.cinelex.quality"
+			implementationClass = "QualityConventionPlugin"
 		}
 	}
 }

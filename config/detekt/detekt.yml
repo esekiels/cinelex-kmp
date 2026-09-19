@@ -949,11 +949,3 @@ style:
     active: true
     excludeImports:
       - "java.util.*"
-
-formatting:
-  active: true
-  Indentation:
-    active: false
-  ParameterListWrapping:
-    active: true
-    indentSize: 4

@@ -8,10 +8,10 @@
 package co.esekiels.cinelex.common
 
 object ErrorConstants {
-    const val NETWORK_ERROR = "E001"
-    const val HTTP_UNAUTHORIZED = "E002"
-    const val HTTP_TIMEOUT = "E003"
-    const val HTTP_FORBIDDEN = "E004"
-    const val HTTP_EMPTY_BODY = "E005"
-    const val UNKNOWN_ERROR = "E999"
+	const val NETWORK_ERROR = "E001"
+	const val HTTP_UNAUTHORIZED = "E002"
+	const val HTTP_TIMEOUT = "E003"
+	const val HTTP_FORBIDDEN = "E004"
+	const val HTTP_EMPTY_BODY = "E005"
+	const val UNKNOWN_ERROR = "E999"
 }

@@ -4,20 +4,6 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-	alias(libs.plugins.detekt)
-}
-
-subprojects {
-	apply(plugin = "io.gitlab.arturbosch.detekt")
-	
-	detekt {
-		config.from(rootProject.files("config/detekt/detekt.yml"))
-		buildUponDefaultConfig = true
-		parallel = true
-		source.setFrom(files("src"))
-	}
-	
-	dependencies {
-		add("detektPlugins", rootProject.libs.detekt.formatting)
-	}
+	alias(libs.plugins.detekt) apply false
+	alias(libs.plugins.ktlint) apply false
 }

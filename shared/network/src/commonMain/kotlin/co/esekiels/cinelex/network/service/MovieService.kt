@@ -13,11 +13,17 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
-class MovieService(private val client: HttpClient) {
-
-    suspend fun fetchMovies(category: String, language: String, page: Int = 1): MovieResponse =
-        client.get(category) {
-            parameter("language", language)
-            parameter("page", page)
-        }.body()
+class MovieService(
+	private val client: HttpClient,
+) {
+	suspend fun fetchMovies(
+		category: String,
+		language: String,
+		page: Int = 1,
+	): MovieResponse =
+		client
+			.get(category) {
+				parameter("language", language)
+				parameter("page", page)
+			}.body()
 }
