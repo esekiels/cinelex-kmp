@@ -1,5 +1,6 @@
 plugins {
 	id("esekiels.cinelex.kmp.library")
+	alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
