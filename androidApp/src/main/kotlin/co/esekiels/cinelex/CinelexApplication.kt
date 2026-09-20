@@ -8,7 +8,7 @@
 package co.esekiels.cinelex
 
 import android.app.Application
-import co.esekiels.cinelex.di.initKoin
+import co.esekiels.cinelex.data.di.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 

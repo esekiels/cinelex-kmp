@@ -1,4 +1,4 @@
-import co.esekiels.cinelex.di.initKoin
+import co.esekiels.cinelex.data.di.initKoin
 
 /*
  * Cinelex

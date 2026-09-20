@@ -5,7 +5,7 @@
  * Created by Esekiel Surbakti on 20/09/26
  */
 
-package co.esekiels.cinelex.di
+package co.esekiels.cinelex.data.di
 
 import co.esekiels.cinelex.common.di.commonModule
 import co.esekiels.cinelex.database.di.databaseModule
