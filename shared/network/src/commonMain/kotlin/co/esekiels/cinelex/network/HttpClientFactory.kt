@@ -23,14 +23,14 @@ import kotlinx.serialization.json.Json
 
 private const val TIMEOUT_MILLIS = 30_000L
 
-val cinelexJson: Json =
+fun cinelexJson(): Json =
 	Json {
 		ignoreUnknownKeys = true
 		coerceInputValues = true
 	}
 
 fun createHttpClient(
-	json: Json = cinelexJson,
+	json: Json = cinelexJson(),
 	enableLogging: Boolean = false,
 	engine: HttpClientEngine? = null,
 ): HttpClient {

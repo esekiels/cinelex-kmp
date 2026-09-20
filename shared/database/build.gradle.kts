@@ -19,11 +19,19 @@ kotlin {
 			implementation(libs.sqlite.bundled)
 			implementation(libs.kotlinx.coroutines.core)
 			implementation(libs.kotlinx.serialization.json)
+
+			api(libs.koin.core)
 		}
+
+		androidMain.dependencies {
+			implementation(libs.koin.android)
+		}
+
 		commonTest.dependencies {
 			implementation(libs.kotlinx.coroutines.test)
 			implementation(projects.shared.model)
 		}
+
 		iosTest.dependencies {
 			implementation(libs.kotlinx.coroutines.test)
 			implementation(projects.shared.model)
