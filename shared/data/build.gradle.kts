@@ -14,6 +14,8 @@ kotlin {
 			implementation(projects.shared.database)
 			implementation(projects.shared.datastore)
 			implementation(libs.kotlinx.coroutines.core)
+
+			api(libs.kmp.nativecoroutines.annotations)
 		}
 		// Repository tests are integration tests: real Room, MockEngine for HTTP.
 		// Room's no-arg in-memory builder is native-only, so they live in iosTest.

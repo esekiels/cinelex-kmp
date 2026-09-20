@@ -6,8 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BF318527305FAC720030AA40 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = BF318526305FAC720030AA40 /* KMPNativeCoroutinesAsync */; };
+		BF318529305FAC720030AA40 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = BF318528305FAC720030AA40 /* KMPNativeCoroutinesCore */; };
+		BFFE8245306013F200927E1E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = BFFE8244306013F200927E1E /* Kingfisher */; };
+		DEADBEEF00000000000000B1 /* AccessibilityID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEADBEEF00000000000000A1 /* AccessibilityID.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DEADBEEF0000000000000009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96EE74EBE2D86A053B2CBE4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC9B9A3497320B98712E0F56;
+			remoteInfo = iosApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2E5F375551A3CDAC5A21CF00 /* Cinelex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cinelex.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEADBEEF0000000000000004 /* CinelexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinelexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEADBEEF00000000000000A1 /* AccessibilityID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccessibilityID.swift; path = iosApp/Core/Design/AccessibilityID.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -34,6 +53,11 @@
 			path = iosApp;
 			sourceTree = "<group>";
 		};
+		DEADBEEF0000000000000002 /* CinelexUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CinelexUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +65,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFFE8245306013F200927E1E /* Kingfisher in Frameworks */,
+				BF318529305FAC720030AA40 /* KMPNativeCoroutinesCore in Frameworks */,
+				BF318527305FAC720030AA40 /* KMPNativeCoroutinesAsync in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				2E5F375551A3CDAC5A21CF00 /* Cinelex.app */,
+				DEADBEEF0000000000000004 /* CinelexUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,8 +88,18 @@
 			children = (
 				1EA9571D110BB47C9C726DCB /* Configuration */,
 				7107AEAE9122557D80102B8D /* iosApp */,
+				DEADBEEF0000000000000002 /* CinelexUITests */,
 				031826754BCE729F76820407 /* Products */,
+				BFFE8310306026D500927E1E /* Recovered References */,
 			);
+			sourceTree = "<group>";
+		};
+		BFFE8310306026D500927E1E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DEADBEEF00000000000000A1 /* AccessibilityID.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,10 +124,32 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				BF318526305FAC720030AA40 /* KMPNativeCoroutinesAsync */,
+				BF318528305FAC720030AA40 /* KMPNativeCoroutinesCore */,
+				BFFE8244306013F200927E1E /* Kingfisher */,
 			);
 			productName = iosApp;
 			productReference = 2E5F375551A3CDAC5A21CF00 /* Cinelex.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DEADBEEF0000000000000001 /* CinelexUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEADBEEF0000000000000005 /* Build configuration list for PBXNativeTarget "CinelexUITests" */;
+			buildPhases = (
+				DEADBEEF0000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DEADBEEF0000000000000008 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DEADBEEF0000000000000002 /* CinelexUITests */,
+			);
+			name = CinelexUITests;
+			productName = CinelexUITests;
+			productReference = DEADBEEF0000000000000004 /* CinelexUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -104,6 +164,9 @@
 					AC9B9A3497320B98712E0F56 = {
 						CreatedOnToolsVersion = 16.2;
 					};
+					DEADBEEF0000000000000001 = {
+						TestTargetID = AC9B9A3497320B98712E0F56;
+					};
 				};
 			};
 			buildConfigurationList = 2B86F0D13A454CAB3AF8A536 /* Build configuration list for PBXProject "iosApp" */;
@@ -115,12 +178,17 @@
 			);
 			mainGroup = 7E0484A9610AD84D7EA7E6ED;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BF318525305FAC720030AA40 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
+				BFFE8243306013F200927E1E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 031826754BCE729F76820407 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				AC9B9A3497320B98712E0F56 /* iosApp */,
+				DEADBEEF0000000000000001 /* CinelexUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -136,25 +204,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		78F4DC02A6ACDBDB2BCCFCB3 /* Compile Kotlin Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Compile Kotlin Framework";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :shared:umbrella:embedAndSignAppleFrameworkForXcode\n";
-		};
 		5A1F7C3E2B9D4E6F8A0B1C2D /* SwiftLint Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -174,6 +223,25 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
+		78F4DC02A6ACDBDB2BCCFCB3 /* Compile Kotlin Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Compile Kotlin Framework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :shared:umbrella:embedAndSignAppleFrameworkForXcode\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -184,7 +252,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DEADBEEF0000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEADBEEF00000000000000B1 /* AccessibilityID.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DEADBEEF0000000000000008 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC9B9A3497320B98712E0F56 /* iosApp */;
+			targetProxy = DEADBEEF0000000000000009 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		105A4292217287026E96C742 /* Debug */ = {
@@ -366,6 +450,36 @@
 			};
 			name = Debug;
 		};
+		DEADBEEF0000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W3UM55KY7Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = co.esekiels.cinelex.CinelexUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iosApp;
+			};
+			name = Debug;
+		};
+		DEADBEEF0000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W3UM55KY7Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = co.esekiels.cinelex.CinelexUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iosApp;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -387,7 +501,53 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		DEADBEEF0000000000000005 /* Build configuration list for PBXNativeTarget "CinelexUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEADBEEF0000000000000006 /* Debug */,
+				DEADBEEF0000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF318525305FAC720030AA40 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.5;
+			};
+		};
+		BFFE8243306013F200927E1E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF318526305FAC720030AA40 /* KMPNativeCoroutinesAsync */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF318525305FAC720030AA40 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesAsync;
+		};
+		BF318528305FAC720030AA40 /* KMPNativeCoroutinesCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF318525305FAC720030AA40 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			productName = KMPNativeCoroutinesCore;
+		};
+		BFFE8244306013F200927E1E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFFE8243306013F200927E1E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F96EE74EBE2D86A053B2CBE4 /* Project object */;
 }

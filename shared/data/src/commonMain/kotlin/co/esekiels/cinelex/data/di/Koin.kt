@@ -29,5 +29,6 @@ fun initKoin(
 			commonModule,
 			networkModule(enableLogging),
 			databaseModule,
+			dataModule,
 		)
 	}

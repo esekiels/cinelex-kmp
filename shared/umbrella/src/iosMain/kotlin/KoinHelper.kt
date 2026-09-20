@@ -1,4 +1,6 @@
+import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.di.initKoin
+import org.koin.mp.KoinPlatform
 
 /*
  * Cinelex
@@ -15,3 +17,6 @@ import co.esekiels.cinelex.data.di.initKoin
 fun doInitKoin() {
 	initKoin()
 }
+
+@Suppress("unused")
+fun movieRepository(): MovieRepository = KoinPlatform.getKoin().get()
