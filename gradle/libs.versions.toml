@@ -23,7 +23,7 @@ androidx-activity = "1.12.4"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.17.0"
 androidx-lifecycle = "2.10.0"
-composeBom = "2024.09.00"
+composeBom = "2026.03.01"
 coil = "3.1.0"
 navigation3 = "1.0.1"
 robolectric = "4.17"
@@ -79,6 +79,8 @@ compose-uiTest-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
+navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 
 ## -- build-logic --
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }

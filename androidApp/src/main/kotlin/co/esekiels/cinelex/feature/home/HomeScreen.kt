@@ -44,11 +44,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
 	viewModel: HomeViewModel = koinViewModel(),
+	onMovieClick: (Movie) -> Unit = {},
 	actions: @Composable RowScope.() -> Unit,
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-	HomeContent(state, isRefreshing, actions, viewModel::refresh)
+	HomeContent(state, isRefreshing, actions, onMovieClick, viewModel::refresh)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +58,7 @@ fun HomeContent(
 	state: UiState<Carousels>,
 	isRefreshing: Boolean,
 	actions: @Composable RowScope.() -> Unit = {},
+	onMovieClick: (Movie) -> Unit = {},
 	onRefresh: () -> Unit,
 ) {
 	Scaffold(
@@ -77,10 +79,10 @@ fun HomeContent(
 				when (state) {
 					is UiState.Loaded ->
 						with(state.data) {
-							item { Carousel(stringResource(R.string.home_now_playing), nowPlaying, CarouselStyle.Poster) }
-							item { Carousel(stringResource(R.string.home_popular), popular, CarouselStyle.Backdrop) }
-							item { Carousel(stringResource(R.string.home_top_rated), topRated, CarouselStyle.Poster) }
-							item { Carousel(stringResource(R.string.home_upcoming), upcoming, CarouselStyle.Backdrop) }
+							item { Carousel(stringResource(R.string.home_now_playing), nowPlaying, CarouselStyle.Poster, onMovieClick) }
+							item { Carousel(stringResource(R.string.home_popular), popular, CarouselStyle.Backdrop, onMovieClick) }
+							item { Carousel(stringResource(R.string.home_top_rated), topRated, CarouselStyle.Poster, onMovieClick) }
+							item { Carousel(stringResource(R.string.home_upcoming), upcoming, CarouselStyle.Backdrop, onMovieClick) }
 						}
 
 					UiState.Loading ->

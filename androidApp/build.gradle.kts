@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
 	alias(libs.plugins.androidApplication)
 	alias(libs.plugins.composeCompiler)
+	alias(libs.plugins.kotlinSerialization)
 	id("esekiels.cinelex.quality")
 }
 
@@ -19,6 +20,8 @@ dependencies {
 	implementation(libs.koin.androidx.compose)
 	implementation(libs.coil.compose)
 	implementation(libs.coil.network.okhttp)
+	implementation(libs.navigation3.runtime)
+	implementation(libs.navigation3.ui)
 	
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.activity.compose)

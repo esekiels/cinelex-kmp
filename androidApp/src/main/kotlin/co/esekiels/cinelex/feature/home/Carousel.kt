@@ -8,6 +8,7 @@
 package co.esekiels.cinelex.feature.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.testTag
@@ -52,6 +54,7 @@ internal fun Carousel(
 	title: String,
 	movies: List<Movie>,
 	style: CarouselStyle,
+	onMovieClick: (Movie) -> Unit = {},
 ) {
 	val width = cardWidth(style)
 	Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -70,6 +73,7 @@ internal fun Carousel(
 				Column(
 					Modifier
 						.width(width)
+						.clickable(role = Role.Button) { onMovieClick(movie) }
 						.clearAndSetSemantics {
 							testTag = TestTag.MOVIE_CARD
 							contentDescription = movie.title

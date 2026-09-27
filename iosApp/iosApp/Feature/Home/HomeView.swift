@@ -34,6 +34,7 @@ struct HomeView: View {
                     ToolbarItem(placement: .topBarTrailing) { themeMenu.tint(.textPrimary) }
                 }
                 .background(Color.background)
+                .navigationDestination(for: Movie.self) { DetailView(movie: $0) }
         }
     }
 }

@@ -120,6 +120,23 @@
         }
       }
     },
+    "detail.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is detail"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ini detail"
+          }
+        }
+      }
+    },
     "home.empty": {
       "extractionState": "manual",
       "localizations": {

@@ -64,8 +64,8 @@ private extension PosterCarouselView {
                 .aspectRatio(2 / 3, contentMode: .fit)
                 .frame(width: cardWidth, height: cardHeight)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                .buttonStyle(.plain)
         }
+        .buttonStyle(.plain)
         .accessibilityIdentifier(AccessibilityID.movieCard)
         .accessibilityLabel(movie.title)
     }

@@ -19,6 +19,7 @@ final class HomeViewModel {
     private let repository: any MovieRepository
     private var tasks: [Task<Void, Never>] = []
     private var carousels = HomeState.Carousels()
+    private var hasRefreshed = false
     
     init(repository: any MovieRepository) {
         self.repository = repository
@@ -32,9 +33,12 @@ final class HomeViewModel {
             observe(repository.observeNowPlaying(), into: \.nowPlaying),
             observe(repository.observePopular(), into: \.popular),
             observe(repository.observeUpcoming(), into: \.upcoming),
-            observe(repository.observeTopRated(), into: \.topRated),
-            Task { await self.refresh() }
+            observe(repository.observeTopRated(), into: \.topRated)
         ]
+        
+        if !hasRefreshed {
+            tasks.append(Task { await self.refresh() })
+        }
     }
     
     func onDisappear() {
@@ -45,6 +49,7 @@ final class HomeViewModel {
     func refresh() async {
         do {
             try await asyncFunction(for: repository.refreshMovies())
+            hasRefreshed = true
             if carousels.isEmpty {
                 state.uiState = .empty
             }
