@@ -5,13 +5,12 @@
 //  Created by Esekiel Surbakti on 27/09/26.
 //
 
+import Shared
 import SwiftUI
 
 enum AppLanguage: String, CaseIterable {
     case en
     case id
-
-    static let storageKey = "language"
 
     static var preferred: Self {
         Locale.preferredLanguages.first?.hasPrefix("id") == true ? .id : .en
@@ -33,5 +32,16 @@ enum AppLanguage: String, CaseIterable {
 
     var locale: Locale {
         Locale(identifier: rawValue)
+    }
+
+    var language: Language {
+        switch self {
+        case .en: .english
+        case .id: .indonesian
+        }
+    }
+
+    init(language: Language) {
+        self = language == .indonesian ? .id : .en
     }
 }

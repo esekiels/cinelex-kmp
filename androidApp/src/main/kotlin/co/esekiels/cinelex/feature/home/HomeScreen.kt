@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,8 +57,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.esekiels.cinelex.R
 import co.esekiels.cinelex.core.common.UiState
-import co.esekiels.cinelex.core.design.LanguageMenu
-import co.esekiels.cinelex.core.design.ThemeMenu
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.core.design.errorMessage
 import co.esekiels.cinelex.core.design.shimmer
@@ -65,10 +64,13 @@ import co.esekiels.cinelex.model.Movie
 import coil3.compose.SubcomposeAsyncImage
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(
+	viewModel: HomeViewModel,
+	actions: @Composable RowScope.() -> Unit,
+) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-	HomeContent(state, isRefreshing, viewModel::refresh)
+	HomeContent(state, isRefreshing, actions, viewModel::refresh)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,16 +78,14 @@ fun HomeScreen(viewModel: HomeViewModel) {
 fun HomeContent(
 	state: UiState<Carousels>,
 	isRefreshing: Boolean,
+	actions: @Composable RowScope.() -> Unit = {},
 	onRefresh: () -> Unit,
 ) {
 	Scaffold(
 		topBar = {
 			TopAppBar(
 				title = { Text(stringResource(R.string.app_name)) },
-				actions = {
-					LanguageMenu()
-					ThemeMenu()
-				},
+				actions = actions,
 				colors = TopAppBarDefaults.topAppBarColors(actionIconContentColor = MaterialTheme.colorScheme.onSurface),
 			)
 		},

@@ -16,7 +16,9 @@ import co.esekiels.cinelex.MainActivity
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.data.MovieRepository
+import co.esekiels.cinelex.data.UserDataRepository
 import co.esekiels.cinelex.testing.FakeMovieRepository
+import co.esekiels.cinelex.testing.FakeUserDataRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import org.junit.After
 import org.junit.Rule
@@ -35,9 +37,20 @@ abstract class UITestCase {
 
 	private var activity: ActivityScenario<MainActivity>? = null
 
+	val preferences = FakeUserDataRepository()
+
 	fun launchApp(scenario: Scenario) {
-		loadKoinModules(module { single<MovieRepository> { scenario.repository() } })
+		loadKoinModules(
+			module {
+				single<MovieRepository> { scenario.repository() }
+				single<UserDataRepository> { preferences }
+			},
+		)
 		activity = ActivityScenario.launch(MainActivity::class.java)
+	}
+
+	fun recreateApp() {
+		activity!!.recreate()
 	}
 
 	fun isNightMode(): Boolean {

@@ -9,6 +9,7 @@ package co.esekiels.cinelex.data.di
 
 import co.esekiels.cinelex.common.di.commonModule
 import co.esekiels.cinelex.database.di.databaseModule
+import co.esekiels.cinelex.datastore.di.datastoreModule
 import co.esekiels.cinelex.network.di.networkModule
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -29,6 +30,7 @@ fun initKoin(
 			commonModule,
 			networkModule(enableLogging),
 			databaseModule,
+			datastoreModule,
 			dataModule,
 		)
 	}

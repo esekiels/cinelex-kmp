@@ -5,14 +5,13 @@
 //  Created by Esekiel Surbakti on 27/09/26.
 //
 
+import Shared
 import SwiftUI
 
 enum AppTheme: String, CaseIterable {
     case system
     case light
     case dark
-
-    static let storageKey = "theme"
 
     var title: LocalizedStringKey {
         switch self {
@@ -35,6 +34,22 @@ enum AppTheme: String, CaseIterable {
         case .system: nil
         case .light: .light
         case .dark: .dark
+        }
+    }
+
+    var uiTheme: UiTheme {
+        switch self {
+        case .system: .followSystem
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+
+    init(uiTheme: UiTheme) {
+        switch uiTheme {
+        case .light: self = .light
+        case .dark: self = .dark
+        default: self = .system
         }
     }
 }

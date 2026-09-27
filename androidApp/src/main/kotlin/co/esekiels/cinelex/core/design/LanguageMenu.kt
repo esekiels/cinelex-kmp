@@ -7,7 +7,6 @@
 
 package co.esekiels.cinelex.core.design
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,44 +31,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import co.esekiels.cinelex.R
-import java.util.Locale
+import co.esekiels.cinelex.core.common.toLanguage
+import co.esekiels.cinelex.model.Language
 
 @Composable
-fun LanguageMenu() {
+fun LanguageMenu(
+	current: Language?,
+	onSelect: (Language) -> Unit,
+) {
 	var showPicker by remember { mutableStateOf(false) }
 	IconButton(onClick = { showPicker = true }) {
 		Icon(Icons.Default.Language, contentDescription = stringResource(R.string.action_language))
 	}
 	if (showPicker) {
-		LanguagePickerDialog(onDismiss = { showPicker = false })
+		LanguagePickerDialog(
+			current = current ?: LocalConfiguration.current.locales[0].toLanguage(),
+			onSelect = onSelect,
+			onDismiss = { showPicker = false },
+		)
 	}
 }
 
 @Composable
-private fun LanguagePickerDialog(onDismiss: () -> Unit) {
-	val current = LocalConfiguration.current.locales[0].language
+private fun LanguagePickerDialog(
+	current: Language?,
+	onSelect: (Language) -> Unit,
+	onDismiss: () -> Unit,
+) {
 	val options =
 		listOf(
-			"en" to stringResource(R.string.language_english),
-			"id" to stringResource(R.string.language_indonesian),
+			Language.ENGLISH to stringResource(R.string.language_english),
+			Language.INDONESIAN to stringResource(R.string.language_indonesian),
 		)
 	AlertDialog(
 		onDismissRequest = onDismiss,
 		title = { Text(stringResource(R.string.picker_language_title)) },
 		text = {
 			Column {
-				options.forEach { (tag, label) ->
+				options.forEach { (language, label) ->
 					val select = {
 						onDismiss()
-						AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
+						onSelect(language)
 					}
 					Row(
 						modifier = Modifier.fillMaxWidth().clickable(onClick = select).padding(vertical = 4.dp),
 						verticalAlignment = Alignment.CenterVertically,
 					) {
-						RadioButton(selected = Locale.forLanguageTag(tag).language == current, onClick = select)
+						RadioButton(selected = language == current, onClick = select)
 						Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 8.dp))
 					}
 				}

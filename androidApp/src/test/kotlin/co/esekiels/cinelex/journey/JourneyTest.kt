@@ -7,17 +7,18 @@
 
 package co.esekiels.cinelex.journey
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.test.core.app.ApplicationProvider
+import androidx.core.os.LocaleListCompat
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.journey.screens.HomeScreen
 import co.esekiels.cinelex.journey.support.UITestCase
+import co.esekiels.cinelex.model.Language
+import co.esekiels.cinelex.model.UiTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -99,6 +100,31 @@ class JourneyTest : UITestCase() {
 
 	@Config(sdk = [32])
 	@Test
+	fun language_savesSelection() {
+		launchApp(Scenario.Loaded)
+		home.waitUntilLoaded()
+
+		home.selectLanguage("Indonesian")
+
+		home.waitForText("Sedang Tayang")
+		assertEquals(Language.INDONESIAN, preferences.userPreferences.value.language)
+	}
+
+	@Config(sdk = [34])
+	@Test
+	fun language_adoptsSystemSettingOnAndroid13() {
+		launchApp(Scenario.Loaded)
+		home.waitUntilLoaded()
+
+		AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("id"))
+		recreateApp()
+		home.waitUntilLoaded()
+
+		assertEquals(Language.INDONESIAN, preferences.userPreferences.value.language)
+	}
+
+	@Config(sdk = [32])
+	@Test
 	fun language_localizesErrorMessage() {
 		launchApp(Scenario.Error)
 		home.errorState.assertIsDisplayed()
@@ -130,8 +156,7 @@ class JourneyTest : UITestCase() {
 
 		home.selectTheme("Dark")
 
-		val settings = ApplicationProvider.getApplicationContext<Context>().getSharedPreferences("settings", Context.MODE_PRIVATE)
-		assertEquals(AppCompatDelegate.MODE_NIGHT_YES, settings.getInt("theme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM))
+		assertEquals(UiTheme.DARK, preferences.userPreferences.value.uiTheme)
 	}
 
 	@Test

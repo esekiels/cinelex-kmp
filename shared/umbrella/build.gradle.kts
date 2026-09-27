@@ -27,6 +27,7 @@ kotlin {
 			api(projects.shared.model)
 			api(projects.shared.common)
 			api(projects.shared.testing)
+			implementation(libs.kotlinx.coroutines.core)
 		}
 	}
 }

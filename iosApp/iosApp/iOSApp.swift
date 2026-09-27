@@ -5,27 +5,27 @@ import Shared
 struct iOSApp: App {
 
     private let repository: any MovieRepository
-    @AppStorage(AppLanguage.storageKey) private var language = AppLanguage.preferred
-    @AppStorage(AppTheme.storageKey) private var theme = AppTheme.system
+    @State private var preferences: PreferencesStore
 
     init() {
         #if DEBUG
         if let scenario = UITestScenario.current {
-            UserDefaults.standard.removeObject(forKey: AppLanguage.storageKey)
-            UserDefaults.standard.removeObject(forKey: AppTheme.storageKey)
             repository = scenario.repository
+            _preferences = State(initialValue: PreferencesStore(repository: FakeUserDataRepository()))
             return
         }
         #endif
         KoinHelperKt.doInitKoin()
         repository = KoinHelperKt.movieRepository()
+        _preferences = State(initialValue: PreferencesStore(repository: KoinHelperKt.userDataRepository()))
     }
 
     var body: some Scene {
         WindowGroup {
             HomeView(viewModel: HomeViewModel(repository: repository))
-                .environment(\.locale, language.locale)
-                .preferredColorScheme(theme.colorScheme)
+                .environment(preferences)
+                .environment(\.locale, preferences.language.locale)
+                .preferredColorScheme(preferences.theme.colorScheme)
                 .tint(.colorPrimary)
         }
     }

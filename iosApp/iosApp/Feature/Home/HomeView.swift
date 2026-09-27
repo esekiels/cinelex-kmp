@@ -15,8 +15,7 @@ enum CarouselStyle {
 struct HomeView: View {
     
     @State private var viewModel: HomeViewModel
-    @AppStorage(AppLanguage.storageKey) private var language = AppLanguage.preferred
-    @AppStorage(AppTheme.storageKey) private var theme = AppTheme.system
+    @Environment(PreferencesStore.self) private var preferences
     @Environment(\.locale) private var locale
     
     init(viewModel: HomeViewModel) {
@@ -43,7 +42,7 @@ private extension HomeView {
     
     var localeMenu: some View {
         Menu {
-            Picker(selection: $language) {
+            Picker(selection: Binding(get: { preferences.language }, set: preferences.setLanguage)) {
                 ForEach(AppLanguage.allCases, id: \.self) { option in
                     Label(option.title, systemImage: option.icon)
                         .tag(option)
@@ -52,16 +51,16 @@ private extension HomeView {
                 Text("language.title")
             }
         } label: {
-            Image(systemName: language.icon)
+            Image(systemName: preferences.language.icon)
                 .accessibilityLabel(Text("action.language"))
         }
         .accessibilityIdentifier(AccessibilityID.localeMenu)
-        .accessibilityValue(language.rawValue)
+        .accessibilityValue(preferences.language.rawValue)
     }
     
     var themeMenu: some View {
         Menu {
-            Picker(selection: $theme) {
+            Picker(selection: Binding(get: { preferences.theme }, set: preferences.setTheme)) {
                 ForEach(AppTheme.allCases, id: \.self) { option in
                     Label(option.title, systemImage: option.icon)
                         .tag(option)
@@ -70,11 +69,11 @@ private extension HomeView {
                 Text("theme.title")
             }
         } label: {
-            Image(systemName: theme.icon)
+            Image(systemName: preferences.theme.icon)
                 .accessibilityLabel(Text("action.theme"))
         }
         .accessibilityIdentifier(AccessibilityID.themeMenu)
-        .accessibilityValue(theme.rawValue)
+        .accessibilityValue(preferences.theme.rawValue)
     }
     
     func localized(_ key: String.LocalizationValue) -> String {
@@ -118,21 +117,25 @@ private extension HomeView {
 #Preview("Loaded") {
     let repository = FakeMovieRepository(nowPlaying: MovieStubs.shared.all)
     return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Loading") {
     let repository = FakeMovieRepository(nowPlaying: [], isLoading: true)
     return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Empty") {
     let repository = FakeMovieRepository(nowPlaying: [])
     return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Error") {
     let repository = FakeMovieRepository(nowPlaying: [])
     repository.failure = CinelexException(code: ErrorConstants.shared.NETWORK_ERROR, message: "Server unreachable")
     return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 #endif
