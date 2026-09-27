@@ -4,38 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import co.esekiels.cinelex.common.platform
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import co.esekiels.cinelex.feature.home.HomeScreen
+import co.esekiels.cinelex.feature.home.HomeViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+	private val homeViewModel: HomeViewModel by viewModel()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		enableEdgeToEdge()
 		super.onCreate(savedInstanceState)
 
 		setContent {
-			SmokeScreen()
+			MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
+				HomeScreen(homeViewModel)
+			}
 		}
 	}
-}
-
-@Composable
-internal fun SmokeScreen() {
-	MaterialTheme {
-		Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-			Text("Compose is talking to ${platform().name}")
-		}
-	}
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-	SmokeScreen()
 }

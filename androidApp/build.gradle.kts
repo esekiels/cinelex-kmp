@@ -16,6 +16,8 @@ dependencies {
 	implementation(projects.shared.common)
 
 	implementation(libs.koin.android)
+	implementation(libs.coil.compose)
+	implementation(libs.coil.network.okhttp)
 	
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.activity.compose)
@@ -27,6 +29,12 @@ dependencies {
 	implementation(libs.compose.material3)
 	implementation(libs.compose.uiToolingPreview)
 	debugImplementation(libs.compose.uiTooling)
+
+	testImplementation(projects.shared.testing)
+	testImplementation(libs.kotlin.test.junit)
+	testImplementation(libs.kotlinx.coroutines.test)
+	testImplementation(libs.robolectric)
+	testImplementation(libs.compose.uiTest.junit4)
 }
 
 android {
@@ -66,6 +74,11 @@ android {
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
+	}
+	testOptions {
+		unitTests.isIncludeAndroidResources = true
+		// Robolectric on SDK 36 pokes FileDescriptor internals via SharedSecrets.
+		unitTests.all { it.jvmArgs("--add-opens=java.base/jdk.internal.access=ALL-UNNAMED") }
 	}
 	buildFeatures {
 		compose = true

@@ -8,6 +8,7 @@
 package co.esekiels.cinelex
 
 import android.app.Application
+import co.esekiels.cinelex.core.di.appModule
 import co.esekiels.cinelex.data.di.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,6 +19,7 @@ class CinelexApplication : Application() {
 		initKoin(enableLogging = BuildConfig.DEBUG) {
 			androidLogger()
 			androidContext(this@CinelexApplication)
+			modules(appModule)
 		}
 	}
 }

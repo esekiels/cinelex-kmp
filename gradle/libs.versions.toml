@@ -25,6 +25,7 @@ androidx-lifecycle = "2.10.0"
 composeBom = "2024.09.00"
 coil = "3.1.0"
 navigation3 = "1.0.1"
+robolectric = "4.17"
 
 # -- quality --
 detekt = "1.23.8"
@@ -66,6 +67,10 @@ compose-ui = { module = "androidx.compose.ui:ui" }
 compose-uiTooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-uiTest-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
 ## -- build-logic --
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
