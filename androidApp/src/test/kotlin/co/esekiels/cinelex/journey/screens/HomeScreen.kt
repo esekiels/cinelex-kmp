@@ -15,9 +15,12 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.journey.support.UITestCase.Companion.TIMEOUT_MS
@@ -40,6 +43,18 @@ class HomeScreen(
 		carouselTitle: String,
 	): SemanticsNodeInteraction =
 		compose.onNode(hasContentDescription(movieTitle) and hasAnyAncestor(hasTestTag(TestTag.carousel(carouselTitle))))
+
+	fun selectLanguage(name: String) {
+		compose.onNodeWithContentDescription("Change language").performClick()
+		text(name).performClick()
+	}
+
+	fun waitForText(
+		text: String,
+		timeout: Long = TIMEOUT_MS,
+	) {
+		compose.waitUntil(timeout) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+	}
 
 	fun waitUntilLoaded(timeout: Long = TIMEOUT_MS) {
 		compose.waitUntil(timeout) { cards.fetchSemanticsNodes().isNotEmpty() }

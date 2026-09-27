@@ -21,12 +21,14 @@ dependencies {
 	
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.activity.compose)
+	implementation(libs.androidx.appcompat)
 	implementation(libs.androidx.lifecycle.runtimeCompose)
 	implementation(libs.androidx.lifecycle.viewmodelCompose)
 	
 	implementation(platform(libs.compose.bom))
 	implementation(libs.compose.ui)
 	implementation(libs.compose.material3)
+	implementation(libs.compose.materialIconsExtended)
 	implementation(libs.compose.uiToolingPreview)
 	debugImplementation(libs.compose.uiTooling)
 

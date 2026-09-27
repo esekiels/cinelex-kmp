@@ -11,6 +11,7 @@ enum AccessibilityID {
     static let homeSkeleton = "HomeSkeleton"
     static let homeEmpty = "HomeEmpty"
     static let homeError = "HomeError"
+    static let localeMenu = "LocaleMenu"
 
     static func carousel(_ title: String) -> String { "Carousel-\(title)" }
 }

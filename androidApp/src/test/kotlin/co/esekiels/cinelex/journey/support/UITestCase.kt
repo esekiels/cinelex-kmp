@@ -7,7 +7,9 @@
 
 package co.esekiels.cinelex.journey.support
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.core.os.LocaleListCompat
 import androidx.test.core.app.ActivityScenario
 import co.esekiels.cinelex.MainActivity
 import co.esekiels.cinelex.common.CinelexException
@@ -40,6 +42,7 @@ abstract class UITestCase {
 	@After
 	fun tearDown() {
 		activity?.close()
+		AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
 		// Robolectric builds a fresh CinelexApplication per test, which calls startKoin again.
 		stopKoin()
 	}

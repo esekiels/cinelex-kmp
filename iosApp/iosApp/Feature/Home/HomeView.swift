@@ -15,6 +15,8 @@ enum CarouselStyle {
 struct HomeView: View {
     
     @State private var viewModel: HomeViewModel
+    @AppStorage(AppLanguage.storageKey) private var language = AppLanguage.preferred
+    @Environment(\.locale) private var locale
     
     init(viewModel: HomeViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -26,11 +28,35 @@ struct HomeView: View {
                 .task { viewModel.onAppear() }
                 .refreshable { await viewModel.refresh() }
                 .onDisappear { viewModel.onDisappear() }
+                .navigationTitle(Text(verbatim: "Cinelex"))
+                .toolbar { ToolbarItem(placement: .topBarTrailing) { localeMenu } }
         }
     }
 }
 
 private extension HomeView {
+    
+    var localeMenu: some View {
+        Menu {
+            Picker(selection: $language) {
+                ForEach(AppLanguage.allCases, id: \.self) { option in
+                    Label(option.title, systemImage: option.icon)
+                        .tag(option)
+                }
+            } label: {
+                Text("language.title")
+            }
+        } label: {
+            Image(systemName: language.icon)
+                .accessibilityLabel(Text("action.language"))
+        }
+        .accessibilityIdentifier(AccessibilityID.localeMenu)
+        .accessibilityValue(language.rawValue)
+    }
+    
+    func localized(_ key: String.LocalizationValue) -> String {
+        String(localized: LocalizedStringResource(key, locale: locale))
+    }
     
     @ViewBuilder
     var content: some View {
@@ -38,10 +64,10 @@ private extension HomeView {
             VStack(spacing: 24) {
                 switch viewModel.state.uiState {
                 case .loaded(let data):
-                    PosterCarouselView(title: String(localized: "home.nowPlaying"), data: data.nowPlaying)
-                    BackdropCarouselView(title: String(localized: "home.popular"), data: data.popular)
-                    PosterCarouselView(title: String(localized: "home.topRated"), data: data.topRated)
-                    BackdropCarouselView(title: String(localized: "home.upcoming"), data: data.upcoming)
+                    PosterCarouselView(title: localized("home.nowPlaying"), data: data.nowPlaying)
+                    BackdropCarouselView(title: localized("home.popular"), data: data.popular)
+                    PosterCarouselView(title: localized("home.topRated"), data: data.topRated)
+                    BackdropCarouselView(title: localized("home.upcoming"), data: data.upcoming)
                 case .loading:
                     SkeletonView(style: .poster)
                     SkeletonView(style: .backdrop)
@@ -51,11 +77,11 @@ private extension HomeView {
                     ContentUnavailableView("home.empty", systemImage: "film")
                         .containerRelativeFrame(.vertical)
                         .accessibilityIdentifier(AccessibilityID.homeEmpty)
-                case .error(_, let message):
+                case .error(let code, _):
                     ContentUnavailableView(
                         "home.error",
                         systemImage: "exclamationmark.triangle",
-                        description: Text(message)
+                        description: Text(.error(code))
                     )
                     .containerRelativeFrame(.vertical)
                     .accessibilityIdentifier(AccessibilityID.homeError)

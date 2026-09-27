@@ -14,8 +14,8 @@ import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.journey.screens.HomeScreen
 import co.esekiels.cinelex.journey.support.UITestCase
 import org.junit.Test
+import org.robolectric.annotation.Config
 
-/** Mirrors `CinelexUITests/JourneyTests.swift`. */
 class JourneyTest : UITestCase() {
 	private val home = HomeScreen(compose)
 
@@ -72,6 +72,32 @@ class JourneyTest : UITestCase() {
 
 		home.errorState.assertIsDisplayed()
 		home.text("Something went wrong").assertIsDisplayed()
-		home.text("Server unreachable").assertIsDisplayed()
+		home.text("Please check your internet connection and try again.").assertIsDisplayed()
+	}
+
+	// Language
+
+	@Config(sdk = [32])
+	@Test
+	fun language_switchesToIndonesian() {
+		launchApp(Scenario.Loaded)
+		home.waitUntilLoaded()
+
+		home.selectLanguage("Indonesian")
+
+		home.waitForText("Sedang Tayang")
+		home.text("Populer").assertIsDisplayed()
+	}
+
+	@Config(sdk = [32])
+	@Test
+	fun language_localizesErrorMessage() {
+		launchApp(Scenario.Error)
+		home.errorState.assertIsDisplayed()
+
+		home.selectLanguage("Indonesian")
+
+		home.waitForText("Terjadi kesalahan")
+		home.text("Periksa koneksi internet Anda dan coba lagi.").assertIsDisplayed()
 	}
 }

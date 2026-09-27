@@ -5,4 +5,14 @@
     <string name="home_upcoming">Akan Datang</string>
     <string name="home_empty">Tidak ada film</string>
     <string name="home_error">Terjadi kesalahan</string>
+    <string name="action_language">Ganti bahasa</string>
+    <string name="picker_language_title">Pilih Bahasa</string>
+    <string name="language_english">Inggris</string>
+    <string name="language_indonesian">Indonesia</string>
+    <string name="action_ok">OK</string>
+    <string name="error_network">Periksa koneksi internet Anda dan coba lagi.</string>
+    <string name="error_unauthorized">Sesi Anda telah berakhir.</string>
+    <string name="error_timeout">Permintaan melebihi batas waktu. Silakan coba lagi.</string>
+    <string name="error_forbidden">Anda tidak memiliki izin untuk mengakses sumber ini.</string>
+    <string name="error_unknown">Terjadi kesalahan tak terduga. Silakan coba lagi nanti.</string>
 </resources>

@@ -66,8 +66,31 @@ final class JourneyTests: UITestCase {
         XCTAssertTrue(home.errorState.waitForExistence(timeout: Self.timeout))
         XCTAssertTrue(app.staticTexts["Something went wrong"].exists)
         XCTAssertTrue(
-            app.staticTexts["Server unreachable"].exists,
-            "The CinelexException message should reach the description"
+            app.staticTexts["Please check your internet connection and try again."].exists,
+            "The error code should map to a localized description"
         )
+    }
+
+    // MARK: - Language
+
+    func testLanguage_switchesToIndonesian() {
+        launchApp(.loaded)
+        XCTAssertTrue(home.waitUntilLoaded(timeout: Self.timeout))
+
+        home.selectLanguage("Indonesian")
+
+        XCTAssertTrue(home.header("Sedang Tayang").waitForExistence(timeout: Self.timeout))
+        XCTAssertTrue(home.header("Populer").exists)
+        XCTAssertEqual(home.localeMenu.value as? String, "id")
+    }
+
+    func testLanguage_localizesErrorMessage() {
+        launchApp(.error)
+        XCTAssertTrue(home.errorState.waitForExistence(timeout: Self.timeout))
+
+        home.selectLanguage("Indonesian")
+
+        XCTAssertTrue(app.staticTexts["Terjadi kesalahan"].waitForExistence(timeout: Self.timeout))
+        XCTAssertTrue(app.staticTexts["Periksa koneksi internet Anda dan coba lagi."].exists)
     }
 }

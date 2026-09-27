@@ -6,4 +6,14 @@
     <string name="home_upcoming">Upcoming</string>
     <string name="home_empty">No movies</string>
     <string name="home_error">Something went wrong</string>
+    <string name="action_language">Change language</string>
+    <string name="picker_language_title">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="action_ok">OK</string>
+    <string name="error_network">Please check your internet connection and try again.</string>
+    <string name="error_unauthorized">Your session has expired.</string>
+    <string name="error_timeout">The request timed out. Please try again.</string>
+    <string name="error_forbidden">You don\'t have permission to access this resource.</string>
+    <string name="error_unknown">An unexpected error occurred. Please try again later.</string>
 </resources>

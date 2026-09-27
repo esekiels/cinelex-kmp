@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,7 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.esekiels.cinelex.R
 import co.esekiels.cinelex.core.common.UiState
+import co.esekiels.cinelex.core.design.LanguageMenu
 import co.esekiels.cinelex.core.design.TestTag
+import co.esekiels.cinelex.core.design.errorMessage
 import co.esekiels.cinelex.core.design.shimmer
 import co.esekiels.cinelex.model.Movie
 import coil3.compose.SubcomposeAsyncImage
@@ -73,7 +76,14 @@ fun HomeContent(
 	isRefreshing: Boolean,
 	onRefresh: () -> Unit,
 ) {
-	Scaffold { padding ->
+	Scaffold(
+		topBar = {
+			TopAppBar(
+				title = { Text(stringResource(R.string.app_name)) },
+				actions = { LanguageMenu() },
+			)
+		},
+	) { padding ->
 		PullToRefreshBox(isRefreshing, onRefresh, Modifier.padding(padding)) {
 			LazyColumn(
 				modifier = Modifier.fillMaxSize().testTag(TestTag.HOME_LIST),
@@ -109,7 +119,7 @@ fun HomeContent(
 								Icons.Default.Warning,
 								stringResource(R.string.home_error),
 								Modifier.fillParentMaxSize().testTag(TestTag.HOME_ERROR),
-								state.message,
+								stringResource(errorMessage(state.code)),
 							)
 						}
 				}

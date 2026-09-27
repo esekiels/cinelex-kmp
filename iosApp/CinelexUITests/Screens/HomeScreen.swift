@@ -30,6 +30,15 @@ struct HomeScreen {
         app.descendants(matching: .any)[AccessibilityID.homeError].firstMatch
     }
 
+    var localeMenu: XCUIElement {
+        app.buttons[AccessibilityID.localeMenu].firstMatch
+    }
+
+    func selectLanguage(_ name: String) {
+        localeMenu.tap()
+        app.buttons[name].firstMatch.tap()
+    }
+
     func header(_ text: String) -> XCUIElement {
         app.staticTexts[text].firstMatch
     }

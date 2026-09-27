@@ -1,6 +1,142 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "action.language": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change language"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganti bahasa"
+          }
+        }
+      }
+    },
+    "error.forbidden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don't have permission to access this resource."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda tidak memiliki izin untuk mengakses sumber ini."
+          }
+        }
+      }
+    },
+    "error.network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please check your internet connection and try again."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periksa koneksi internet Anda dan coba lagi."
+          }
+        }
+      }
+    },
+    "error.timeout": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The request timed out. Please try again."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permintaan melebihi batas waktu. Silakan coba lagi."
+          }
+        }
+      }
+    },
+    "error.unauthorized": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your session has expired."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesi Anda telah berakhir."
+          }
+        }
+      }
+    },
+    "error.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An unexpected error occurred. Please try again later."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terjadi kesalahan tak terduga. Silakan coba lagi nanti."
+          }
+        }
+      }
+    },
+    "home.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No movies"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada film"
+          }
+        }
+      }
+    },
+    "home.error": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something went wrong"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terjadi kesalahan"
+          }
+        }
+      }
+    },
     "home.nowPlaying": {
       "extractionState": "manual",
       "localizations": {
@@ -69,36 +205,53 @@
         }
       }
     },
-    "home.empty": {
+    "language.english": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No movies"
+            "value": "English"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tidak ada film"
+            "value": "Inggris"
           }
         }
       }
     },
-    "home.error": {
+    "language.indonesian": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Something went wrong"
+            "value": "Indonesian"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Terjadi kesalahan"
+            "value": "Indonesia"
+          }
+        }
+      }
+    },
+    "language.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Language"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilih Bahasa"
           }
         }
       }

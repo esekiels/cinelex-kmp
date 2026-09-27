@@ -20,6 +20,7 @@ kmpNativeCoroutines = "1.0.5"
 
 # -- android app --
 androidx-activity = "1.12.4"
+androidx-appcompat = "1.7.1"
 androidx-core = "1.17.0"
 androidx-lifecycle = "2.10.0"
 composeBom = "2024.09.00"
@@ -60,6 +61,7 @@ kmp-nativecoroutines-annotations = { module = "com.rickclephas.kmp:kmp-nativecor
 # -- android app--
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-lifecycle-runtimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -67,6 +69,7 @@ compose-ui = { module = "androidx.compose.ui:ui" }
 compose-uiTooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 compose-uiTest-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
