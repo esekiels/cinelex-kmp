@@ -49,6 +49,13 @@ class HomeScreen(
 		text(name).performClick()
 	}
 
+	val themeMenu: SemanticsNodeInteraction get() = compose.onNodeWithContentDescription("Change theme")
+
+	fun selectTheme(name: String) {
+		themeMenu.performClick()
+		text(name).performClick()
+	}
+
 	fun waitForText(
 		text: String,
 		timeout: Long = TIMEOUT_MS,

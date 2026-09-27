@@ -7,6 +7,7 @@
 
 package co.esekiels.cinelex.journey.support
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.core.os.LocaleListCompat
@@ -39,10 +40,19 @@ abstract class UITestCase {
 		activity = ActivityScenario.launch(MainActivity::class.java)
 	}
 
+	fun isNightMode(): Boolean {
+		var night = false
+		activity!!.onActivity {
+			night = it.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+		}
+		return night
+	}
+
 	@After
 	fun tearDown() {
 		activity?.close()
 		AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
+		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 		// Robolectric builds a fresh CinelexApplication per test, which calls startKoin again.
 		stopKoin()
 	}

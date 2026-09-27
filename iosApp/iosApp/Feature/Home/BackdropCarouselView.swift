@@ -29,6 +29,7 @@ private extension BackdropCarouselView {
             Text(title)
                 .font(.title)
                 .fontWeight(.bold)
+                .foregroundStyle(.textPrimary)
             carousel(geometry)
         }
         .padding(.leading, geometry.size.width * 0.04)
@@ -65,6 +66,7 @@ private extension BackdropCarouselView {
                 Text(movie.title)
                     .font(.subheadline)
                     .fontWeight(.medium)
+                    .foregroundStyle(.textPrimary)
                     .lineLimit(1)
             }
             .frame(width: cardWidth, height: cardHeight)

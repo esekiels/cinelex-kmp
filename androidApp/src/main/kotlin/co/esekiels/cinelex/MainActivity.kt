@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
+import co.esekiels.cinelex.core.design.CinelexTheme
 import co.esekiels.cinelex.feature.home.HomeScreen
 import co.esekiels.cinelex.feature.home.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 
 		setContent {
-			MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
+			CinelexTheme {
 				HomeScreen(homeViewModel)
 			}
 		}

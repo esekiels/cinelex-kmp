@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,6 +57,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.esekiels.cinelex.R
 import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.core.design.LanguageMenu
+import co.esekiels.cinelex.core.design.ThemeMenu
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.core.design.errorMessage
 import co.esekiels.cinelex.core.design.shimmer
@@ -80,7 +82,11 @@ fun HomeContent(
 		topBar = {
 			TopAppBar(
 				title = { Text(stringResource(R.string.app_name)) },
-				actions = { LanguageMenu() },
+				actions = {
+					LanguageMenu()
+					ThemeMenu()
+				},
+				colors = TopAppBarDefaults.topAppBarColors(actionIconContentColor = MaterialTheme.colorScheme.onSurface),
 			)
 		},
 	) { padding ->

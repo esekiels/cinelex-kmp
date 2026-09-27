@@ -16,6 +16,7 @@ struct HomeView: View {
     
     @State private var viewModel: HomeViewModel
     @AppStorage(AppLanguage.storageKey) private var language = AppLanguage.preferred
+    @AppStorage(AppTheme.storageKey) private var theme = AppTheme.system
     @Environment(\.locale) private var locale
     
     init(viewModel: HomeViewModel) {
@@ -29,7 +30,11 @@ struct HomeView: View {
                 .refreshable { await viewModel.refresh() }
                 .onDisappear { viewModel.onDisappear() }
                 .navigationTitle(Text(verbatim: "Cinelex"))
-                .toolbar { ToolbarItem(placement: .topBarTrailing) { localeMenu } }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) { localeMenu.tint(.textPrimary) }
+                    ToolbarItem(placement: .topBarTrailing) { themeMenu.tint(.textPrimary) }
+                }
+                .background(Color.background)
         }
     }
 }
@@ -52,6 +57,24 @@ private extension HomeView {
         }
         .accessibilityIdentifier(AccessibilityID.localeMenu)
         .accessibilityValue(language.rawValue)
+    }
+    
+    var themeMenu: some View {
+        Menu {
+            Picker(selection: $theme) {
+                ForEach(AppTheme.allCases, id: \.self) { option in
+                    Label(option.title, systemImage: option.icon)
+                        .tag(option)
+                }
+            } label: {
+                Text("theme.title")
+            }
+        } label: {
+            Image(systemName: theme.icon)
+                .accessibilityLabel(Text("action.theme"))
+        }
+        .accessibilityIdentifier(AccessibilityID.themeMenu)
+        .accessibilityValue(theme.rawValue)
     }
     
     func localized(_ key: String.LocalizationValue) -> String {

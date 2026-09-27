@@ -10,6 +10,11 @@
     <string name="picker_language_title">Select Language</string>
     <string name="language_english">English</string>
     <string name="language_indonesian">Indonesian</string>
+    <string name="action_theme">Change theme</string>
+    <string name="picker_theme_title">Select Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
     <string name="action_ok">OK</string>
     <string name="error_network">Please check your internet connection and try again.</string>
     <string name="error_unauthorized">Your session has expired.</string>

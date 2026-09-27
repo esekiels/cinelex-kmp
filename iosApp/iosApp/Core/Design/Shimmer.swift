@@ -14,9 +14,9 @@ struct Shimmer: ViewModifier {
 
     private static let animationDuration: Double = 1.0
     private static let gradientColors: [Color] = [
-        Color.white.opacity(0.4),
-        Color.gray.opacity(0.7),
-        Color.white.opacity(0.4)
+        Color.textSecondary.opacity(0.15),
+        Color.textSecondary.opacity(0.35),
+        Color.textSecondary.opacity(0.15)
     ]
 
     func body(content: Content) -> some View {

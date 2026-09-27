@@ -29,6 +29,7 @@ private extension PosterCarouselView {
             Text(title)
                 .font(.title)
                 .fontWeight(.bold)
+                .foregroundStyle(.textPrimary)
             carousel(geometry)
         }
         .padding(.leading, geometry.size.width * 0.04)

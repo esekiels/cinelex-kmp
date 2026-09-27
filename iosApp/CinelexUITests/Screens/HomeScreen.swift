@@ -39,6 +39,15 @@ struct HomeScreen {
         app.buttons[name].firstMatch.tap()
     }
 
+    var themeMenu: XCUIElement {
+        app.buttons[AccessibilityID.themeMenu].firstMatch
+    }
+
+    func selectTheme(_ name: String) {
+        themeMenu.tap()
+        app.buttons[name].firstMatch.tap()
+    }
+
     func header(_ text: String) -> XCUIElement {
         app.staticTexts[text].firstMatch
     }

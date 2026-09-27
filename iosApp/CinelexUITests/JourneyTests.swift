@@ -93,4 +93,27 @@ final class JourneyTests: UITestCase {
         XCTAssertTrue(app.staticTexts["Terjadi kesalahan"].waitForExistence(timeout: Self.timeout))
         XCTAssertTrue(app.staticTexts["Periksa koneksi internet Anda dan coba lagi."].exists)
     }
+
+    // MARK: - Theme
+
+    func testTheme_switchesToDark() {
+        launchApp(.loaded)
+        XCTAssertTrue(home.waitUntilLoaded(timeout: Self.timeout))
+        XCTAssertEqual(home.themeMenu.value as? String, "system")
+
+        home.selectTheme("Dark")
+
+        XCTAssertEqual(home.themeMenu.value as? String, "dark")
+        XCTAssertTrue(home.firstCard.exists, "Switching theme should keep the loaded content")
+    }
+
+    func testTheme_localizesOptions() {
+        launchApp(.loaded)
+        XCTAssertTrue(home.waitUntilLoaded(timeout: Self.timeout))
+
+        home.selectLanguage("Indonesian")
+        home.selectTheme("Gelap")
+
+        XCTAssertEqual(home.themeMenu.value as? String, "dark")
+    }
 }
