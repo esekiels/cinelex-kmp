@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.testTag
@@ -51,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.esekiels.cinelex.R
 import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.core.design.shimmer
@@ -81,10 +83,10 @@ fun HomeContent(
 				when (state) {
 					is UiState.Loaded ->
 						with(state.data) {
-							item { Carousel("Now Playing", nowPlaying, CarouselStyle.Poster) }
-							item { Carousel("Popular", popular, CarouselStyle.Backdrop) }
-							item { Carousel("Top Rated", topRated, CarouselStyle.Poster) }
-							item { Carousel("Upcoming", upcoming, CarouselStyle.Backdrop) }
+							item { Carousel(stringResource(R.string.home_now_playing), nowPlaying, CarouselStyle.Poster) }
+							item { Carousel(stringResource(R.string.home_popular), popular, CarouselStyle.Backdrop) }
+							item { Carousel(stringResource(R.string.home_top_rated), topRated, CarouselStyle.Poster) }
+							item { Carousel(stringResource(R.string.home_upcoming), upcoming, CarouselStyle.Backdrop) }
 						}
 
 					UiState.Loading ->
@@ -94,14 +96,18 @@ fun HomeContent(
 
 					UiState.Empty ->
 						item {
-							Unavailable(Icons.Default.Info, "No movies", Modifier.fillParentMaxSize().testTag(TestTag.HOME_EMPTY))
+							Unavailable(
+								Icons.Default.Info,
+								stringResource(R.string.home_empty),
+								Modifier.fillParentMaxSize().testTag(TestTag.HOME_EMPTY),
+							)
 						}
 
 					is UiState.Error ->
 						item {
 							Unavailable(
 								Icons.Default.Warning,
-								"Something went wrong",
+								stringResource(R.string.home_error),
 								Modifier.fillParentMaxSize().testTag(TestTag.HOME_ERROR),
 								state.message,
 							)

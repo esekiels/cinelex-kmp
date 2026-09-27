@@ -1,0 +1,8 @@
+<resources>
+    <string name="home_now_playing">Sedang Tayang</string>
+    <string name="home_popular">Populer</string>
+    <string name="home_top_rated">Rating Tertinggi</string>
+    <string name="home_upcoming">Akan Datang</string>
+    <string name="home_empty">Tidak ada film</string>
+    <string name="home_error">Terjadi kesalahan</string>
+</resources>

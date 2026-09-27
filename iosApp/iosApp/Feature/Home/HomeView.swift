@@ -38,22 +38,22 @@ private extension HomeView {
             VStack(spacing: 24) {
                 switch viewModel.state.uiState {
                 case .loaded(let data):
-                    PosterCarouselView(title: "Now Playing", data: data.nowPlaying)
-                    BackdropCarouselView(title: "Popular", data: data.popular)
-                    PosterCarouselView(title: "Top Rated", data: data.topRated)
-                    BackdropCarouselView(title: "Upcoming", data: data.upcoming)
+                    PosterCarouselView(title: String(localized: "home.nowPlaying"), data: data.nowPlaying)
+                    BackdropCarouselView(title: String(localized: "home.popular"), data: data.popular)
+                    PosterCarouselView(title: String(localized: "home.topRated"), data: data.topRated)
+                    BackdropCarouselView(title: String(localized: "home.upcoming"), data: data.upcoming)
                 case .loading:
                     SkeletonView(style: .poster)
                     SkeletonView(style: .backdrop)
                     SkeletonView(style: .poster)
                     SkeletonView(style: .backdrop)
                 case .empty:
-                    ContentUnavailableView("No movies", systemImage: "film")
+                    ContentUnavailableView("home.empty", systemImage: "film")
                         .containerRelativeFrame(.vertical)
                         .accessibilityIdentifier(AccessibilityID.homeEmpty)
                 case .error(_, let message):
                     ContentUnavailableView(
-                        "Something went wrong",
+                        "home.error",
                         systemImage: "exclamationmark.triangle",
                         description: Text(message)
                     )

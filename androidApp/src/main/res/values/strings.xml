@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cinelex</string>
+    <string name="home_now_playing">Now Playing</string>
+    <string name="home_popular">Popular</string>
+    <string name="home_top_rated">Top Rated</string>
+    <string name="home_upcoming">Upcoming</string>
+    <string name="home_empty">No movies</string>
+    <string name="home_error">Something went wrong</string>
 </resources>

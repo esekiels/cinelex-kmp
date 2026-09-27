@@ -57,6 +57,10 @@ android {
 		versionCode = 1
 		versionName = "1.0"
 	}
+	androidResources {
+		localeFilters += listOf("en", "in")
+		generateLocaleConfig = true
+	}
 	packaging {
 		resources {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
