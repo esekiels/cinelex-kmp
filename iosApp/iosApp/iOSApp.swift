@@ -4,25 +4,29 @@ import Shared
 @main
 struct iOSApp: App {
 
-    private let repository: any MovieRepository
+    private let factory: CinelexDIFactory
     @State private var preferences: PreferencesStore
 
     init() {
+        let factory: CinelexDIFactory
         #if DEBUG
         if let scenario = UITestScenario.current {
-            repository = scenario.repository
-            _preferences = State(initialValue: PreferencesStore(repository: FakeUserDataRepository()))
-            return
+            factory = CinelexDIFactory(movieRepository: scenario.repository, userDataRepository: FakeUserDataRepository())
+        } else {
+            KoinHelperKt.doInitKoin()
+            factory = CinelexDIFactory()
         }
-        #endif
+        #else
         KoinHelperKt.doInitKoin()
-        repository = KoinHelperKt.movieRepository()
-        _preferences = State(initialValue: PreferencesStore(repository: KoinHelperKt.userDataRepository()))
+        factory = CinelexDIFactory()
+        #endif
+        self.factory = factory
+        _preferences = State(initialValue: factory.injectPreferencesStore())
     }
 
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: HomeViewModel(repository: repository))
+            HomeView(viewModel: factory.injectHomeViewModel())
                 .environment(preferences)
                 .environment(\.locale, preferences.language.locale)
                 .preferredColorScheme(preferences.theme.colorScheme)

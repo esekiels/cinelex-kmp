@@ -5,7 +5,7 @@
  * Created by Esekiel Surbakti on 26/09/26
  */
 
-package co.esekiels.cinelex.core.design
+package co.esekiels.cinelex.core.design.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -14,14 +14,19 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import co.esekiels.cinelex.core.design.theme.CinelexTheme
 
 private val ShimmerColors =
 	listOf(
@@ -34,7 +39,6 @@ private const val DURATION_MS = 1_000
 private const val SWEEP_PX = 1_000f
 private const val BAND_PX = 500f
 
-/** Rounded gray block with a diagonal sweep — the Android twin of iOS `shimmerEffect()`. */
 fun Modifier.shimmer(): Modifier =
 	composed {
 		val progress by rememberInfiniteTransition(label = "shimmer").animateFloat(
@@ -54,3 +58,11 @@ fun Modifier.shimmer(): Modifier =
 			shape = RoundedCornerShape(8.dp),
 		)
 	}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShimmerPreview() {
+	CinelexTheme {
+		Box(Modifier.size(200.dp, 120.dp).shimmer())
+	}
+}

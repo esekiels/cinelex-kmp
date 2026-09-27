@@ -16,6 +16,7 @@ dependencies {
 	implementation(projects.shared.common)
 
 	implementation(libs.koin.android)
+	implementation(libs.koin.androidx.compose)
 	implementation(libs.coil.compose)
 	implementation(libs.coil.network.okhttp)
 	
