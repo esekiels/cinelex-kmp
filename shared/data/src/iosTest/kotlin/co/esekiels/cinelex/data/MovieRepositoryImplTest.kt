@@ -123,4 +123,21 @@ class MovieRepositoryImplTest {
 			assertEquals(1, harness.requests.size)
 			assertTrue(harness.requests.single().contains(ApiConstants.NOW_PLAYING))
 		}
+
+	@Test
+	fun fetchDetailsFallsBackToCacheOffline() =
+		runTest {
+			harness.alwaysOffline()
+			val error = assertFailsWith<CinelexException> { repository().fetchMovieDetails(278) }
+			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
+
+			harness.alwaysRespond("""{ "id": 278, "title": "The Shawshank Redemption", "runtime": 142 }""")
+			assertEquals("The Shawshank Redemption", repository().fetchMovieDetails(278).title)
+			assertTrue(harness.requests.last().contains("movie/278"))
+
+			harness.alwaysOffline()
+			val cached = repository().fetchMovieDetails(278)
+			assertEquals("The Shawshank Redemption", cached.title)
+			assertEquals(142, cached.runtime)
+		}
 }

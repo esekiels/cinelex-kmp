@@ -10,6 +10,7 @@ package co.esekiels.cinelex.testing
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,8 @@ class FakeMovieRepository(
 
 	var failure: CinelexException? = null
 
+	var detailsFailure: CinelexException? = null
+
 	var refreshCount: Int = 0
 		private set
 
@@ -45,6 +48,11 @@ class FakeMovieRepository(
 		refreshCount++
 		if (isLoading) awaitCancellation()
 		failure?.let { throw it }
+	}
+
+	override suspend fun fetchMovieDetails(id: Int): MovieDetails {
+		detailsFailure?.let { throw it }
+		return MovieStubs.details(id)
 	}
 
 	private fun MutableStateFlow<List<Movie>>.orNever(): Flow<List<Movie>> = if (isLoading) emptyFlow() else asStateFlow()

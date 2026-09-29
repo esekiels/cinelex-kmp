@@ -8,6 +8,7 @@
 package co.esekiels.cinelex.network.service
 
 import co.esekiels.cinelex.network.ApiConstants
+import co.esekiels.cinelex.network.MOVIE_DETAILS_RESPONSE
 import co.esekiels.cinelex.network.MOVIE_RESPONSE
 import co.esekiels.cinelex.network.MockClient
 import kotlinx.coroutines.test.runTest
@@ -35,5 +36,18 @@ class MovieServiceTest {
 				assertEquals("The Shawshank Redemption", response.results.first().title)
 				assertTrue(mock.requests.single().contains(category))
 			}
+		}
+
+	@Test
+	fun decodesDetailsWithCreditsAndVideos() =
+		runTest {
+			val mock = MockClient(body = MOVIE_DETAILS_RESPONSE)
+			val details = MovieService(mock.client).fetchDetails(278, "en")
+
+			assertEquals("The Shawshank Redemption", details.title)
+			assertEquals(listOf("Frank Darabont"), details.directors.map { it.name })
+			assertEquals(1, details.youtubeTrailers.size)
+			assertTrue(mock.requests.single().contains("movie/278"))
+			assertTrue(mock.requests.single().contains("append_to_response=credits%2Cvideos"))
 		}
 }

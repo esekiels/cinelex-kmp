@@ -12,6 +12,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.database.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -37,4 +38,10 @@ interface MovieDao {
 		clearByCategory(category)
 		saveMovies(movies)
 	}
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	suspend fun saveDetails(details: MovieDetailsEntity)
+
+	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
+	suspend fun fetchDetails(id: Int): MovieDetailsEntity?
 }

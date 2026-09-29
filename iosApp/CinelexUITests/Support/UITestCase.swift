@@ -29,6 +29,7 @@ class UITestCase: XCTestCase {
         case loading
         case empty
         case error
+        case detailError
     }
 }
 

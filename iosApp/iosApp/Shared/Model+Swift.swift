@@ -9,17 +9,33 @@ import Foundation
 import Shared
 
 extension Movie: @retroactive Identifiable {}
+extension Cast: @retroactive Identifiable {}
+extension Video: @retroactive Identifiable {}
 
 extension Movie {
     var posterURL: URL? { imageURL(posterUrl) }
     var backdropURL: URL? { imageURL(backdropUrl) }
 
-    private func imageURL(_ path: String?) -> URL? {
-        #if DEBUG
-        if UITestScenario.current != nil {
-            return nil
-        }
-        #endif
-        return path.flatMap(URL.init(string:))
+    private func imageURL(_ path: String?) -> URL? { stubbableURL(path) }
+}
+
+extension MovieDetails {
+    var backdropURL: URL? { stubbableURL(backdropUrl) }
+}
+
+extension Cast {
+    var profileURL: URL? { stubbableURL(profileUrl) }
+}
+
+extension Video {
+    var youtubeURL: URL? { youtubeUrl.flatMap(URL.init(string:)) }
+}
+
+private func stubbableURL(_ path: String?) -> URL? {
+    #if DEBUG
+    if UITestScenario.current != nil {
+        return nil
     }
+    #endif
+    return path.flatMap(URL.init(string:))
 }

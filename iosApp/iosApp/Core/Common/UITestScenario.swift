@@ -15,6 +15,7 @@ enum UITestScenario: String {
     case loading
     case empty
     case error
+    case detailError
 
     /// `nil` unless the app was launched with `-UITestStubs`.
     static var current: Self? {
@@ -43,6 +44,13 @@ enum UITestScenario: String {
         case .error:
             let repository = FakeMovieRepository(nowPlaying: [])
             repository.failure = CinelexException(
+                code: ErrorConstants.shared.NETWORK_ERROR,
+                message: "Server unreachable"
+            )
+            return repository
+        case .detailError:
+            let repository = FakeMovieRepository(nowPlaying: MovieStubs.shared.all)
+            repository.detailsFailure = CinelexException(
                 code: ErrorConstants.shared.NETWORK_ERROR,
                 message: "Server unreachable"
             )

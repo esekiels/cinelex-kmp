@@ -7,8 +7,11 @@
 
 package co.esekiels.cinelex.database.entity.mapper
 
+import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.database.entity.MovieEntity
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieDetails
+import kotlinx.serialization.json.Json
 
 fun List<Movie>.toEntities(category: String): List<MovieEntity> =
 	map { movie ->
@@ -30,3 +33,7 @@ fun List<MovieEntity>.toDomain(): List<Movie> =
 			backdropPath = entity.backdropPath,
 		)
 	}
+
+fun MovieDetails.toEntity(): MovieDetailsEntity = MovieDetailsEntity(id = id, json = Json.encodeToString(this))
+
+fun MovieDetailsEntity.toDomain(): MovieDetails = Json.decodeFromString(json)

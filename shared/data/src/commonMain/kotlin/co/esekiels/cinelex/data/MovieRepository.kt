@@ -8,6 +8,7 @@
 package co.esekiels.cinelex.data
 
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieDetails
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 
@@ -26,4 +27,7 @@ interface MovieRepository {
 
 	@NativeCoroutines
 	suspend fun refreshMovies()
+
+	@NativeCoroutines
+	suspend fun fetchMovieDetails(id: Int): MovieDetails
 }

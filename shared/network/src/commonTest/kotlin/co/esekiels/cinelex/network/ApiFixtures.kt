@@ -27,3 +27,22 @@ internal const val MOVIE_RESPONSE: String = """
   ]
 }
 """
+
+internal const val MOVIE_DETAILS_RESPONSE: String = """
+{
+  "id": 278,
+  "title": "The Shawshank Redemption",
+  "overview": "Two imprisoned men bond over a number of years.",
+  "vote_average": 8.7,
+  "release_date": "1994-09-23",
+  "runtime": 142,
+  "genres": [{ "id": 18, "name": "Drama" }],
+  "credits": {
+    "cast": [{ "id": 504, "name": "Tim Robbins", "character": "Andy Dufresne", "profile_path": null }],
+    "crew": [{ "id": 4027, "name": "Frank Darabont", "job": "Director" }]
+  },
+  "videos": {
+    "results": [{ "id": "t1", "key": "abc", "name": "Trailer", "site": "YouTube", "type": "Trailer" }]
+  }
+}
+"""

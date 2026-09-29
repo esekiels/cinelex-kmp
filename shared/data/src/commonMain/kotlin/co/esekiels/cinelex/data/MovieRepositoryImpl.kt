@@ -10,7 +10,9 @@ package co.esekiels.cinelex.data
 import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.mapper.toDomain
 import co.esekiels.cinelex.database.entity.mapper.toEntities
+import co.esekiels.cinelex.database.entity.mapper.toEntity
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
 import co.esekiels.cinelex.network.ApiResponse
 import co.esekiels.cinelex.network.service.MovieClient
@@ -49,6 +51,14 @@ internal class MovieRepositoryImpl(
 
 					is ApiResponse.Failure -> throw response.error
 				}
+			}
+		}
+
+	override suspend fun fetchMovieDetails(id: Int): MovieDetails =
+		withContext(ioDispatcher) {
+			when (val response = client.fetchDetails(id, "en-us")) {
+				is ApiResponse.Success -> response.body.also { dao.saveDetails(it.toEntity()) }
+				is ApiResponse.Failure -> dao.fetchDetails(id)?.toDomain() ?: throw response.error
 			}
 		}
 
