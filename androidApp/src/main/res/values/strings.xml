@@ -21,6 +21,12 @@
     <string name="error_timeout">The request timed out. Please try again.</string>
     <string name="error_forbidden">You don\'t have permission to access this resource.</string>
     <string name="error_unknown">An unexpected error occurred. Please try again later.</string>
-    <string name="detail_placeholder">This is detail</string>
     <string name="action_back">Back</string>
+    <string name="detail_cast">Cast</string>
+    <string name="detail_crew">Crew</string>
+    <string name="detail_director">Director</string>
+    <string name="detail_producer">Producer</string>
+    <string name="detail_writer">Writer</string>
+    <string name="detail_trailers">Trailers</string>
+    <string name="detail_play_trailer">Play trailer</string>
 </resources>

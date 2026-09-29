@@ -53,7 +53,7 @@ fun CinelexMain(
 							ThemeMenu(preferences.uiTheme, onThemeSelected)
 						}
 					}
-					entry<Detail> { DetailScreen(it.title, onBack = { pop() }) }
+					entry<Detail> { DetailScreen(it.movieId, it.title, onBack = { pop() }) }
 				},
 		)
 	}

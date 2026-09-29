@@ -44,6 +44,13 @@ class HomeScreen(
 	): SemanticsNodeInteraction =
 		compose.onNode(hasContentDescription(movieTitle) and hasAnyAncestor(hasTestTag(TestTag.carousel(carouselTitle))))
 
+	fun openMovie(
+		movieTitle: String,
+		carouselTitle: String = "Now Playing",
+	) {
+		card(movieTitle, carouselTitle).performClick()
+	}
+
 	fun selectLanguage(name: String) {
 		compose.onNodeWithContentDescription("Change language").performClick()
 		text(name).performClick()

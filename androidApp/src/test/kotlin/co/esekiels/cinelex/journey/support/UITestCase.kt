@@ -75,6 +75,7 @@ abstract class UITestCase {
 		Loading,
 		Empty,
 		Error,
+		DetailError,
 		;
 
 		fun repository(): MovieRepository =
@@ -85,6 +86,10 @@ abstract class UITestCase {
 				Error ->
 					FakeMovieRepository(emptyList()).apply {
 						failure = CinelexException(ErrorConstants.NETWORK_ERROR, "Server unreachable")
+					}
+				DetailError ->
+					FakeMovieRepository(MovieStubs.all).apply {
+						detailsFailure = CinelexException(ErrorConstants.NETWORK_ERROR, "Server unreachable")
 					}
 			}
 	}

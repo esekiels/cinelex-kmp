@@ -13,10 +13,13 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 import androidx.core.os.LocaleListCompat
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.journey.screens.HomeScreen
 import co.esekiels.cinelex.journey.support.UITestCase
+import co.esekiels.cinelex.journey.support.UITestCase.Companion.TIMEOUT_MS
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.UiTheme
 import org.junit.Assert.assertEquals
@@ -55,6 +58,46 @@ class JourneyTest : UITestCase() {
 		home.waitUntilLoaded()
 
 		home.scrollCarousel("Popular", toCard = "The Godfather").assertIsDisplayed()
+	}
+
+	// Detail
+
+	@Test
+	fun detail_showsSectionsFromTheSharedModel() {
+		launchApp(Scenario.Loaded)
+		home.waitUntilLoaded()
+
+		home.openMovie("The Shawshank Redemption")
+
+		home.waitForText("Tim Robbins")
+		home.text("Cast").assertExists()
+		home.text("Director").assertExists()
+		home.text("Frank Darabont").assertExists()
+		home.text("Official Trailer").assertExists()
+	}
+
+	@Test
+	fun detail_backReturnsHome() {
+		launchApp(Scenario.Loaded)
+		home.waitUntilLoaded()
+		home.openMovie("The Shawshank Redemption")
+		home.waitForText("Tim Robbins")
+
+		compose.onNodeWithContentDescription("Back").performClick()
+
+		home.waitUntilLoaded()
+		home.text("Now Playing").assertIsDisplayed()
+	}
+
+	@Test
+	fun detail_error_showsMessage() {
+		launchApp(Scenario.DetailError)
+		home.waitUntilLoaded()
+
+		home.openMovie("The Shawshank Redemption")
+
+		compose.waitUntil(TIMEOUT_MS) { compose.onAllNodesWithTag(TestTag.DETAIL_ERROR).fetchSemanticsNodes().isNotEmpty() }
+		home.text("Please check your internet connection and try again.").assertIsDisplayed()
 	}
 
 	// Other states
