@@ -17,6 +17,8 @@ import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.UserDataRepository
+import co.esekiels.cinelex.journey.screens.DetailScreen
+import co.esekiels.cinelex.journey.screens.HomeScreen
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.FakeUserDataRepository
 import co.esekiels.cinelex.testing.MovieStubs
@@ -38,6 +40,10 @@ abstract class UITestCase {
 	private var activity: ActivityScenario<MainActivity>? = null
 
 	val preferences = FakeUserDataRepository()
+
+	val home = HomeScreen(compose)
+
+	val detail = DetailScreen(compose)
 
 	fun launchApp(scenario: Scenario) {
 		loadKoinModules(

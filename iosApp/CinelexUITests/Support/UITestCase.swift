@@ -15,6 +15,9 @@ class UITestCase: XCTestCase {
 
     nonisolated static let timeout: TimeInterval = 5
 
+    var home: HomeScreen { HomeScreen(app: app) }
+    var detail: DetailScreen { DetailScreen(app: app) }
+
     override func setUp() {
         continueAfterFailure = false
     }
