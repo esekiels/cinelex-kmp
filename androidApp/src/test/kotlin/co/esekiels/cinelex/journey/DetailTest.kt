@@ -21,11 +21,11 @@ class DetailTest : UITestCase() {
 
 		home.openMovie("The Shawshank Redemption")
 
-		home.waitForText("Tim Robbins")
-		home.text("Cast").assertExists()
-		home.text("Director").assertExists()
-		home.text("Frank Darabont").assertExists()
-		home.text("Official Trailer").assertExists()
+		detail.waitForText("Tim Robbins")
+		detail.text("Cast").assertExists()
+		detail.text("Director").assertExists()
+		detail.text("Frank Darabont").assertExists()
+		detail.text("Official Trailer").assertExists()
 	}
 
 	@Test
@@ -33,7 +33,7 @@ class DetailTest : UITestCase() {
 		launchApp(Scenario.Loaded)
 		home.waitUntilLoaded()
 		home.openMovie("The Shawshank Redemption")
-		home.waitForText("Tim Robbins")
+		detail.waitForText("Tim Robbins")
 
 		detail.back()
 
@@ -51,6 +51,8 @@ class DetailTest : UITestCase() {
 		home.openMovie("The Shawshank Redemption")
 
 		detail.waitForError()
-		home.text("Please check your internet connection and try again.").assertIsDisplayed()
+		detail.text("Couldn't load movie").assertIsDisplayed()
+		detail.text("Please check your internet connection and try again.").assertIsDisplayed()
+		detail.text("Retry").assertIsDisplayed()
 	}
 }

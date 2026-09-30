@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -48,10 +49,10 @@ fun DetailScreen(
 	movieId: Int,
 	title: String,
 	onBack: () -> Unit,
-	viewModel: DetailViewModel = koinViewModel(key = "detail-$movieId") { parametersOf(movieId) },
+	viewModel: DetailViewModel = koinViewModel { parametersOf(movieId) },
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
-	DetailContent(title, state, onBack)
+	DetailContent(title, state, onBack, viewModel::load)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,6 +61,7 @@ fun DetailContent(
 	title: String,
 	state: UiState<MovieDetails>,
 	onBack: () -> Unit,
+	onRetry: () -> Unit,
 ) {
 	Scaffold(
 		topBar = {
@@ -79,10 +81,12 @@ fun DetailContent(
 				is UiState.Error ->
 					Unavailable(
 						Icons.Default.Warning,
-						stringResource(R.string.home_error),
+						stringResource(R.string.detail_error),
 						Modifier.fillMaxSize().testTag(TestTag.DETAIL_ERROR),
 						stringResource(errorMessage(state.code)),
-					)
+					) {
+						OutlinedButton(onRetry) { Text(stringResource(R.string.action_retry)) }
+					}
 				UiState.Loading, UiState.Empty -> Skeleton()
 			}
 		}
@@ -110,7 +114,7 @@ private val previewDetails =
 @Composable
 private fun LoadedPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Loaded(previewDetails)) {}
+		DetailContent(previewDetails.title, UiState.Loaded(previewDetails), {}, {})
 	}
 }
 
@@ -118,7 +122,7 @@ private fun LoadedPreview() {
 @Composable
 private fun LoadingPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Loading) {}
+		DetailContent(previewDetails.title, UiState.Loading, {}, {})
 	}
 }
 
@@ -126,6 +130,6 @@ private fun LoadingPreview() {
 @Composable
 private fun ErrorPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Error("E001", "Server unreachable")) {}
+		DetailContent(previewDetails.title, UiState.Error("E001", "Server unreachable"), {}, {})
 	}
 }

@@ -9,15 +9,18 @@ package co.esekiels.cinelex.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.core.common.UiState
+import co.esekiels.cinelex.core.common.toUiError
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.Movie
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -42,14 +45,9 @@ class HomeViewModel(
 	val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
 	init {
-		combine(
-			repository.observeNowPlaying(),
-			repository.observePopular(),
-			repository.observeUpcoming(),
-			repository.observeTopRated(),
-			::Carousels,
-		).onEach { if (!it.isEmpty) _state.value = UiState.Loaded(it) }
-			.catch { if (it is CinelexException) fail(it) else throw it }
+		carousels()
+			.onEach { if (!it.isEmpty) _state.value = UiState.Loaded(it) }
+			.catch { fail(it) }
 			.launchIn(viewModelScope)
 		viewModelScope.launch { load() }
 	}
@@ -65,16 +63,28 @@ class HomeViewModel(
 		}
 	}
 
+	@Suppress("TooGenericExceptionCaught")
 	private suspend fun load() {
 		try {
 			repository.refreshMovies()
-			if (_state.value !is UiState.Loaded) _state.value = UiState.Empty
-		} catch (e: CinelexException) {
+			if (_state.value !is UiState.Loaded && carousels().first().isEmpty) _state.value = UiState.Empty
+		} catch (e: CancellationException) {
+			throw e
+		} catch (e: Exception) {
 			fail(e)
 		}
 	}
 
-	private fun fail(e: CinelexException) {
-		if (_state.value !is UiState.Loaded) _state.value = UiState.Error(e.code, e.message)
+	private fun carousels(): Flow<Carousels> =
+		combine(
+			repository.observeNowPlaying(),
+			repository.observePopular(),
+			repository.observeUpcoming(),
+			repository.observeTopRated(),
+			::Carousels,
+		)
+
+	private fun fail(error: Throwable) {
+		if (_state.value !is UiState.Loaded) _state.value = error.toUiError()
 	}
 }

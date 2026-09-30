@@ -7,6 +7,9 @@
 
 package co.esekiels.cinelex.core.common
 
+import co.esekiels.cinelex.common.CinelexException
+import co.esekiels.cinelex.common.ErrorConstants
+
 sealed interface UiState<out T> {
 	data object Loading : UiState<Nothing>
 
@@ -21,3 +24,10 @@ sealed interface UiState<out T> {
 		val message: String,
 	) : UiState<Nothing>
 }
+
+fun Throwable.toUiError(): UiState.Error =
+	if (this is CinelexException) {
+		UiState.Error(code, message)
+	} else {
+		UiState.Error(ErrorConstants.UNKNOWN_ERROR, message.orEmpty())
+	}

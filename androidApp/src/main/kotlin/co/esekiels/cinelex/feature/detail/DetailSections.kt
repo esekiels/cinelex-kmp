@@ -7,7 +7,6 @@
 
 package co.esekiels.cinelex.feature.detail
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,11 +45,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import co.esekiels.cinelex.R
+import co.esekiels.cinelex.core.common.openUrl
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.core.design.components.shimmer
 import co.esekiels.cinelex.model.Cast
@@ -67,7 +68,7 @@ internal fun Sections(movie: MovieDetails) {
 	Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
 		AsyncImage(
 			model = movie.backdropUrl,
-			contentDescription = movie.title,
+			contentDescription = null,
 			contentScale = ContentScale.Crop,
 			modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
 		)
@@ -127,7 +128,7 @@ private fun CastSection(cast: List<Cast>) {
 	Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		SectionTitle(stringResource(R.string.detail_cast))
 		LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(end = 16.dp)) {
-			items(cast.take(CAST_LIMIT), key = { it.id }) { CastCard(it) }
+			items(cast.take(CAST_LIMIT)) { CastCard(it) }
 		}
 	}
 }
@@ -200,7 +201,8 @@ private fun TrailerSection(trailers: List<Video>) {
 			Row(
 				Modifier
 					.fillMaxWidth()
-					.clickable { trailer.youtubeUrl?.let { context.startActivity(Intent(Intent.ACTION_VIEW, it.toUri())) } }
+					.heightIn(min = 48.dp)
+					.clickable(role = Role.Button) { trailer.youtubeUrl?.let { context.openUrl(it) } }
 					.padding(vertical = 4.dp),
 				verticalAlignment = Alignment.CenterVertically,
 			) {

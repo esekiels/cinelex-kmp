@@ -32,6 +32,7 @@ fun Unavailable(
 	title: String,
 	modifier: Modifier = Modifier,
 	message: String? = null,
+	action: (@Composable () -> Unit)? = null,
 ) {
 	Column(
 		modifier.padding(horizontal = 32.dp),
@@ -41,6 +42,7 @@ fun Unavailable(
 		Icon(icon, contentDescription = null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
 		Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
 		message?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center) }
+		action?.invoke()
 	}
 }
 

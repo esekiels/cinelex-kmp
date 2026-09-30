@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cinelex</string>
+    <string name="app_name" translatable="false">Cinelex</string>
     <string name="home_now_playing">Now Playing</string>
     <string name="home_popular">Popular</string>
     <string name="home_top_rated">Top Rated</string>
@@ -22,6 +22,8 @@
     <string name="error_forbidden">You don\'t have permission to access this resource.</string>
     <string name="error_unknown">An unexpected error occurred. Please try again later.</string>
     <string name="action_back">Back</string>
+    <string name="action_retry">Retry</string>
+    <string name="detail_error">Couldn\'t load movie</string>
     <string name="detail_cast">Cast</string>
     <string name="detail_crew">Crew</string>
     <string name="detail_director">Director</string>

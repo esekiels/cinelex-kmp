@@ -21,6 +21,8 @@
     <string name="error_forbidden">Anda tidak memiliki izin untuk mengakses sumber ini.</string>
     <string name="error_unknown">Terjadi kesalahan tak terduga. Silakan coba lagi nanti.</string>
     <string name="action_back">Kembali</string>
+    <string name="action_retry">Coba lagi</string>
+    <string name="detail_error">Gagal memuat film</string>
     <string name="detail_cast">Pemeran</string>
     <string name="detail_crew">Kru</string>
     <string name="detail_director">Sutradara</string>

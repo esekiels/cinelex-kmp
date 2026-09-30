@@ -12,6 +12,11 @@ kotlin {
 		jvmTarget = JvmTarget.JVM_11
 	}
 }
+
+composeCompiler {
+	stabilityConfigurationFiles.add(layout.projectDirectory.file("compose-stability.conf"))
+}
+
 dependencies {
 	implementation(projects.shared.data)
 	implementation(projects.shared.common)
@@ -28,6 +33,7 @@ dependencies {
 	implementation(libs.androidx.appcompat)
 	implementation(libs.androidx.lifecycle.runtimeCompose)
 	implementation(libs.androidx.lifecycle.viewmodelCompose)
+	implementation(libs.androidx.lifecycle.viewmodelNavigation3)
 	
 	implementation(platform(libs.compose.bom))
 	implementation(libs.compose.ui)
