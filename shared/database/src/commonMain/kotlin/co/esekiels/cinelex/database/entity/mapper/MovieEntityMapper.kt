@@ -13,7 +13,10 @@ import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.serialization.json.Json
 
-fun List<Movie>.toEntities(category: String): List<MovieEntity> =
+fun List<Movie>.toEntities(
+	category: String,
+	language: String,
+): List<MovieEntity> =
 	mapIndexed { position, movie ->
 		MovieEntity(
 			id = movie.id,
@@ -22,6 +25,7 @@ fun List<Movie>.toEntities(category: String): List<MovieEntity> =
 			backdropPath = movie.backdropPath ?: "",
 			category = category,
 			position = position,
+			language = language,
 		)
 	}
 
@@ -37,7 +41,8 @@ fun List<MovieEntity>.toDomain(): List<Movie> =
 
 private val cacheJson = Json { ignoreUnknownKeys = true }
 
-fun MovieDetails.toEntity(): MovieDetailsEntity = MovieDetailsEntity(id = id, json = cacheJson.encodeToString(this))
+fun MovieDetails.toEntity(language: String): MovieDetailsEntity =
+	MovieDetailsEntity(id = id, language = language, json = cacheJson.encodeToString(this))
 
 @Suppress("SwallowedException")
 fun MovieDetailsEntity.toDomainOrNull(): MovieDetails? =

@@ -21,7 +21,7 @@ import kotlin.test.assertNull
 class MapperTest {
 	@Test
 	fun movieMapperSubstitutesEmptyStringForNullPaths() {
-		val entities = listOf(Movie(id = 1, title = "X")).toEntities("popular")
+		val entities = listOf(Movie(id = 1, title = "X")).toEntities("popular", "en")
 
 		assertEquals("", entities.single().posterPath)
 		assertEquals("popular", entities.single().category)
@@ -29,7 +29,7 @@ class MapperTest {
 
 	@Test
 	fun movieMapperRestoresNullPaths() {
-		val movie = listOf(Movie(id = 1, title = "X")).toEntities("popular").toDomain().single()
+		val movie = listOf(Movie(id = 1, title = "X")).toEntities("popular", "en").toDomain().single()
 
 		assertNull(movie.posterPath)
 		assertNull(movie.posterUrl)
@@ -38,7 +38,7 @@ class MapperTest {
 
 	@Test
 	fun movieMapperKeepsListOrderAsPosition() {
-		val entities = listOf(Movie(id = 9, title = "A"), Movie(id = 3, title = "B")).toEntities("popular")
+		val entities = listOf(Movie(id = 9, title = "A"), Movie(id = 3, title = "B")).toEntities("popular", "en")
 
 		assertEquals(listOf(0, 1), entities.map { it.position })
 	}
@@ -47,13 +47,13 @@ class MapperTest {
 	fun detailsRoundTripThroughCache() {
 		val details = MovieDetails(id = 278, title = "The Shawshank Redemption", runtime = 142)
 
-		assertEquals(details, details.toEntity().toDomainOrNull())
+		assertEquals(details, details.toEntity("en").toDomainOrNull())
 	}
 
 	@Test
 	fun unreadableDetailsCacheIsAMiss() {
-		assertNull(MovieDetailsEntity(id = 278, json = "{\"id\": 278}").toDomainOrNull())
-		assertNull(MovieDetailsEntity(id = 278, json = "not json").toDomainOrNull())
+		assertNull(MovieDetailsEntity(id = 278, language = "en", json = "{\"id\": 278}").toDomainOrNull())
+		assertNull(MovieDetailsEntity(id = 278, language = "en", json = "not json").toDomainOrNull())
 	}
 
 	@Test
@@ -63,7 +63,7 @@ class MapperTest {
 		val roundTripped =
 			original
 				.let { listOf(it) }
-				.toEntities("popular")
+				.toEntities("popular", "en")
 				.toDomain()
 				.single()
 

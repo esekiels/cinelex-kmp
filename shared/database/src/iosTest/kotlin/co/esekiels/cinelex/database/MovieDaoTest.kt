@@ -25,6 +25,7 @@ class MovieDaoTest {
 		category: String,
 		title: String = "M$id",
 		position: Int = 0,
+		language: String = "en",
 	) = MovieEntity(
 		id = id,
 		title = title,
@@ -32,6 +33,7 @@ class MovieDaoTest {
 		posterPath = "/p$id.jpg",
 		category = category,
 		position = position,
+		language = language,
 	)
 
 	@Test
@@ -45,7 +47,7 @@ class MovieDaoTest {
 				),
 			)
 
-			assertEquals(listOf(2, 3, 1), dao.fetchByCategory("popular").map { it.id })
+			assertEquals(listOf(2, 3, 1), dao.fetchByCategory("popular", "en").map { it.id })
 		}
 
 	@Test
@@ -53,8 +55,8 @@ class MovieDaoTest {
 		runTest {
 			dao.saveMovies(listOf(movie(1, "popular"), movie(1, "top_rated")))
 
-			assertEquals(1, dao.fetchByCategory("popular").size)
-			assertEquals(1, dao.fetchByCategory("top_rated").size)
+			assertEquals(1, dao.fetchByCategory("popular", "en").size)
+			assertEquals(1, dao.fetchByCategory("top_rated", "en").size)
 		}
 
 	@Test
@@ -62,9 +64,20 @@ class MovieDaoTest {
 		runTest {
 			dao.saveMovies(listOf(movie(1, "popular"), movie(2, "popular")))
 
-			dao.replaceCategory("popular", listOf(movie(3, "popular")))
+			dao.replaceCategory("popular", "en", listOf(movie(3, "popular")))
 
-			val remaining = dao.fetchByCategory("popular")
+			val remaining = dao.fetchByCategory("popular", "en")
 			assertEquals(listOf(3), remaining.map { it.id })
+		}
+
+	@Test
+	fun languagesAreCachedSeparately() =
+		runTest {
+			dao.saveMovies(listOf(movie(1, "popular", language = "en"), movie(2, "popular", language = "id")))
+
+			dao.replaceCategory("popular", "id", listOf(movie(3, "popular", language = "id")))
+
+			assertEquals(listOf(1), dao.fetchByCategory("popular", "en").map { it.id })
+			assertEquals(listOf(3), dao.fetchByCategory("popular", "id").map { it.id })
 		}
 }

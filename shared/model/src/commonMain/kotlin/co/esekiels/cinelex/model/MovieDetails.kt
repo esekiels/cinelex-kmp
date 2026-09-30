@@ -34,12 +34,11 @@ data class MovieDetails(
 ) {
 	val backdropUrl: String? get() = tmdbImageUrl(backdropPath, BACKDROP_SIZE)
 
-	val genreFormatted: String get() = genres.takeIf { it.isNotEmpty() }?.joinToString(", ") { it.name } ?: "N/A"
+	val genreNames: String? get() = genres.takeIf { it.isNotEmpty() }?.joinToString(", ") { it.name }
 
-	val releaseYearFormatted: String get() = releaseDate.takeIf { it.isNotEmpty() }?.take(YEAR_LENGTH) ?: "N/A"
+	val releaseYear: String? get() = releaseDate.takeIf { it.isNotEmpty() }?.take(YEAR_LENGTH)
 
-	val durationFormatted: String
-		get() = runtime?.let { "${it / MINUTES_PER_HOUR}h ${it % MINUTES_PER_HOUR}m" } ?: "N/A"
+	val length: Length? get() = runtime?.let { Length(it / MINUTES_PER_HOUR, it % MINUTES_PER_HOUR) }
 
 	val scoreRating: String get() = voteAverage.toOneDecimal()
 
@@ -55,3 +54,8 @@ data class MovieDetails(
 
 	val youtubeTrailers: List<Video> get() = videos.results.filter { it.site == "YouTube" && it.type == "Trailer" }
 }
+
+data class Length(
+	val hours: Int,
+	val minutes: Int,
+)

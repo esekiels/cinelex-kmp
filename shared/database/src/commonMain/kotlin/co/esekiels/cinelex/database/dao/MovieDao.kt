@@ -18,30 +18,46 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
-	@Query("SELECT * FROM MovieEntity WHERE category = :category ORDER BY position")
-	fun observeMovieByCategory(category: String): Flow<List<MovieEntity>>
+	@Query("SELECT * FROM MovieEntity WHERE category = :category AND language = :language ORDER BY position")
+	fun observeMovieByCategory(
+		category: String,
+		language: String,
+	): Flow<List<MovieEntity>>
 
-	@Query("SELECT * FROM MovieEntity WHERE category = :category ORDER BY position")
-	suspend fun fetchByCategory(category: String): List<MovieEntity>
+	@Query("SELECT * FROM MovieEntity WHERE category = :category AND language = :language ORDER BY position")
+	suspend fun fetchByCategory(
+		category: String,
+		language: String,
+	): List<MovieEntity>
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun saveMovies(movies: List<MovieEntity>)
 
-	@Query("DELETE FROM MovieEntity WHERE category = :category")
-	suspend fun clearByCategory(category: String)
+	@Query("SELECT COUNT(*) FROM MovieEntity WHERE language = :language")
+	suspend fun countMovies(language: String): Int
+
+	@Query("DELETE FROM MovieEntity WHERE category = :category AND language = :language")
+	suspend fun clearByCategory(
+		category: String,
+		language: String,
+	)
 
 	@Transaction
 	suspend fun replaceCategory(
 		category: String,
+		language: String,
 		movies: List<MovieEntity>,
 	) {
-		clearByCategory(category)
+		clearByCategory(category, language)
 		saveMovies(movies)
 	}
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun saveDetails(details: MovieDetailsEntity)
 
-	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
-	fun observeDetails(id: Int): Flow<MovieDetailsEntity?>
+	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id AND language = :language")
+	fun observeDetails(
+		id: Int,
+		language: String,
+	): Flow<MovieDetailsEntity?>
 }

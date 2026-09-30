@@ -33,7 +33,8 @@ final class HomeViewModel {
             observe(repository.observeNowPlaying(), into: \.nowPlaying),
             observe(repository.observePopular(), into: \.popular),
             observe(repository.observeUpcoming(), into: \.upcoming),
-            observe(repository.observeTopRated(), into: \.topRated)
+            observe(repository.observeTopRated(), into: \.topRated),
+            Task { await self.refreshOnLanguageChange() }
         ]
         
         if !hasRefreshed {
@@ -50,7 +51,7 @@ final class HomeViewModel {
         do {
             try await asyncFunction(for: repository.refreshMovies())
             hasRefreshed = true
-            if carousels.isEmpty, try await isCacheEmpty() {
+            if carousels.isEmpty, try await !asyncFunction(for: repository.hasCachedMovies()).boolValue {
                 state.uiState = .empty
             }
         } catch is CancellationError {
@@ -83,22 +84,18 @@ private extension HomeViewModel {
         }
     }
     
-    func isCacheEmpty() async throws -> Bool {
-        let flows = [
-            repository.observeNowPlaying(),
-            repository.observePopular(),
-            repository.observeUpcoming(),
-            repository.observeTopRated()
-        ]
-        for flow in flows {
-            for try await movies in asyncSequence(for: flow) {
-                if !movies.isEmpty {
-                    return false
+    func refreshOnLanguageChange() async {
+        var isFirst = true
+        do {
+            for try await _ in asyncSequence(for: repository.observeContentLanguage()) {
+                if !isFirst {
+                    await refresh()
                 }
-                break
+                isFirst = false
             }
+        } catch {
+            return
         }
-        return true
     }
 
     func fail(_ error: Error) {

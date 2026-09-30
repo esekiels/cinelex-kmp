@@ -10,7 +10,7 @@ package co.esekiels.cinelex.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 
-@Entity(primaryKeys = ["id", "category"])
+@Entity(primaryKeys = ["id", "category", "language"])
 data class MovieEntity(
 	val id: Int,
 	val title: String,
@@ -20,4 +20,5 @@ data class MovieEntity(
 	val backdropPath: String,
 	val category: String,
 	val position: Int,
+	val language: String,
 )

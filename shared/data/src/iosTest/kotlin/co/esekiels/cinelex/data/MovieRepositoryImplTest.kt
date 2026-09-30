@@ -11,9 +11,14 @@ import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.MovieDetailsEntity
+import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.network.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -21,6 +26,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -31,12 +37,17 @@ class MovieRepositoryImplTest {
 	@AfterTest
 	fun tearDown() = harness.close()
 
-	private fun TestScope.repository(dao: MovieDao = harness.dao) =
-		MovieRepositoryImpl(
-			client = harness.movieClient,
-			dao = dao,
-			ioDispatcher = UnconfinedTestDispatcher(testScheduler),
-		)
+	private val language = MutableStateFlow(Language.ENGLISH)
+
+	private fun TestScope.repository(
+		dao: MovieDao = harness.dao,
+		language: Flow<Language> = this@MovieRepositoryImplTest.language,
+	) = MovieRepositoryImpl(
+		client = harness.movieClient,
+		dao = dao,
+		language = language,
+		ioDispatcher = UnconfinedTestDispatcher(testScheduler),
+	)
 
 	@Test
 	fun refreshFillsEveryCarousel() =
@@ -74,7 +85,7 @@ class MovieRepositoryImplTest {
 
 			for (category in MOVIE_CATEGORIES) {
 				val url = harness.requests.single { it.contains(category) }
-				assertTrue(url.contains("language=en-us"), "no language in $url")
+				assertTrue(url.contains("language=en"), "no language in $url")
 				assertTrue(url.contains("page=1"), "no page in $url")
 			}
 		}
@@ -155,9 +166,63 @@ class MovieRepositoryImplTest {
 		}
 
 	@Test
+	fun eachLanguageHasItsOwnCache() =
+		runTest {
+			harness.alwaysRespond(MOVIE_PAGE)
+			val repository = repository()
+			repository.refreshMovies()
+
+			language.value = Language.INDONESIAN
+
+			assertTrue(repository.observeNowPlaying().first().isEmpty())
+			repository.refreshMovies()
+			assertTrue(harness.requests.last().contains("language=id"))
+			assertEquals(1, repository.observeNowPlaying().first().size)
+		}
+
+	@Test
+	fun hasCachedMoviesChecksTheCurrentLanguage() =
+		runTest {
+			harness.alwaysRespond(MOVIE_PAGE)
+			val repository = repository()
+			assertFalse(repository.hasCachedMovies())
+
+			repository.refreshMovies()
+			assertTrue(repository.hasCachedMovies())
+
+			language.value = Language.INDONESIAN
+			assertFalse(repository.hasCachedMovies())
+		}
+
+	@Test
+	fun contentLanguageEmitsOnlyRealChanges() =
+		runTest {
+			val preferences = flowOf(Language.ENGLISH, Language.ENGLISH, Language.INDONESIAN)
+
+			val emitted = repository(language = preferences).observeContentLanguage().toList()
+
+			assertEquals(listOf(Language.ENGLISH, Language.INDONESIAN), emitted)
+		}
+
+	@Test
+	fun detailsFollowTheLanguage() =
+		runTest {
+			harness.alwaysRespond("""{ "id": 278, "title": "Penebusan Shawshank" }""")
+			language.value = Language.INDONESIAN
+			val repository = repository()
+
+			repository.refreshMovieDetails(278)
+
+			assertTrue(harness.requests.single().contains("language=id"))
+			assertEquals("Penebusan Shawshank", repository.observeMovieDetails(278).first()?.title)
+			language.value = Language.ENGLISH
+			assertNull(repository.observeMovieDetails(278).first())
+		}
+
+	@Test
 	fun observeDetailsTreatsAnUnreadableRowAsMissing() =
 		runTest {
-			harness.dao.saveDetails(MovieDetailsEntity(id = 278, json = "not json"))
+			harness.dao.saveDetails(MovieDetailsEntity(id = 278, language = "en", json = "not json"))
 
 			assertNull(repository().observeMovieDetails(278).first())
 		}

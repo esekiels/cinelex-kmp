@@ -10,6 +10,7 @@ package co.esekiels.cinelex.feature.home
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.core.common.UiState
+import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import kotlinx.coroutines.Dispatchers
@@ -63,5 +64,16 @@ class HomeViewModelTest {
 
 		assertEquals(UiState.Error(failure.code, failure.message), HomeViewModel(empty).state.value)
 		assertIs<UiState.Loaded<Carousels>>(HomeViewModel(cached).state.value)
+	}
+
+	@Test
+	fun refreshesWhenContentLanguageChanges() {
+		val repository = FakeMovieRepository(MovieStubs.all)
+		HomeViewModel(repository)
+		assertEquals(1, repository.refreshCount)
+
+		repository.contentLanguage.value = Language.INDONESIAN
+
+		assertEquals(2, repository.refreshCount)
 	}
 }

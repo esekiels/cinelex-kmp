@@ -23,6 +23,8 @@
     <string name="error_unknown">An unexpected error occurred. Please try again later.</string>
     <string name="action_back">Back</string>
     <string name="action_retry">Retry</string>
+    <string name="detail_not_available">N/A</string>
+    <string name="detail_runtime">%1$dh %2$dm</string>
     <string name="detail_error">Couldn\'t load movie</string>
     <string name="detail_cast">Cast</string>
     <string name="detail_crew">Crew</string>

@@ -87,8 +87,10 @@ internal fun Sections(movie: MovieDetails) {
 private fun Info(movie: MovieDetails) {
 	Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		Text(movie.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+		val unknown = stringResource(R.string.detail_not_available)
+		val length = movie.length?.let { stringResource(R.string.detail_runtime, it.hours, it.minutes) }
 		Text(
-			listOf(movie.genreFormatted, movie.releaseYearFormatted, movie.durationFormatted).joinToString(" · "),
+			listOf(movie.genreNames, movie.releaseYear, length).joinToString(" · ") { it ?: unknown },
 			style = MaterialTheme.typography.bodySmall,
 			color = MaterialTheme.colorScheme.onSurfaceVariant,
 		)

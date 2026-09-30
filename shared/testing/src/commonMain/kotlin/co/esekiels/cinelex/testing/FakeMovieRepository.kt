@@ -9,6 +9,7 @@ package co.esekiels.cinelex.testing
 
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.data.MovieRepository
+import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.coroutines.awaitCancellation
@@ -33,6 +34,8 @@ class FakeMovieRepository(
 	private val popularFlow = MutableStateFlow(nowPlaying)
 	private val detailsFlow = MutableStateFlow<Map<Int, MovieDetails>>(emptyMap())
 
+	val contentLanguage = MutableStateFlow(Language.ENGLISH)
+
 	var failure: CinelexException? = null
 
 	var detailsFailure: CinelexException? = null
@@ -53,6 +56,11 @@ class FakeMovieRepository(
 		if (isLoading) awaitCancellation()
 		failure?.let { throw it }
 	}
+
+	override suspend fun hasCachedMovies(): Boolean =
+		listOf(nowPlayingFlow, popularFlow, upcomingFlow, topRatedFlow).any { it.value.isNotEmpty() }
+
+	override fun observeContentLanguage(): Flow<Language> = contentLanguage
 
 	override fun observeMovieDetails(id: Int): Flow<MovieDetails?> = detailsFlow.map { it[id] }.distinctUntilChanged()
 

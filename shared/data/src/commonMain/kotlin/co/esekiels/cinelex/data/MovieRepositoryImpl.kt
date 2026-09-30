@@ -14,6 +14,7 @@ import co.esekiels.cinelex.database.entity.mapper.toDomain
 import co.esekiels.cinelex.database.entity.mapper.toDomainOrNull
 import co.esekiels.cinelex.database.entity.mapper.toEntities
 import co.esekiels.cinelex.database.entity.mapper.toEntity
+import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
@@ -21,9 +22,12 @@ import co.esekiels.cinelex.network.ApiResponse
 import co.esekiels.cinelex.network.service.MovieClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -35,11 +39,15 @@ internal val MOVIE_CATEGORIES =
 		ApiConstants.POPULAR,
 	)
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieRepositoryImpl(
 	private val client: MovieClient,
 	private val dao: MovieDao,
+	language: Flow<Language>,
 	private val ioDispatcher: CoroutineDispatcher,
 ) : MovieRepository {
+	private val language = language.distinctUntilChanged()
+
 	override fun observeNowPlaying(): Flow<List<Movie>> = observe(ApiConstants.NOW_PLAYING)
 
 	override fun observePopular(): Flow<List<Movie>> = observe(ApiConstants.POPULAR)
@@ -49,49 +57,55 @@ internal class MovieRepositoryImpl(
 	override fun observeTopRated(): Flow<List<Movie>> = observe(ApiConstants.TOP_RATED)
 
 	override suspend fun refreshMovies() =
-		guarded {
+		ioDispatcher.guarded {
+			val code = language.first().code
 			for (category in MOVIE_CATEGORIES) {
-				when (val response = client.fetchMovies(category, "en-us")) {
+				when (val response = client.fetchMovies(category, code)) {
 					is ApiResponse.Success ->
-						dao.replaceCategory(category, response.body.results.toEntities(category))
+						dao.replaceCategory(category, code, response.body.results.toEntities(category, code))
 
 					is ApiResponse.Failure -> throw response.error
 				}
 			}
 		}
 
+	override suspend fun hasCachedMovies(): Boolean = ioDispatcher.guarded { dao.countMovies(language.first().code) > 0 }
+
+	override fun observeContentLanguage(): Flow<Language> = language
+
 	override fun observeMovieDetails(id: Int): Flow<MovieDetails?> =
-		dao
-			.observeDetails(id)
+		language
+			.flatMapLatest { dao.observeDetails(id, it.code) }
 			.map { it?.toDomainOrNull() }
 			.distinctUntilChanged()
 			.catch { throw it.toCinelexException() }
 
 	override suspend fun refreshMovieDetails(id: Int) =
-		guarded {
-			when (val response = client.fetchDetails(id, "en-us")) {
-				is ApiResponse.Success -> dao.saveDetails(response.body.toEntity())
+		ioDispatcher.guarded {
+			val code = language.first().code
+			when (val response = client.fetchDetails(id, code)) {
+				is ApiResponse.Success -> dao.saveDetails(response.body.toEntity(code))
 				is ApiResponse.Failure -> throw response.error
 			}
 		}
 
 	private fun observe(category: String): Flow<List<Movie>> =
-		dao
-			.observeMovieByCategory(category)
+		language
+			.flatMapLatest { dao.observeMovieByCategory(category, it.code) }
 			.map { it.toDomain() }
 			.distinctUntilChanged()
 			.catch { throw it.toCinelexException() }
-
-	@Suppress("TooGenericExceptionCaught")
-	private suspend fun <T> guarded(block: suspend () -> T): T =
-		try {
-			withContext(ioDispatcher) { block() }
-		} catch (e: CancellationException) {
-			throw e
-		} catch (e: Exception) {
-			throw e.toCinelexException()
-		}
 }
+
+@Suppress("TooGenericExceptionCaught")
+private suspend fun <T> CoroutineDispatcher.guarded(block: suspend () -> T): T =
+	try {
+		withContext(this) { block() }
+	} catch (e: CancellationException) {
+		throw e
+	} catch (e: Exception) {
+		throw e.toCinelexException()
+	}
 
 private fun Throwable.toCinelexException(): CinelexException =
 	this as? CinelexException

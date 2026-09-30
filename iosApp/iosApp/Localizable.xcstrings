@@ -493,6 +493,40 @@
           }
         }
       }
+    },
+    "detail.notAvailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N/A"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "T/A"
+          }
+        }
+      }
+    },
+    "detail.runtime %lld %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld j %2$lld m"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -10,6 +10,7 @@ package co.esekiels.cinelex.model
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MovieDetailsTest {
@@ -43,13 +44,13 @@ class MovieDetailsTest {
 		)
 
 	@Test
-	fun formatsRuntimeGenresAndYear() {
-		assertEquals("2h 22m", details.durationFormatted)
-		assertEquals("Drama, Crime", details.genreFormatted)
-		assertEquals("1994", details.releaseYearFormatted)
-		assertEquals("N/A", details.copy(runtime = null).durationFormatted)
-		assertEquals("N/A", details.copy(genres = emptyList()).genreFormatted)
-		assertEquals("N/A", details.copy(releaseDate = "").releaseYearFormatted)
+	fun exposesRuntimeGenresAndYearForFormatting() {
+		assertEquals(Length(hours = 2, minutes = 22), details.length)
+		assertEquals("Drama, Crime", details.genreNames)
+		assertEquals("1994", details.releaseYear)
+		assertNull(details.copy(runtime = null).length)
+		assertNull(details.copy(genres = emptyList()).genreNames)
+		assertNull(details.copy(releaseDate = "").releaseYear)
 	}
 
 	@Test

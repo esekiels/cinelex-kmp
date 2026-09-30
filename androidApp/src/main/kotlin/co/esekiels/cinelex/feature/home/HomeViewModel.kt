@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -49,6 +49,11 @@ class HomeViewModel(
 			.catch { if (it is CinelexException) fail(it) else throw it }
 			.launchIn(viewModelScope)
 		viewModelScope.launch { load() }
+		repository
+			.observeContentLanguage()
+			.drop(1)
+			.onEach { load() }
+			.launchIn(viewModelScope)
 	}
 
 	fun refresh() {
@@ -65,7 +70,7 @@ class HomeViewModel(
 	private suspend fun load() {
 		try {
 			repository.refreshMovies()
-			if (_state.value !is UiState.Loaded && carousels().first().isEmpty) _state.value = UiState.Empty
+			if (_state.value !is UiState.Loaded && !repository.hasCachedMovies()) _state.value = UiState.Empty
 		} catch (e: CinelexException) {
 			fail(e)
 		}

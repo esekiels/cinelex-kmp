@@ -8,10 +8,10 @@
 package co.esekiels.cinelex.database.entity
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity
+@Entity(primaryKeys = ["id", "language"])
 data class MovieDetailsEntity(
-	@PrimaryKey val id: Int,
+	val id: Int,
+	val language: String,
 	val json: String,
 )

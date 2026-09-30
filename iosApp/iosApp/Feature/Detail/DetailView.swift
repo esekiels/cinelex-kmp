@@ -88,10 +88,23 @@ private extension DetailView {
                 .fontWeight(.bold)
                 .foregroundStyle(.textPrimary)
 
-            Text(verbatim: [movie.genreFormatted, movie.releaseYearFormatted, movie.durationFormatted].joined(separator: " · "))
+            (part(movie.genreNames) + separator + part(movie.releaseYear) + separator + length(movie.length))
                 .font(.subheadline)
                 .foregroundStyle(.textSecondary)
         }
+    }
+
+    var separator: Text { Text(verbatim: " · ") }
+
+    func part(_ value: String?) -> Text {
+        value.map { Text(verbatim: $0) } ?? Text("detail.notAvailable")
+    }
+
+    func length(_ length: Length?) -> Text {
+        guard let length else {
+            return Text("detail.notAvailable")
+        }
+        return Text("detail.runtime \(Int(length.hours)) \(Int(length.minutes))")
     }
 
     func rating(_ movie: MovieDetails) -> some View {

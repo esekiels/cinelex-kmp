@@ -7,6 +7,7 @@
 
 package co.esekiels.cinelex.data
 
+import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieDetails
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -27,6 +28,12 @@ interface MovieRepository {
 
 	@NativeCoroutines
 	suspend fun refreshMovies()
+
+	@NativeCoroutines
+	suspend fun hasCachedMovies(): Boolean
+
+	@NativeCoroutines
+	fun observeContentLanguage(): Flow<Language>
 
 	@NativeCoroutines
 	fun observeMovieDetails(id: Int): Flow<MovieDetails?>
