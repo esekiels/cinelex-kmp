@@ -7,7 +7,10 @@
 
 package co.esekiels.cinelex.common
 
-data class CinelexException(
+class CinelexException(
 	val code: String,
 	override val message: String,
-) : Exception()
+	cause: Throwable?,
+) : Exception(message, cause) {
+	constructor(code: String, message: String) : this(code, message, null)
+}

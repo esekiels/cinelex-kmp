@@ -24,7 +24,7 @@ data class Cast(
 	@SerialName("profile_path")
 	val profilePath: String? = null,
 ) {
-	val profileUrl: String? get() = profilePath?.let { "$PROFILE_IMAGE_BASE_URL$it" }
+	val profileUrl: String? get() = tmdbImageUrl(profilePath, PROFILE_SIZE)
 }
 
 @Serializable
@@ -33,5 +33,3 @@ data class Crew(
 	val name: String,
 	val job: String,
 )
-
-private const val PROFILE_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w185"

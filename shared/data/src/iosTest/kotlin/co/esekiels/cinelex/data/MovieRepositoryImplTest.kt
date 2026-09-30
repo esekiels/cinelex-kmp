@@ -9,6 +9,7 @@ package co.esekiels.cinelex.data
 
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
+import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.network.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,6 +20,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -139,5 +141,51 @@ class MovieRepositoryImplTest {
 			val cached = repository().fetchMovieDetails(278)
 			assertEquals("The Shawshank Redemption", cached.title)
 			assertEquals(142, cached.runtime)
+		}
+
+	@Test
+	fun refreshDetailsFeedsTheObservedCache() =
+		runTest {
+			val repository = repository()
+			assertNull(repository.observeMovieDetails(278).first())
+
+			harness.alwaysRespond("""{ "id": 278, "title": "The Shawshank Redemption", "runtime": 142 }""")
+			repository.refreshMovieDetails(278)
+
+			assertEquals(142, repository.observeMovieDetails(278).first()?.runtime)
+			assertTrue(harness.requests.single().contains("movie/278"))
+		}
+
+	@Test
+	fun refreshDetailsOfflineThrowsAndKeepsTheCache() =
+		runTest {
+			harness.alwaysRespond("""{ "id": 278, "title": "The Shawshank Redemption" }""")
+			val repository = repository()
+			repository.refreshMovieDetails(278)
+
+			harness.alwaysOffline()
+			val error = assertFailsWith<CinelexException> { repository.refreshMovieDetails(278) }
+
+			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
+			assertEquals("The Shawshank Redemption", repository.observeMovieDetails(278).first()?.title)
+		}
+
+	@Test
+	fun observeDetailsTreatsAnUnreadableRowAsMissing() =
+		runTest {
+			harness.dao.saveDetails(MovieDetailsEntity(id = 278, json = "not json"))
+
+			assertNull(repository().observeMovieDetails(278).first())
+		}
+
+	@Test
+	fun unreadableDetailsCacheSurfacesTheNetworkError() =
+		runTest {
+			harness.dao.saveDetails(MovieDetailsEntity(id = 278, json = "not json"))
+			harness.alwaysOffline()
+
+			val error = assertFailsWith<CinelexException> { repository().fetchMovieDetails(278) }
+
+			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
 		}
 }

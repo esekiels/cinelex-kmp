@@ -24,13 +24,29 @@ class MovieDaoTest {
 		id: Int,
 		category: String,
 		title: String = "M$id",
+		position: Int = 0,
 	) = MovieEntity(
 		id = id,
 		title = title,
 		backdropPath = "/b$id.jpg",
 		posterPath = "/p$id.jpg",
 		category = category,
+		position = position,
 	)
+
+	@Test
+	fun categoryKeepsSavedPositionOrder() =
+		runTest {
+			dao.saveMovies(
+				listOf(
+					movie(1, "popular", position = 2),
+					movie(2, "popular", position = 0),
+					movie(3, "popular", position = 1),
+				),
+			)
+
+			assertEquals(listOf(2, 3, 1), dao.fetchByCategory("popular").map { it.id })
+		}
 
 	@Test
 	fun sameMovieCanLiveInTwoCategories() =

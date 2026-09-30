@@ -19,7 +19,6 @@ dependencies {
 	// we only need their types to compile against.
 	compileOnly(libs.android.gradlePlugin)
 	compileOnly(libs.kotlin.gradlePlugin)
-	compileOnly(libs.ksp.gradlePlugin)
 	compileOnly(libs.detekt.gradlePlugin)
 	compileOnly(libs.ktlint.gradlePlugin)
 }

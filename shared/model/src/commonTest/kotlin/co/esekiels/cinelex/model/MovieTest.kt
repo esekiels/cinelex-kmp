@@ -38,7 +38,7 @@ class MovieTest {
 			)
 
 		assertEquals(278, decoded.id)
-		assertEquals("https://image.tmdb.org/t/p/original/poster.jpg", decoded.posterUrl)
+		assertEquals("https://image.tmdb.org/t/p/w342/poster.jpg", decoded.posterUrl)
 		assertNull(decoded.backdropUrl)
 		assertEquals(listOf(18, 80), decoded.genreIds)
 		assertEquals("8.7", decoded.rating)

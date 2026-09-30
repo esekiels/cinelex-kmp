@@ -14,13 +14,14 @@ import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.serialization.json.Json
 
 fun List<Movie>.toEntities(category: String): List<MovieEntity> =
-	map { movie ->
+	mapIndexed { position, movie ->
 		MovieEntity(
 			id = movie.id,
 			title = movie.title,
 			posterPath = movie.posterPath ?: "",
 			backdropPath = movie.backdropPath ?: "",
 			category = category,
+			position = position,
 		)
 	}
 
@@ -29,11 +30,19 @@ fun List<MovieEntity>.toDomain(): List<Movie> =
 		Movie(
 			id = entity.id,
 			title = entity.title,
-			posterPath = entity.posterPath,
-			backdropPath = entity.backdropPath,
+			posterPath = entity.posterPath.ifEmpty { null },
+			backdropPath = entity.backdropPath.ifEmpty { null },
 		)
 	}
 
-fun MovieDetails.toEntity(): MovieDetailsEntity = MovieDetailsEntity(id = id, json = Json.encodeToString(this))
+private val cacheJson = Json { ignoreUnknownKeys = true }
 
-fun MovieDetailsEntity.toDomain(): MovieDetails = Json.decodeFromString(json)
+fun MovieDetails.toEntity(): MovieDetailsEntity = MovieDetailsEntity(id = id, json = cacheJson.encodeToString(this))
+
+@Suppress("SwallowedException")
+fun MovieDetailsEntity.toDomainOrNull(): MovieDetails? =
+	try {
+		cacheJson.decodeFromString<MovieDetails>(json)
+	} catch (_: IllegalArgumentException) {
+		null
+	}

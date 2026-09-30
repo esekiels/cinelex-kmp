@@ -32,7 +32,7 @@ data class MovieDetails(
 	val credits: Credits = Credits(),
 	val videos: VideoResponse = VideoResponse(),
 ) {
-	val backdropUrl: String? get() = backdropPath?.let { "$IMAGE_BASE_URL$it" }
+	val backdropUrl: String? get() = tmdbImageUrl(backdropPath, BACKDROP_SIZE)
 
 	val genreFormatted: String get() = genres.takeIf { it.isNotEmpty() }?.joinToString(", ") { it.name } ?: "N/A"
 

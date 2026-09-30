@@ -18,6 +18,9 @@ val generateBuildKonfig by tasks.registering {
 	inputs.property("tmdbToken", token)
 	outputs.dir(outputDir)
 	doLast {
+		if (token.isBlank()) {
+			throw GradleException("TMDB_TOKEN is missing. Add it to local.properties or the environment; see README.")
+		}
 		val pkgDir = outputDir.get().asFile.resolve("co/esekiels/cinelex/network")
 		pkgDir.mkdirs()
 		pkgDir.resolve("BuildKonfig.kt").writeText(

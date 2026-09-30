@@ -15,8 +15,10 @@ import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.ResponseException
+import io.ktor.serialization.ContentConvertException
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.IOException
+import kotlinx.serialization.SerializationException
 
 private const val HTTP_UNAUTHORIZED = 401
 private const val HTTP_FORBIDDEN = 403
@@ -26,6 +28,7 @@ private const val HTTP_SERVER_ERROR_START = 500
 private const val HTTP_SERVER_ERROR_END = 599
 
 private const val TIMEOUT_MESSAGE = "The request timed out. Please try again."
+private const val UNEXPECTED_MESSAGE = "An unexpected error occurred."
 
 sealed interface ApiResponse<out T> {
 	data class Success<T>(
@@ -54,14 +57,18 @@ suspend fun <T> safeApiCall(call: suspend () -> T): ApiResponse<T> =
 	} catch (e: IOException) {
 		ApiResponse.Failure(
 			if (e.isTimeout()) {
-				CinelexException(ErrorConstants.HTTP_TIMEOUT, e.message ?: TIMEOUT_MESSAGE)
+				CinelexException(ErrorConstants.HTTP_TIMEOUT, e.message ?: TIMEOUT_MESSAGE, e)
 			} else {
-				CinelexException(ErrorConstants.NETWORK_ERROR, "Please check your internet connection and try again.")
+				CinelexException(ErrorConstants.NETWORK_ERROR, "Please check your internet connection and try again.", e)
 			},
 		)
+	} catch (e: ContentConvertException) {
+		ApiResponse.Failure(CinelexException(ErrorConstants.UNKNOWN_ERROR, UNEXPECTED_MESSAGE, e))
+	} catch (e: SerializationException) {
+		ApiResponse.Failure(CinelexException(ErrorConstants.UNKNOWN_ERROR, UNEXPECTED_MESSAGE, e))
 	} catch (e: Exception) {
 		ApiResponse.Failure(
-			CinelexException(ErrorConstants.UNKNOWN_ERROR, e.message ?: "Unknown error during network request"),
+			CinelexException(ErrorConstants.UNKNOWN_ERROR, e.message ?: "Unknown error during network request", e),
 		)
 	}
 
@@ -89,6 +96,6 @@ private suspend fun ResponseException.toCinelexException(): CinelexException {
 				ErrorConstants.UNKNOWN_ERROR,
 				"Server error. Please try again later.",
 			)
-		else -> CinelexException(ErrorConstants.UNKNOWN_ERROR, message ?: "An unexpected error occurred.")
+		else -> CinelexException(ErrorConstants.UNKNOWN_ERROR, message ?: UNEXPECTED_MESSAGE)
 	}
 }

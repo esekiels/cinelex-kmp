@@ -1,35 +1,40 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Cinelex
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A movie browser for Android (Jetpack Compose) and iOS (SwiftUI) built on the TMDB API. The data, caching and preferences layers are shared through Kotlin Multiplatform, and each platform keeps native UI.
 
-* [/sharedLogic](./sharedLogic/src) is for the code that will be shared between app targets in the project.
-  The most important subfolder is [commonMain](./sharedLogic/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+## Layout
 
-* [/sharedUI](./sharedUI/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./sharedUI/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./sharedUI/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./sharedUI/src/jvmMain/kotlin)
-    folder is the appropriate location.
+| Path | What lives there |
+|---|---|
+| `androidApp/` | Compose UI, Navigation3, Koin view models, Robolectric UI tests |
+| `iosApp/` | SwiftUI app and XCUITests (`CinelexUITests`) |
+| `shared/model` | Domain models (`Movie`, `MovieDetails`, preferences) |
+| `shared/network` | Ktor client for TMDB, error mapping into `CinelexException` |
+| `shared/database` | Room cache for carousels and movie details |
+| `shared/datastore` | DataStore-backed user preferences (theme, language) |
+| `shared/data` | Repositories combining network, cache and preferences; Koin wiring |
+| `shared/common` | `CinelexException`, error codes, dispatchers |
+| `shared/testing` | Fakes and stubs used by unit tests, UI tests and previews |
+| `shared/umbrella` | The `Shared` framework exported to iOS |
+| `build-logic/` | Gradle convention plugins (KMP library, quality checks) |
 
-### Running the apps
+## Setup
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+Add a TMDB v4 read access token to `local.properties` (it is git-ignored), or export it as `TMDB_TOKEN`:
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+```properties
+TMDB_TOKEN=eyJhbGciOi...
+```
 
-### Running tests
+The build fails without it.
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+## Run
 
-- Android tests: `./gradlew :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest`
-- iOS tests: `./gradlew :sharedLogic:iosSimulatorArm64Test`
+- Android: `./gradlew :androidApp:installDebug`
+- iOS: open `iosApp/iosApp.xcodeproj` in Xcode and run the `iosApp` scheme. The shared framework is built by the Xcode build phase.
 
----
+## Test
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+- Everything on the JVM side (unit tests, Android UI tests, detekt, ktlint): `./gradlew check`
+- Shared tests on the iOS simulator: `./gradlew :shared:data:iosSimulatorArm64Test :shared:database:iosSimulatorArm64Test`
+- iOS UI tests: `xcodebuild test -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:CinelexUITests`

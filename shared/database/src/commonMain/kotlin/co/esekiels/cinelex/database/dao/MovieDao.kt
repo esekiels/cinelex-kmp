@@ -18,10 +18,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
-	@Query("SELECT * FROM MovieEntity WHERE category = :category")
+	@Query("SELECT * FROM MovieEntity WHERE category = :category ORDER BY position")
 	fun observeMovieByCategory(category: String): Flow<List<MovieEntity>>
 
-	@Query("SELECT * FROM MovieEntity WHERE category = :category")
+	@Query("SELECT * FROM MovieEntity WHERE category = :category ORDER BY position")
 	suspend fun fetchByCategory(category: String): List<MovieEntity>
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -44,4 +44,7 @@ interface MovieDao {
 
 	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
 	suspend fun fetchDetails(id: Int): MovieDetailsEntity?
+
+	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
+	fun observeDetails(id: Int): Flow<MovieDetailsEntity?>
 }

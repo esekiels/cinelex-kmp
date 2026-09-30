@@ -8,13 +8,16 @@
 package co.esekiels.cinelex.datastore
 
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.UiTheme
 import co.esekiels.cinelex.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 private val KEY_LANGUAGE = stringPreferencesKey("language")
@@ -23,7 +26,10 @@ private val KEY_UI_THEME = stringPreferencesKey("ui_theme")
 class UserPreferencesDataSource(
 	private val dataStore: DataStore<Preferences>,
 ) {
-	val data: Flow<UserPreferences> = dataStore.data.map { it.toUserPreferences() }
+	val data: Flow<UserPreferences> =
+		dataStore.data
+			.catch { if (it is IOException) emit(emptyPreferences()) else throw it }
+			.map { it.toUserPreferences() }
 
 	suspend fun setLanguage(language: Language?) {
 		dataStore.edit {

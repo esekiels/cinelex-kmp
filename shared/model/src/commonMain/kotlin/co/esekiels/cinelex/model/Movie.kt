@@ -27,9 +27,16 @@ data class Movie(
 	@SerialName("genre_ids")
 	val genreIds: List<Int>? = null,
 ) {
-	val posterUrl: String? get() = posterPath?.let { "$IMAGE_BASE_URL$it" }
-	val backdropUrl: String? get() = backdropPath?.let { "$IMAGE_BASE_URL$it" }
+	val posterUrl: String? get() = tmdbImageUrl(posterPath, POSTER_SIZE)
+	val backdropUrl: String? get() = tmdbImageUrl(backdropPath, BACKDROP_SIZE)
 	val rating: String get() = voteAverage.toOneDecimal()
 }
 
-internal const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"
+internal const val POSTER_SIZE = "w342"
+internal const val BACKDROP_SIZE = "w780"
+internal const val PROFILE_SIZE = "w185"
+
+internal fun tmdbImageUrl(
+	path: String?,
+	size: String,
+): String? = path?.let { "https://image.tmdb.org/t/p/$size$it" }

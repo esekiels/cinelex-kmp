@@ -17,7 +17,7 @@ import co.esekiels.cinelex.database.entity.MovieEntity
 
 internal const val DATABASE_NAME = "cinelex.db"
 
-@Database(entities = [MovieEntity::class, MovieDetailsEntity::class], version = 2)
+@Database(entities = [MovieEntity::class, MovieDetailsEntity::class], version = 3)
 @ConstructedBy(CinelexDatabaseConstructor::class)
 abstract class CinelexDatabase : RoomDatabase() {
 	abstract fun movieDao(): MovieDao

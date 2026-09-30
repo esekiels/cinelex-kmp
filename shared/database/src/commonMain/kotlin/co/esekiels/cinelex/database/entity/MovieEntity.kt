@@ -19,4 +19,5 @@ data class MovieEntity(
 	@ColumnInfo("backdrop_path")
 	val backdropPath: String,
 	val category: String,
+	val position: Int,
 )

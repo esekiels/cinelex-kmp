@@ -15,7 +15,10 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
 class FakeMovieRepository(
 	nowPlaying: List<Movie> = MovieStubs.all,
@@ -28,6 +31,7 @@ class FakeMovieRepository(
 	private val upcomingFlow = MutableStateFlow(nowPlaying)
 	private val topRatedFlow = MutableStateFlow(nowPlaying)
 	private val popularFlow = MutableStateFlow(nowPlaying)
+	private val detailsFlow = MutableStateFlow<Map<Int, MovieDetails>>(emptyMap())
 
 	var failure: CinelexException? = null
 
@@ -53,6 +57,13 @@ class FakeMovieRepository(
 	override suspend fun fetchMovieDetails(id: Int): MovieDetails {
 		detailsFailure?.let { throw it }
 		return MovieStubs.details(id)
+	}
+
+	override fun observeMovieDetails(id: Int): Flow<MovieDetails?> = detailsFlow.map { it[id] }.distinctUntilChanged()
+
+	override suspend fun refreshMovieDetails(id: Int) {
+		detailsFailure?.let { throw it }
+		detailsFlow.update { it + (id to MovieStubs.details(id)) }
 	}
 
 	private fun MutableStateFlow<List<Movie>>.orNever(): Flow<List<Movie>> = if (isLoading) emptyFlow() else asStateFlow()
