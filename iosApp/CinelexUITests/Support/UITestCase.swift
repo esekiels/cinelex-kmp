@@ -23,7 +23,10 @@ class UITestCase: XCTestCase {
     }
 
     func launchApp(_ scenario: Scenario = .loaded) {
-        app.launchArguments = ["-UITestStubs", "-UITestScenario", scenario.rawValue]
+        app.launchArguments = [
+            "-UITestStubs", "-UITestScenario", scenario.rawValue,
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US"
+        ]
         app.launch()
     }
 

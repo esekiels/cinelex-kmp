@@ -9,6 +9,8 @@ import SwiftUI
 
 struct Shimmer: ViewModifier {
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var startPoint: UnitPoint = .init(x: -1.8, y: -1.2)
     @State private var endPoint: UnitPoint = .init(x: 0, y: -0.2)
 
@@ -38,9 +40,14 @@ struct Shimmer: ViewModifier {
     }
 
     private func startAnimation() {
+        guard !reduceMotion else {
+            return
+        }
+        #if DEBUG
         guard !ProcessInfo.processInfo.arguments.contains("-UITestStubs") else {
             return
         }
+        #endif
 
         withAnimation(.easeInOut(duration: Self.animationDuration).repeatForever(autoreverses: false)) {
             startPoint = .init(x: 1, y: 1)

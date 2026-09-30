@@ -29,9 +29,6 @@ interface MovieRepository {
 	suspend fun refreshMovies()
 
 	@NativeCoroutines
-	suspend fun fetchMovieDetails(id: Int): MovieDetails
-
-	@NativeCoroutines
 	fun observeMovieDetails(id: Int): Flow<MovieDetails?>
 
 	@NativeCoroutines

@@ -54,11 +54,6 @@ class FakeMovieRepository(
 		failure?.let { throw it }
 	}
 
-	override suspend fun fetchMovieDetails(id: Int): MovieDetails {
-		detailsFailure?.let { throw it }
-		return MovieStubs.details(id)
-	}
-
 	override fun observeMovieDetails(id: Int): Flow<MovieDetails?> = detailsFlow.map { it[id] }.distinctUntilChanged()
 
 	override suspend fun refreshMovieDetails(id: Int) {

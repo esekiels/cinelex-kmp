@@ -9,11 +9,10 @@ package co.esekiels.cinelex.feature.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.core.common.UiState
-import co.esekiels.cinelex.core.common.toUiError
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.MovieDetails
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,12 +37,11 @@ class DetailViewModel(
 			.observeMovieDetails(movieId)
 			.filterNotNull()
 			.onEach { _state.value = UiState.Loaded(it) }
-			.catch { fail(it) }
+			.catch { if (it is CinelexException) fail(it) else throw it }
 			.launchIn(viewModelScope)
 		load()
 	}
 
-	@Suppress("TooGenericExceptionCaught")
 	fun load() {
 		if (refresh?.isActive == true) return
 		if (_state.value is UiState.Error) _state.value = UiState.Loading
@@ -51,15 +49,13 @@ class DetailViewModel(
 			viewModelScope.launch {
 				try {
 					repository.refreshMovieDetails(movieId)
-				} catch (e: CancellationException) {
-					throw e
-				} catch (e: Exception) {
+				} catch (e: CinelexException) {
 					fail(e)
 				}
 			}
 	}
 
-	private fun fail(error: Throwable) {
-		if (_state.value !is UiState.Loaded) _state.value = error.toUiError()
+	private fun fail(e: CinelexException) {
+		if (_state.value !is UiState.Loaded) _state.value = UiState.Error(e.code, e.message)
 	}
 }

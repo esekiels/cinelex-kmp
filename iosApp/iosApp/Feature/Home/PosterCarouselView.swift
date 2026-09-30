@@ -57,7 +57,6 @@ private extension PosterCarouselView {
                     ImagePlaceholder(2 / 3)
                 }
                 .resizable()
-                .loadDiskFileSynchronously()
                 .cacheOriginalImage()
                 .scaleFactor(UIScreen.main.scale)
                 .fade(duration: 0.2)

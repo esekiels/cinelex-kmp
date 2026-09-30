@@ -7,6 +7,8 @@
 
 package co.esekiels.cinelex.data
 
+import co.esekiels.cinelex.common.CinelexException
+import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.mapper.toDomain
 import co.esekiels.cinelex.database.entity.mapper.toDomainOrNull
@@ -20,6 +22,7 @@ import co.esekiels.cinelex.network.service.MovieClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -46,7 +49,7 @@ internal class MovieRepositoryImpl(
 	override fun observeTopRated(): Flow<List<Movie>> = observe(ApiConstants.TOP_RATED)
 
 	override suspend fun refreshMovies() =
-		withContext(ioDispatcher) {
+		guarded {
 			for (category in MOVIE_CATEGORIES) {
 				when (val response = client.fetchMovies(category, "en-us")) {
 					is ApiResponse.Success ->
@@ -57,41 +60,39 @@ internal class MovieRepositoryImpl(
 			}
 		}
 
-	override suspend fun fetchMovieDetails(id: Int): MovieDetails =
-		withContext(ioDispatcher) {
-			when (val response = client.fetchDetails(id, "en-us")) {
-				is ApiResponse.Success -> response.body.also { cacheDetails(it) }
-				is ApiResponse.Failure -> dao.fetchDetails(id)?.toDomainOrNull() ?: throw response.error
-			}
-		}
-
 	override fun observeMovieDetails(id: Int): Flow<MovieDetails?> =
 		dao
 			.observeDetails(id)
 			.map { it?.toDomainOrNull() }
 			.distinctUntilChanged()
+			.catch { throw it.toCinelexException() }
 
 	override suspend fun refreshMovieDetails(id: Int) =
-		withContext(ioDispatcher) {
+		guarded {
 			when (val response = client.fetchDetails(id, "en-us")) {
 				is ApiResponse.Success -> dao.saveDetails(response.body.toEntity())
 				is ApiResponse.Failure -> throw response.error
 			}
 		}
 
-	@Suppress("TooGenericExceptionCaught", "SwallowedException")
-	private suspend fun cacheDetails(details: MovieDetails) {
-		try {
-			dao.saveDetails(details.toEntity())
-		} catch (e: CancellationException) {
-			throw e
-		} catch (_: Exception) {
-		}
-	}
-
 	private fun observe(category: String): Flow<List<Movie>> =
 		dao
 			.observeMovieByCategory(category)
 			.map { it.toDomain() }
 			.distinctUntilChanged()
+			.catch { throw it.toCinelexException() }
+
+	@Suppress("TooGenericExceptionCaught")
+	private suspend fun <T> guarded(block: suspend () -> T): T =
+		try {
+			withContext(ioDispatcher) { block() }
+		} catch (e: CancellationException) {
+			throw e
+		} catch (e: Exception) {
+			throw e.toCinelexException()
+		}
 }
+
+private fun Throwable.toCinelexException(): CinelexException =
+	this as? CinelexException
+		?: CinelexException(ErrorConstants.UNKNOWN_ERROR, message ?: "An unexpected error occurred.", this)

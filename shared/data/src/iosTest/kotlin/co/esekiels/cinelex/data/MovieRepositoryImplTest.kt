@@ -9,6 +9,7 @@ package co.esekiels.cinelex.data
 
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
+import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.network.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,10 +31,10 @@ class MovieRepositoryImplTest {
 	@AfterTest
 	fun tearDown() = harness.close()
 
-	private fun TestScope.repository() =
+	private fun TestScope.repository(dao: MovieDao = harness.dao) =
 		MovieRepositoryImpl(
 			client = harness.movieClient,
-			dao = harness.dao,
+			dao = dao,
 			ioDispatcher = UnconfinedTestDispatcher(testScheduler),
 		)
 
@@ -127,23 +128,6 @@ class MovieRepositoryImplTest {
 		}
 
 	@Test
-	fun fetchDetailsFallsBackToCacheOffline() =
-		runTest {
-			harness.alwaysOffline()
-			val error = assertFailsWith<CinelexException> { repository().fetchMovieDetails(278) }
-			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
-
-			harness.alwaysRespond("""{ "id": 278, "title": "The Shawshank Redemption", "runtime": 142 }""")
-			assertEquals("The Shawshank Redemption", repository().fetchMovieDetails(278).title)
-			assertTrue(harness.requests.last().contains("movie/278"))
-
-			harness.alwaysOffline()
-			val cached = repository().fetchMovieDetails(278)
-			assertEquals("The Shawshank Redemption", cached.title)
-			assertEquals(142, cached.runtime)
-		}
-
-	@Test
 	fun refreshDetailsFeedsTheObservedCache() =
 		runTest {
 			val repository = repository()
@@ -179,13 +163,16 @@ class MovieRepositoryImplTest {
 		}
 
 	@Test
-	fun unreadableDetailsCacheSurfacesTheNetworkError() =
+	fun databaseFailureSurfacesAsUnknownCinelexException() =
 		runTest {
-			harness.dao.saveDetails(MovieDetailsEntity(id = 278, json = "not json"))
-			harness.alwaysOffline()
+			harness.alwaysRespond("""{ "id": 278, "title": "The Shawshank Redemption" }""")
+			val failingDao =
+				object : MovieDao by harness.dao {
+					override suspend fun saveDetails(details: MovieDetailsEntity) = error("disk full")
+				}
 
-			val error = assertFailsWith<CinelexException> { repository().fetchMovieDetails(278) }
+			val error = assertFailsWith<CinelexException> { repository(failingDao).refreshMovieDetails(278) }
 
-			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
+			assertEquals(ErrorConstants.UNKNOWN_ERROR, error.code)
 		}
 }

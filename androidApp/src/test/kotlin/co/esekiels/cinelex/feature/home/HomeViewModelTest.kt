@@ -10,7 +10,6 @@ package co.esekiels.cinelex.feature.home
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.core.common.UiState
-import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import kotlinx.coroutines.Dispatchers
@@ -64,15 +63,5 @@ class HomeViewModelTest {
 
 		assertEquals(UiState.Error(failure.code, failure.message), HomeViewModel(empty).state.value)
 		assertIs<UiState.Loaded<Carousels>>(HomeViewModel(cached).state.value)
-	}
-
-	@Test
-	fun unknownRefreshErrorMapsToUnknownCode() {
-		val repository =
-			object : MovieRepository by FakeMovieRepository(emptyList()) {
-				override suspend fun refreshMovies() = error("Disk full")
-			}
-
-		assertEquals(UiState.Error(ErrorConstants.UNKNOWN_ERROR, "Disk full"), HomeViewModel(repository).state.value)
 	}
 }

@@ -9,7 +9,6 @@ import Foundation
 import Shared
 
 extension Movie: @retroactive Identifiable {}
-extension Cast: @retroactive Identifiable {}
 extension Video: @retroactive Identifiable {}
 
 extension Movie {
@@ -31,9 +30,13 @@ extension Video {
     var youtubeURL: URL? { youtubeUrl.flatMap(URL.init(string:)) }
 }
 
+#if DEBUG
+private let isStubbed = UITestScenario.current != nil
+#endif
+
 private func stubbableURL(_ path: String?) -> URL? {
     #if DEBUG
-    if UITestScenario.current != nil {
+    if isStubbed {
         return nil
     }
     #endif

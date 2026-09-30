@@ -10,7 +10,6 @@ package co.esekiels.cinelex.feature.detail
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.core.common.UiState
-import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import kotlinx.coroutines.Dispatchers
@@ -68,16 +67,4 @@ class DetailViewModelTest {
 
 			assertEquals(UiState.Loaded(MovieStubs.details(movieId)), DetailViewModel(repository, movieId).state.value)
 		}
-
-	@Test
-	fun unknownErrorMapsToUnknownCode() {
-		val repository =
-			object : MovieRepository by FakeMovieRepository() {
-				override suspend fun refreshMovieDetails(id: Int) = error("Disk full")
-			}
-
-		val state = DetailViewModel(repository, movieId).state.value
-
-		assertEquals(UiState.Error(ErrorConstants.UNKNOWN_ERROR, "Disk full"), state)
-	}
 }

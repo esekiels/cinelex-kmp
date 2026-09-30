@@ -19,7 +19,7 @@ struct DetailView: View {
 
     var body: some View {
         content
-            .task { await viewModel.load() }
+            .task { await viewModel.observe() }
             .navigationBarTitleDisplayMode(.inline)
             .background(Color.background)
     }
@@ -32,14 +32,18 @@ private extension DetailView {
         switch viewModel.state {
         case .loaded(let movie):
             details(movie)
+                .navigationTitle(movie.title)
         case .loading, .empty:
             DetailSkeletonView()
         case .error(let code, _):
-            ContentUnavailableView(
-                "detail.error",
-                systemImage: "exclamationmark.triangle",
-                description: Text(.error(code))
-            )
+            ContentUnavailableView {
+                Label("detail.error", systemImage: "exclamationmark.triangle")
+            } description: {
+                Text(.error(code))
+            } actions: {
+                Button("action.retry") { viewModel.refresh() }
+                    .buttonStyle(.bordered)
+            }
             .accessibilityIdentifier(AccessibilityID.detailError)
         }
     }
@@ -100,11 +104,12 @@ private extension DetailView {
                         .foregroundStyle(filled ? .yellow : .gray)
                 }
             }
-            .accessibilityHidden(true)
             Text(verbatim: movie.scoreRating)
                 .font(.subheadline)
                 .foregroundStyle(.textSecondary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("detail.rating \(movie.scoreRating)"))
     }
 
     // MARK: - Cast
@@ -119,7 +124,7 @@ private extension DetailView {
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(alignment: .top, spacing: 12) {
-                        ForEach(cast.prefix(10)) { member in
+                        ForEach(Array(cast.prefix(10).enumerated()), id: \.offset) { _, member in
                             castCard(member)
                         }
                     }

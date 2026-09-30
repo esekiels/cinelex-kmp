@@ -56,7 +56,6 @@ private extension BackdropCarouselView {
                 KFImage.url(movie.backdropURL)
                     .placeholder { ImagePlaceholder(16 / 9) }
                     .resizable()
-                    .loadDiskFileSynchronously()
                     .cacheOriginalImage()
                     .scaleFactor(UIScreen.main.scale)
                     .fade(duration: 0.2)

@@ -50,7 +50,7 @@ final class HomeViewModel {
         do {
             try await asyncFunction(for: repository.refreshMovies())
             hasRefreshed = true
-            if carousels.isEmpty {
+            if carousels.isEmpty, try await isCacheEmpty() {
                 state.uiState = .empty
             }
         } catch is CancellationError {
@@ -83,12 +83,27 @@ private extension HomeViewModel {
         }
     }
     
+    func isCacheEmpty() async throws -> Bool {
+        let flows = [
+            repository.observeNowPlaying(),
+            repository.observePopular(),
+            repository.observeUpcoming(),
+            repository.observeTopRated()
+        ]
+        for flow in flows {
+            for try await movies in asyncSequence(for: flow) {
+                if !movies.isEmpty {
+                    return false
+                }
+                break
+            }
+        }
+        return true
+    }
+
     func fail(_ error: Error) {
-        if let exception = error.cinelexException, carousels.isEmpty {
-            state.uiState = .error(
-                code: exception.code,
-                message: exception.message
-            )
+        if carousels.isEmpty {
+            state.uiState = .failed(error)
         }
     }
 }

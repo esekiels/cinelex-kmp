@@ -43,8 +43,5 @@ interface MovieDao {
 	suspend fun saveDetails(details: MovieDetailsEntity)
 
 	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
-	suspend fun fetchDetails(id: Int): MovieDetailsEntity?
-
-	@Query("SELECT * FROM MovieDetailsEntity WHERE id = :id")
 	fun observeDetails(id: Int): Flow<MovieDetailsEntity?>
 }

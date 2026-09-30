@@ -36,7 +36,7 @@ struct HomeScreen {
 
     func selectLanguage(_ name: String) {
         localeMenu.tap()
-        app.buttons[name].firstMatch.tap()
+        tapMenuItem(name)
     }
 
     var themeMenu: XCUIElement {
@@ -45,7 +45,13 @@ struct HomeScreen {
 
     func selectTheme(_ name: String) {
         themeMenu.tap()
-        app.buttons[name].firstMatch.tap()
+        tapMenuItem(name)
+    }
+
+    private func tapMenuItem(_ name: String) {
+        let item = app.buttons[name].firstMatch
+        XCTAssertTrue(item.waitForExistence(timeout: UITestCase.timeout), "Menu item \(name) should appear")
+        item.tap()
     }
 
     func header(_ text: String) -> XCUIElement {

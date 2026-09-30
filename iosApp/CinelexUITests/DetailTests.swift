@@ -62,5 +62,6 @@ final class DetailTests: UITestCase {
         XCTAssertTrue(detail.errorState.waitForExistence(timeout: Self.timeout))
         XCTAssertTrue(detail.text("Couldn't load movie").exists)
         XCTAssertTrue(detail.text("Please check your internet connection and try again.").exists)
+        XCTAssertTrue(app.buttons["Retry"].exists, "Error state should offer a retry")
     }
 }

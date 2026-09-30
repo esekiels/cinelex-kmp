@@ -17,28 +17,54 @@ final class DetailViewModel {
 
     private let repository: any MovieRepository
     private let movieId: Int32
+    private var refreshTask: Task<Void, Never>?
 
     init(repository: any MovieRepository, movieId: Int32) {
         self.repository = repository
         self.movieId = movieId
     }
 
-    func load() async {
-        if case .loaded = state {
-            return
-        }
-        state = .loading
+    func observe() async {
+        refresh()
         do {
-            let details = try await asyncFunction(for: repository.fetchMovieDetails(id: movieId))
-            state = .loaded(details)
+            for try await details in asyncSequence(for: repository.observeMovieDetails(id: movieId)) {
+                if let details {
+                    state = .loaded(details)
+                }
+            }
         } catch is CancellationError {
             return
         } catch {
-            let exception = error.cinelexException
-            state = .error(
-                code: exception?.code ?? ErrorConstants.shared.UNKNOWN_ERROR,
-                message: exception?.message ?? error.localizedDescription
-            )
+            fail(error)
         }
+    }
+
+    func refresh() {
+        guard refreshTask == nil else {
+            return
+        }
+        if case .error = state {
+            state = .loading
+        }
+        refreshTask = Task {
+            defer { refreshTask = nil }
+            do {
+                try await asyncFunction(for: repository.refreshMovieDetails(id: movieId))
+            } catch is CancellationError {
+                return
+            } catch {
+                fail(error)
+            }
+        }
+    }
+}
+
+private extension DetailViewModel {
+
+    func fail(_ error: Error) {
+        if case .loaded = state {
+            return
+        }
+        state = .failed(error)
     }
 }
