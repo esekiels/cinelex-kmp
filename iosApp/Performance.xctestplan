@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "9A3E5B71-C2D4-4F86-A1B9-7E0D3C5F2A48",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "uiTestingScreenshotsEnabled" : false
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "PerformanceTests"
+      ],
+      "target" : {
+        "containerPath" : "container:iosApp.xcodeproj",
+        "identifier" : "DEADBEEF0000000000000001",
+        "name" : "CinelexUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

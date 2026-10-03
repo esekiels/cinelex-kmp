@@ -22,11 +22,16 @@ class UITestCase: XCTestCase {
         continueAfterFailure = false
     }
 
+    nonisolated static let localeArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+
     func launchApp(_ scenario: Scenario = .loaded) {
-        app.launchArguments = [
-            "-UITestStubs", "-UITestScenario", scenario.rawValue,
-            "-AppleLanguages", "(en)", "-AppleLocale", "en_US"
-        ]
+        app.launchArguments = ["-UITestStubs", "-UITestScenario", scenario.rawValue] + Self.localeArguments
+        app.launch()
+    }
+
+    /// Launches against real data; stubs only exist in Debug builds anyway.
+    func launchLive() {
+        app.launchArguments = Self.localeArguments
         app.launch()
     }
 
