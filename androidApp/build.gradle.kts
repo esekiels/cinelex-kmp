@@ -5,6 +5,7 @@ plugins {
 	alias(libs.plugins.composeCompiler)
 	alias(libs.plugins.kotlinSerialization)
 	id("esekiels.cinelex.quality")
+	alias(libs.plugins.baselineProfile)
 }
 
 kotlin {
@@ -40,7 +41,9 @@ dependencies {
 	implementation(libs.compose.material3)
 	implementation(libs.compose.materialIconsExtended)
 	implementation(libs.compose.uiToolingPreview)
+	implementation(libs.androidx.profileinstaller)
 	debugImplementation(libs.compose.uiTooling)
+	baselineProfile(projects.benchmark)
 
 	testImplementation(projects.shared.testing)
 	testImplementation(libs.kotlin.test.junit)
@@ -80,7 +83,8 @@ android {
 	}
 	buildTypes {
 		release {
-			isMinifyEnabled = false
+			isMinifyEnabled = true
+			isShrinkResources = true
 			proguardFiles(
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro",

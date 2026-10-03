@@ -8,6 +8,9 @@
 package co.esekiels.cinelex
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -45,6 +48,7 @@ fun CinelexMain(
 		val pop = { if (backStack.size > 1) backStack.removeLastOrNull() }
 		val push = { key: NavKey -> if (backStack.last() != key) backStack.add(key) }
 		NavDisplay(
+			modifier = Modifier.semantics { testTagsAsResourceId = true },
 			backStack = backStack,
 			onBack = { pop() },
 			entryDecorators =

@@ -7,6 +7,7 @@
 
 package co.esekiels.cinelex.feature.home
 
+import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
@@ -49,6 +50,8 @@ fun HomeScreen(
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+	// Marks "fully drawn" for startup metrics (timeToFullDisplay): data loaded, not images drawn.
+	ReportDrawnWhen { state !is UiState.Loading }
 	HomeContent(state, isRefreshing, actions, onMovieClick, viewModel::refresh)
 }
 

@@ -65,7 +65,7 @@ private val StarGold = Color(0xFFFFD700)
 
 @Composable
 internal fun Sections(movie: MovieDetails) {
-	Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+	Column(Modifier.fillMaxSize().testTag(TestTag.DETAIL_CONTENT).verticalScroll(rememberScrollState())) {
 		AsyncImage(
 			model = movie.backdropUrl,
 			contentDescription = null,
