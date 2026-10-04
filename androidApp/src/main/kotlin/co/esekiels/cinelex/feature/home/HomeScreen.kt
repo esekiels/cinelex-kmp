@@ -45,12 +45,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
 	viewModel: HomeViewModel = koinViewModel(),
-	onMovieClick: (Movie) -> Unit = {},
+	onMovieClick: (movie: Movie, source: String) -> Unit = { _, _ -> },
 	actions: @Composable RowScope.() -> Unit,
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-	// Marks "fully drawn" for startup metrics (timeToFullDisplay): data loaded, not images drawn.
 	ReportDrawnWhen { state !is UiState.Loading }
 	HomeContent(state, isRefreshing, actions, onMovieClick, viewModel::refresh)
 }
@@ -61,7 +60,7 @@ fun HomeContent(
 	state: UiState<Carousels>,
 	isRefreshing: Boolean,
 	actions: @Composable RowScope.() -> Unit = {},
-	onMovieClick: (Movie) -> Unit = {},
+	onMovieClick: (movie: Movie, source: String) -> Unit = { _, _ -> },
 	onRefresh: () -> Unit,
 ) {
 	Scaffold(

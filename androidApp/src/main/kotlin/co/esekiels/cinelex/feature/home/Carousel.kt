@@ -41,7 +41,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import co.esekiels.cinelex.core.design.TestTag
+import co.esekiels.cinelex.core.design.components.ZoomKey
 import co.esekiels.cinelex.core.design.components.shimmer
+import co.esekiels.cinelex.core.design.components.zoomBounds
 import co.esekiels.cinelex.core.design.theme.CinelexTheme
 import co.esekiels.cinelex.model.Movie
 import coil3.compose.SubcomposeAsyncImage
@@ -54,7 +56,7 @@ internal fun Carousel(
 	title: String,
 	movies: List<Movie>,
 	style: CarouselStyle,
-	onMovieClick: (Movie) -> Unit = {},
+	onMovieClick: (movie: Movie, source: String) -> Unit = { _, _ -> },
 ) {
 	val width = cardWidth(style)
 	Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -72,8 +74,9 @@ internal fun Carousel(
 			items(movies, key = { it.id }) { movie ->
 				Column(
 					Modifier
+						.zoomBounds(ZoomKey(movie.id, title))
 						.width(width)
-						.clickable(role = Role.Button) { onMovieClick(movie) }
+						.clickable(role = Role.Button) { onMovieClick(movie, title) }
 						.clearAndSetSemantics {
 							testTag = TestTag.MOVIE_CARD
 							contentDescription = movie.title
