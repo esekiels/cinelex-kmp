@@ -19,6 +19,7 @@ import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.UserDataRepository
 import co.esekiels.cinelex.journey.screens.DetailScreen
 import co.esekiels.cinelex.journey.screens.HomeScreen
+import co.esekiels.cinelex.journey.screens.SearchScreen
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.FakeUserDataRepository
 import co.esekiels.cinelex.testing.MovieStubs
@@ -45,6 +46,8 @@ abstract class UITestCase {
 
 	val detail = DetailScreen(compose)
 
+	val search = SearchScreen(compose)
+
 	fun launchApp(scenario: Scenario) {
 		loadKoinModules(
 			module {
@@ -53,6 +56,10 @@ abstract class UITestCase {
 			},
 		)
 		activity = ActivityScenario.launch(MainActivity::class.java)
+	}
+
+	fun pressBack() {
+		activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
 	}
 
 	fun recreateApp() {
