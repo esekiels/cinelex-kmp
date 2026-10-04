@@ -33,4 +33,11 @@
     <string name="detail_writer">Writer</string>
     <string name="detail_trailers">Trailers</string>
     <string name="detail_play_trailer">Play trailer</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="search_prompt">Search movies</string>
+    <string name="search_recommendations">Recommendations</string>
+    <string name="search_empty">No results for “%1$s”</string>
+    <string name="search_error">Couldn\'t search movies</string>
+    <string name="action_clear">Clear</string>
 </resources>

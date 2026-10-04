@@ -1,6 +1,6 @@
 /*
  * Cinelex
- * ZoomTransition
+ * ZoomKey
  *
  * Created by Esekiel Surbakti on 04/10/26
  */

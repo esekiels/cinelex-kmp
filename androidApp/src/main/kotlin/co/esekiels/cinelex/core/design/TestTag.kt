@@ -17,6 +17,10 @@ object TestTag {
 	const val DETAIL_CONTENT = "DetailContent"
 	const val DETAIL_SKELETON = "DetailSkeleton"
 	const val DETAIL_ERROR = "DetailError"
+	const val RECOMMENDATION_ROW = "RecommendationRow"
+	const val SEARCH_RESULT_ROW = "SearchResultRow"
+	const val SEARCH_EMPTY = "SearchEmpty"
+	const val SEARCH_ERROR = "SearchError"
 
 	/** Every carousel is fed the same movies, so a card lookup has to be scoped to one section. */
 	fun carousel(title: String) = "Carousel-$title"

@@ -32,4 +32,11 @@
     <string name="detail_writer">Penulis</string>
     <string name="detail_trailers">Trailer</string>
     <string name="detail_play_trailer">Putar trailer</string>
+    <string name="home">Beranda</string>
+    <string name="search">Cari</string>
+    <string name="search_prompt">Cari film</string>
+    <string name="search_recommendations">Rekomendasi</string>
+    <string name="search_empty">Tidak ada hasil untuk “%1$s”</string>
+    <string name="search_error">Gagal mencari film</string>
+    <string name="action_clear">Hapus</string>
 </resources>
