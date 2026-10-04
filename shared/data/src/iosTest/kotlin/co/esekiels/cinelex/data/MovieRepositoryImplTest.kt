@@ -240,4 +240,42 @@ class MovieRepositoryImplTest {
 
 			assertEquals(ErrorConstants.UNKNOWN_ERROR, error.code)
 		}
+
+	@Test
+	fun searchHitsTheNetworkInTheCurrentLanguageAndCachesNothing() =
+		runTest {
+			harness.alwaysRespond(MOVIE_PAGE)
+			language.value = Language.INDONESIAN
+			val repository = repository()
+
+			val result = repository.searchMovies("shawshank", page = 1)
+
+			assertEquals(listOf(278), result.movies.map { it.id })
+			val url = harness.requests.single()
+			assertTrue(url.contains(ApiConstants.SEARCH) && url.contains("query=shawshank"), url)
+			assertTrue(url.contains("language=id"), url)
+			assertFalse(repository.hasCachedMovies(), "search results must not land in the carousel cache")
+		}
+
+	@Test
+	fun searchOfflineThrowsNetworkError() =
+		runTest {
+			harness.alwaysOffline()
+
+			val error = assertFailsWith<CinelexException> { repository().searchMovies("shawshank", page = 1) }
+
+			assertEquals(ErrorConstants.NETWORK_ERROR, error.code)
+		}
+
+	@Test
+	fun searchRequestsThePageAndReportsTotalPages() =
+		runTest {
+			harness.alwaysRespond("""{ "page": 2, "total_pages": 5, "results": [{ "id": 238, "title": "The Godfather" }] }""")
+
+			val result = repository().searchMovies("god", page = 2)
+
+			assertEquals(5, result.totalPages)
+			assertEquals(listOf(238), result.movies.map { it.id })
+			assertTrue(harness.requests.single().contains("page=2"))
+		}
 }

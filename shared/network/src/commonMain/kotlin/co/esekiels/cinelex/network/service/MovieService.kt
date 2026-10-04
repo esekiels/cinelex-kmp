@@ -29,6 +29,18 @@ class MovieService(
 				parameter("page", page)
 			}.body()
 
+	suspend fun searchMovies(
+		query: String,
+		language: String,
+		page: Int = 1,
+	): MovieResponse =
+		client
+			.get(ApiConstants.SEARCH) {
+				parameter("query", query)
+				parameter("language", language)
+				parameter("page", page)
+			}.body()
+
 	suspend fun fetchDetails(
 		id: Int,
 		language: String,

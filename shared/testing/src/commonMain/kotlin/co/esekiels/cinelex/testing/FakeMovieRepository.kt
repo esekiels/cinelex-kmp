@@ -9,6 +9,7 @@ package co.esekiels.cinelex.testing
 
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.data.MovieRepository
+import co.esekiels.cinelex.data.SearchResult
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieDetails
@@ -67,6 +68,15 @@ class FakeMovieRepository(
 	override suspend fun refreshMovieDetails(id: Int) {
 		detailsFailure?.let { throw it }
 		detailsFlow.update { it + (id to MovieStubs.details(id)) }
+	}
+
+	override suspend fun searchMovies(
+		query: String,
+		page: Int,
+	): SearchResult {
+		failure?.let { throw it }
+		val matches = popularFlow.value.filter { it.title.contains(query, ignoreCase = true) }
+		return SearchResult(listOfNotNull(matches.getOrNull(page - 1)), totalPages = matches.size)
 	}
 
 	private fun MutableStateFlow<List<Movie>>.orNever(): Flow<List<Movie>> = if (isLoading) emptyFlow() else asStateFlow()

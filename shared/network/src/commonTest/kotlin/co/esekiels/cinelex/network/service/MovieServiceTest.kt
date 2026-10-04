@@ -39,6 +39,29 @@ class MovieServiceTest {
 		}
 
 	@Test
+	fun searchPercentEncodesTheQuery() =
+		runTest {
+			val mock = MockClient(body = MOVIE_RESPONSE)
+			val response = MovieService(mock.client).searchMovies("fast & furious", "en")
+
+			assertEquals(2, response.results.size)
+			val url = mock.requests.single()
+			assertTrue(url.contains(ApiConstants.SEARCH), url)
+			assertTrue(url.contains("%26"), url)
+			assertTrue(url.contains("language=en"), url)
+			assertTrue(url.contains("page=1"), url)
+		}
+
+	@Test
+	fun searchRequestsTheGivenPage() =
+		runTest {
+			val mock = MockClient(body = MOVIE_RESPONSE)
+			MovieService(mock.client).searchMovies("god", "en", page = 3)
+
+			assertTrue(mock.requests.single().contains("page=3"))
+		}
+
+	@Test
 	fun decodesDetailsWithCreditsAndVideos() =
 		runTest {
 			val mock = MockClient(body = MOVIE_DETAILS_RESPONSE)

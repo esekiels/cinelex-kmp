@@ -21,6 +21,12 @@ class MovieClient(
 		page: Int = 1,
 	): ApiResponse<MovieResponse> = safeApiCall { service.fetchMovies(category, language, page) }
 
+	suspend fun searchMovies(
+		query: String,
+		language: String,
+		page: Int = 1,
+	): ApiResponse<MovieResponse> = safeApiCall { service.searchMovies(query, language, page) }
+
 	suspend fun fetchDetails(
 		id: Int,
 		language: String,

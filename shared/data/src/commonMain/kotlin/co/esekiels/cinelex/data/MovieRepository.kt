@@ -13,6 +13,11 @@ import co.esekiels.cinelex.model.MovieDetails
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 
+data class SearchResult(
+	val movies: List<Movie>,
+	val totalPages: Int,
+)
+
 interface MovieRepository {
 	@NativeCoroutines
 	fun observeNowPlaying(): Flow<List<Movie>>
@@ -40,4 +45,10 @@ interface MovieRepository {
 
 	@NativeCoroutines
 	suspend fun refreshMovieDetails(id: Int)
+
+	@NativeCoroutines
+	suspend fun searchMovies(
+		query: String,
+		page: Int,
+	): SearchResult
 }

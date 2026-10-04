@@ -89,6 +89,17 @@ internal class MovieRepositoryImpl(
 			}
 		}
 
+	override suspend fun searchMovies(
+		query: String,
+		page: Int,
+	): SearchResult =
+		ioDispatcher.guarded {
+			when (val response = client.searchMovies(query, language.first().code, page)) {
+				is ApiResponse.Success -> SearchResult(response.body.results, response.body.totalPages)
+				is ApiResponse.Failure -> throw response.error
+			}
+		}
+
 	private fun observe(category: String): Flow<List<Movie>> =
 		language
 			.flatMapLatest { dao.observeMovieByCategory(category, it.code) }
