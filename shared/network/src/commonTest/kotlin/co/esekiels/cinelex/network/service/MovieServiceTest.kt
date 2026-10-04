@@ -49,5 +49,6 @@ class MovieServiceTest {
 			assertEquals(1, details.youtubeTrailers.size)
 			assertTrue(mock.requests.single().contains("movie/278"))
 			assertTrue(mock.requests.single().contains("append_to_response=credits%2Cvideos"))
+			assertTrue(mock.requests.single().contains("include_video_language=en%2Cen%2Cnull"))
 		}
 }

@@ -37,5 +37,6 @@ class MovieService(
 			.get("${ApiConstants.MOVIE}/$id") {
 				parameter("language", language)
 				parameter("append_to_response", "credits,videos")
+				parameter("include_video_language", "$language,en,null")
 			}.body()
 }
