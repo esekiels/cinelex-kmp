@@ -5,9 +5,11 @@
 //  Created by Esekiel Surbakti on 27/09/26.
 //
 
+import Observation
 import Shared
 
 @MainActor
+@Observable
 final class CinelexDIFactory {
 
     private let movieRepository: any MovieRepository

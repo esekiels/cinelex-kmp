@@ -51,7 +51,7 @@ private extension BackdropCarouselView {
         let cardWidth = geometry.size.width * 0.75
         let cardHeight = cardWidth * (9 / 16)
         
-        return NavigationLink(value: movie) {
+        return ZoomLink(movie, source: title) {
             VStack(alignment: .leading, spacing: 8) {
                 KFImage.url(movie.backdropURL)
                     .placeholder { ImagePlaceholder(16 / 9) }
@@ -60,6 +60,7 @@ private extension BackdropCarouselView {
                     .scaleFactor(UIScreen.main.scale)
                     .fade(duration: 0.2)
                     .aspectRatio(16 / 9, contentMode: .fill)
+                    .frame(width: cardWidth, height: cardHeight)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 Text(movie.title)
@@ -68,9 +69,8 @@ private extension BackdropCarouselView {
                     .foregroundStyle(.textPrimary)
                     .lineLimit(1)
             }
-            .frame(width: cardWidth, height: cardHeight)
+            .frame(width: cardWidth, alignment: .leading)
         }
-        .buttonStyle(.plain)
         .accessibilityIdentifier(AccessibilityID.movieCard)
         .accessibilityLabel(movie.title)
     }

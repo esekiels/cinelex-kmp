@@ -26,12 +26,8 @@ struct iOSApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                HomeView(viewModel: factory.injectHomeViewModel())
-                    .navigationDestination(for: Movie.self) { movie in
-                        DetailView(viewModel: factory.injectDetailViewModel(movieId: movie.id))
-                    }
-            }
+            HomeView(viewModel: factory.injectHomeViewModel())
+            .environment(factory)
             .environment(preferences)
             .environment(\.locale, preferences.language.locale)
             .preferredColorScheme(preferences.theme.colorScheme)

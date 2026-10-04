@@ -51,7 +51,7 @@ private extension PosterCarouselView {
         let cardWidth = geometry.size.width * 0.4
         let cardHeight = cardWidth * (3 / 2)
         
-        return NavigationLink(value: movie) {
+        return ZoomLink(movie, source: title) {
             KFImage.url(movie.posterURL)
                 .placeholder {
                     ImagePlaceholder(2 / 3)
@@ -64,7 +64,6 @@ private extension PosterCarouselView {
                 .frame(width: cardWidth, height: cardHeight)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
-        .buttonStyle(.plain)
         .accessibilityIdentifier(AccessibilityID.movieCard)
         .accessibilityLabel(movie.title)
     }

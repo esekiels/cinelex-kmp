@@ -17,22 +17,29 @@ struct HomeView: View {
     @State private var viewModel: HomeViewModel
     @Environment(PreferencesStore.self) private var preferences
     @Environment(\.locale) private var locale
+    @Environment(CinelexDIFactory.self) private var factory
+    @Namespace private var carouselNs
     
     init(viewModel: HomeViewModel) {
         _viewModel = State(initialValue: viewModel)
     }
     
     var body: some View {
-        content
-            .task { viewModel.onAppear() }
-            .refreshable { await viewModel.refresh() }
-            .onDisappear { viewModel.onDisappear() }
-            .navigationTitle(Text(verbatim: "Cinelex"))
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) { localeMenu.tint(.textPrimary) }
-                ToolbarItem(placement: .topBarTrailing) { themeMenu.tint(.textPrimary) }
-            }
-            .background(Color.background)
+        NavigationStack {
+            content
+                .task { viewModel.onAppear() }
+                .refreshable { await viewModel.refresh() }
+                .onDisappear { viewModel.onDisappear() }
+                .navigationTitle(Text(verbatim: "Cinelex"))
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) { localeMenu.tint(.textPrimary) }
+                    ToolbarItem(placement: .topBarTrailing) { themeMenu.tint(.textPrimary) }
+                }
+                .background(Color.background)
+                .zoomDestination(for: Movie.self, in: carouselNs) { movie in
+                    DetailView(viewModel: factory.injectDetailViewModel(movieId: movie.id))
+                }
+        }
     }
 }
 
@@ -114,26 +121,30 @@ private extension HomeView {
 #if DEBUG
 #Preview("Loaded") {
     let repository = FakeMovieRepository(nowPlaying: MovieStubs.shared.all)
-    return NavigationStack { HomeView(viewModel: HomeViewModel(repository: repository)) }
+    return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Loading") {
     let repository = FakeMovieRepository(nowPlaying: [], isLoading: true)
-    return NavigationStack { HomeView(viewModel: HomeViewModel(repository: repository)) }
+    return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Empty") {
     let repository = FakeMovieRepository(nowPlaying: [])
-    return NavigationStack { HomeView(viewModel: HomeViewModel(repository: repository)) }
+    return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Error") {
     let repository = FakeMovieRepository(nowPlaying: [])
     repository.failure = CinelexException(code: ErrorConstants.shared.NETWORK_ERROR, message: "Server unreachable")
-    return NavigationStack { HomeView(viewModel: HomeViewModel(repository: repository)) }
+    return HomeView(viewModel: HomeViewModel(repository: repository))
+        .environment(CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 #endif
