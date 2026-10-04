@@ -19,7 +19,7 @@ struct DetailView: View {
 
     var body: some View {
         content
-            .task { await viewModel.observe() }
+            .task { await viewModel.onAppear() }
             .navigationBarTitleDisplayMode(.inline)
             .background(Color.background)
     }
@@ -32,7 +32,6 @@ private extension DetailView {
         switch viewModel.state {
         case .loaded(let movie):
             details(movie)
-                .navigationTitle(movie.title)
         case .loading, .empty:
             DetailSkeletonView()
         case .error(let code, _):
@@ -41,7 +40,7 @@ private extension DetailView {
             } description: {
                 Text(.error(code))
             } actions: {
-                Button("action.retry") { viewModel.refresh() }
+                Button("action.retry") { viewModel.onRefresh() }
                     .buttonStyle(.bordered)
             }
             .accessibilityIdentifier(AccessibilityID.detailError)

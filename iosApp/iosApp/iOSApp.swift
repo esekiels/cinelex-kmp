@@ -26,7 +26,7 @@ struct iOSApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: factory.injectHomeViewModel())
+            AppTabView()
             .environment(\.factory, factory)
             .environment(preferences)
             .environment(\.locale, preferences.language.locale)

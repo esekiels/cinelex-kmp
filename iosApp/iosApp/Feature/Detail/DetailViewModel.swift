@@ -24,8 +24,8 @@ final class DetailViewModel {
         self.movieId = movieId
     }
 
-    func observe() async {
-        refresh()
+    func onAppear() async {
+        onRefresh()
         do {
             for try await details in asyncSequence(for: repository.observeMovieDetails(id: movieId)) {
                 if let details {
@@ -39,7 +39,7 @@ final class DetailViewModel {
         }
     }
 
-    func refresh() {
+    func onRefresh() {
         guard refreshTask == nil else {
             return
         }

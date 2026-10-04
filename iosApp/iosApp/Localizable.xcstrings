@@ -1,533 +1,614 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "action.language": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Change language"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "action.language" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change language"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ganti bahasa"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ganti bahasa"
           }
         }
       }
     },
-    "action.theme": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Change theme"
+    "action.retry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ganti tema"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coba lagi"
           }
         }
       }
     },
-    "error.forbidden": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You don't have permission to access this resource."
+    "action.theme" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change theme"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anda tidak memiliki izin untuk mengakses sumber ini."
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ganti tema"
           }
         }
       }
     },
-    "error.network": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please check your internet connection and try again."
+    "detail.cast" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cast"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Periksa koneksi internet Anda dan coba lagi."
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pemeran"
           }
         }
       }
     },
-    "error.timeout": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The request timed out. Please try again."
+    "detail.crew" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crew"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permintaan melebihi batas waktu. Silakan coba lagi."
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kru"
           }
         }
       }
     },
-    "error.unauthorized": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your session has expired."
+    "detail.director" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Director"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sesi Anda telah berakhir."
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sutradara"
           }
         }
       }
     },
-    "error.unknown": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "An unexpected error occurred. Please try again later."
+    "detail.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load movie"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terjadi kesalahan tak terduga. Silakan coba lagi nanti."
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gagal memuat film"
           }
         }
       }
     },
-    "detail.cast": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cast"
+    "detail.notAvailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N/A"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pemeran"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "T/A"
           }
         }
       }
     },
-    "detail.crew": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crew"
+    "detail.producer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Producer"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kru"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produser"
           }
         }
       }
     },
-    "detail.director": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Director"
+    "detail.rating %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating %@ out of 10"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sutradara"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating %@ dari 10"
           }
         }
       }
     },
-    "detail.error": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't load movie"
+    "detail.runtime %lld %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lldh %2$lldm"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gagal memuat film"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld j %2$lld m"
           }
         }
       }
     },
-    "detail.producer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Producer"
+    "detail.trailers" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trailers"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Produser"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trailer"
           }
         }
       }
     },
-    "detail.trailers": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trailers"
+    "detail.writer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Writer"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trailer"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penulis"
           }
         }
       }
     },
-    "detail.writer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Writer"
+    "error.forbidden" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have permission to access this resource."
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Penulis"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda tidak memiliki izin untuk mengakses sumber ini."
           }
         }
       }
     },
-    "home.empty": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No movies"
+    "error.network" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check your internet connection and try again."
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tidak ada film"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periksa koneksi internet Anda dan coba lagi."
           }
         }
       }
     },
-    "home.error": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Something went wrong"
+    "error.timeout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The request timed out. Please try again."
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terjadi kesalahan"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permintaan melebihi batas waktu. Silakan coba lagi."
           }
         }
       }
     },
-    "home.nowPlaying": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Now Playing"
+    "error.unauthorized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your session has expired."
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sedang Tayang"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesi Anda telah berakhir."
           }
         }
       }
     },
-    "home.popular": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Popular"
+    "error.unknown" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unexpected error occurred. Please try again later."
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Populer"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan tak terduga. Silakan coba lagi nanti."
           }
         }
       }
     },
-    "home.topRated": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Top Rated"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rating Tertinggi"
+    "home" : {
+      "comment" : "System image name for the \"home\" tab.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
           }
         }
       }
     },
-    "home.upcoming": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Upcoming"
+    "home.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No movies"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Akan Datang"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada film"
           }
         }
       }
     },
-    "language.english": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "English"
+    "home.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inggris"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan"
           }
         }
       }
     },
-    "language.indonesian": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indonesian"
+    "home.nowPlaying" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Now Playing"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indonesia"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sedang Tayang"
           }
         }
       }
     },
-    "language.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select Language"
+    "home.popular" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Popular"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pilih Bahasa"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Populer"
           }
         }
       }
     },
-    "theme.dark": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dark"
+    "home.topRated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top Rated"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gelap"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating Tertinggi"
           }
         }
       }
     },
-    "theme.light": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Light"
+    "home.upcoming" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terang"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akan Datang"
           }
         }
       }
     },
-    "theme.system": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System"
+    "language.english" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sistem"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inggris"
           }
         }
       }
     },
-    "theme.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select Theme"
+    "language.indonesian" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indonesian"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pilih Tema"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indonesia"
           }
         }
       }
     },
-    "action.retry": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
+    "language.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Language"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Coba lagi"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih Bahasa"
           }
         }
       }
     },
-    "detail.rating %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rating %@ out of 10"
+    "search" : {
+      "comment" : "Label for the search tab in the tab view.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rating %@ dari 10"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari"
           }
         }
       }
     },
-    "detail.notAvailable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "N/A"
+    "search.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't search movies"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "T/A"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gagal mencari film"
           }
         }
       }
     },
-    "detail.runtime %lld %lld": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lldh %2$lldm"
+    "search.prompt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search movies"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld j %2$lld m"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari film"
+          }
+        }
+      }
+    },
+    "search.recommendations" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommendations"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekomendasi"
+          }
+        }
+      }
+    },
+    "theme.dark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelap"
+          }
+        }
+      }
+    },
+    "theme.light" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terang"
+          }
+        }
+      }
+    },
+    "theme.system" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem"
+          }
+        }
+      }
+    },
+    "theme.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Theme"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih Tema"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.1"
 }

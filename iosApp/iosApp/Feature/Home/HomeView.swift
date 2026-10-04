@@ -83,20 +83,16 @@ private extension HomeView {
         .accessibilityValue(preferences.theme.rawValue)
     }
     
-    func localized(_ key: String.LocalizationValue) -> String {
-        String(localized: LocalizedStringResource(key, locale: locale))
-    }
-    
     @ViewBuilder
     var content: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 24) {
                 switch viewModel.state.uiState {
                 case .loaded(let data):
-                    PosterCarouselView(title: localized("home.nowPlaying"), data: data.nowPlaying)
-                    BackdropCarouselView(title: localized("home.popular"), data: data.popular)
-                    PosterCarouselView(title: localized("home.topRated"), data: data.topRated)
-                    BackdropCarouselView(title: localized("home.upcoming"), data: data.upcoming)
+                    PosterCarouselView(title: locale.localized("home.nowPlaying"), data: data.nowPlaying)
+                    BackdropCarouselView(title: locale.localized("home.popular"), data: data.popular)
+                    PosterCarouselView(title: locale.localized("home.topRated"), data: data.topRated)
+                    BackdropCarouselView(title: locale.localized("home.upcoming"), data: data.upcoming)
                 case .loading:
                     SkeletonView(style: .poster)
                     SkeletonView(style: .backdrop)

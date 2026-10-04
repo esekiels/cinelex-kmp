@@ -30,6 +30,10 @@ final class CinelexDIFactory {
         DetailViewModel(repository: movieRepository, movieId: movieId)
     }
 
+    func injectSearchViewModel() -> SearchViewModel {
+        SearchViewModel(repository: movieRepository)
+    }
+
     func injectPreferencesStore() -> PreferencesStore {
         PreferencesStore(repository: userDataRepository)
     }
