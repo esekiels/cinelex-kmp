@@ -27,7 +27,7 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView(viewModel: factory.injectHomeViewModel())
-            .environment(factory)
+            .environment(\.factory, factory)
             .environment(preferences)
             .environment(\.locale, preferences.language.locale)
             .preferredColorScheme(preferences.theme.colorScheme)

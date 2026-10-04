@@ -5,11 +5,10 @@
 //  Created by Esekiel Surbakti on 27/09/26.
 //
 
-import Observation
+import SwiftUI
 import Shared
 
 @MainActor
-@Observable
 final class CinelexDIFactory {
 
     private let movieRepository: any MovieRepository
@@ -34,4 +33,9 @@ final class CinelexDIFactory {
     func injectPreferencesStore() -> PreferencesStore {
         PreferencesStore(repository: userDataRepository)
     }
+}
+
+extension EnvironmentValues {
+    // Optional: a non-nil default would resolve repositories from Koin, which may not be started.
+    @Entry var factory: CinelexDIFactory?
 }
