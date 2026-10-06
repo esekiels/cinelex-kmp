@@ -14,13 +14,16 @@ import Shared
 final class DetailViewModel {
 
     private(set) var state: UiState<MovieDetails> = .loading
+    private(set) var isSaved = false
 
     private let repository: any MovieRepository
+    private let watchlist: any WatchlistRepository
     private let movieId: Int32
     private var refreshTask: Task<Void, Never>?
 
-    init(repository: any MovieRepository, movieId: Int32) {
+    init(repository: any MovieRepository, watchlist: any WatchlistRepository, movieId: Int32) {
         self.repository = repository
+        self.watchlist = watchlist
         self.movieId = movieId
     }
 
@@ -36,6 +39,31 @@ final class DetailViewModel {
             return
         } catch {
             fail(error)
+        }
+    }
+
+    func observeWatchlist() async {
+        do {
+            for try await saved in asyncSequence(for: watchlist.observeIsInWatchlist(id: movieId)) {
+                isSaved = saved.boolValue
+            }
+        } catch {
+            return
+        }
+    }
+
+    func toggleWatchlist() {
+        guard case .loaded(let details) = state else {
+            return
+        }
+        let movieId = movieId
+        let shouldRemove = isSaved
+        Task {
+            if shouldRemove {
+                _ = try? await asyncFunction(for: watchlist.remove(id: movieId))
+            } else {
+                _ = try? await asyncFunction(for: watchlist.add(movie: details.toMovie()))
+            }
         }
     }
 

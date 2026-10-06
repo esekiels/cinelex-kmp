@@ -13,13 +13,16 @@ final class CinelexDIFactory {
 
     private let movieRepository: any MovieRepository
     private let userDataRepository: any UserDataRepository
+    private let watchlistRepository: any WatchlistRepository
 
     init(
         movieRepository: any MovieRepository = KoinHelperKt.movieRepository(),
-        userDataRepository: any UserDataRepository = KoinHelperKt.userDataRepository()
+        userDataRepository: any UserDataRepository = KoinHelperKt.userDataRepository(),
+        watchlistRepository: any WatchlistRepository = KoinHelperKt.watchlistRepository()
     ) {
         self.movieRepository = movieRepository
         self.userDataRepository = userDataRepository
+        self.watchlistRepository = watchlistRepository
     }
 
     func injectHomeViewModel() -> HomeViewModel {
@@ -27,11 +30,15 @@ final class CinelexDIFactory {
     }
 
     func injectDetailViewModel(movieId: Int32) -> DetailViewModel {
-        DetailViewModel(repository: movieRepository, movieId: movieId)
+        DetailViewModel(repository: movieRepository, watchlist: watchlistRepository, movieId: movieId)
     }
 
     func injectSearchViewModel() -> SearchViewModel {
         SearchViewModel(repository: movieRepository)
+    }
+
+    func injectWatchlistViewModel() -> WatchlistViewModel {
+        WatchlistViewModel(repository: watchlistRepository)
     }
 
     func injectPreferencesStore() -> PreferencesStore {

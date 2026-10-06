@@ -11,7 +11,11 @@ struct iOSApp: App {
         let factory: CinelexDIFactory
         #if DEBUG
         if let scenario = UITestScenario.current {
-            factory = CinelexDIFactory(movieRepository: scenario.repository, userDataRepository: FakeUserDataRepository())
+            factory = CinelexDIFactory(
+                movieRepository: scenario.repository,
+                userDataRepository: FakeUserDataRepository(),
+                watchlistRepository: FakeWatchlistRepository()
+            )
         } else {
             KoinHelperKt.doInitKoin()
             factory = CinelexDIFactory()

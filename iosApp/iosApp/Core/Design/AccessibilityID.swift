@@ -22,6 +22,9 @@ enum AccessibilityID {
     static let searchResultRow = "SearchResultRow"
     static let searchEmpty = "SearchEmpty"
     static let searchError = "SearchError"
+    static let watchlistRow = "WatchlistRow"
+    static let watchlistEmpty = "WatchlistEmpty"
+    static let watchlistToggle = "WatchlistToggle"
 
     static func carousel(_ title: String) -> String { "Carousel-\(title)" }
 }

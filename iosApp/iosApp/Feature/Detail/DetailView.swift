@@ -20,12 +20,35 @@ struct DetailView: View {
     var body: some View {
         content
             .task { await viewModel.onAppear() }
+            .task { await viewModel.observeWatchlist() }
+            .toolbar {
+                if isLoaded {
+                    ToolbarItem(placement: .topBarTrailing) { watchlistToggle }
+                }
+            }
             .navigationBarTitleDisplayMode(.inline)
             .background(Color.background)
     }
 }
 
 private extension DetailView {
+
+    var isLoaded: Bool {
+        if case .loaded = viewModel.state {
+            return true
+        }
+        return false
+    }
+
+    var watchlistToggle: some View {
+        Button {
+            viewModel.toggleWatchlist()
+        } label: {
+            Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
+                .accessibilityLabel(Text(viewModel.isSaved ? LocalizedStringKey("watchlist.remove") : "watchlist.add"))
+        }
+        .accessibilityIdentifier(AccessibilityID.watchlistToggle)
+    }
 
     @ViewBuilder
     var content: some View {
@@ -255,7 +278,13 @@ private extension DetailView {
 #if DEBUG
 #Preview("Loaded") {
     NavigationStack {
-        DetailView(viewModel: DetailViewModel(repository: FakeMovieRepository(nowPlaying: MovieStubs.shared.all), movieId: 278))
+        DetailView(
+            viewModel: DetailViewModel(
+                repository: FakeMovieRepository(nowPlaying: MovieStubs.shared.all),
+                watchlist: FakeWatchlistRepository(),
+                movieId: 278
+            )
+        )
     }
 }
 
@@ -263,7 +292,7 @@ private extension DetailView {
     let repository = FakeMovieRepository(nowPlaying: MovieStubs.shared.all)
     repository.detailsFailure = CinelexException(code: ErrorConstants.shared.NETWORK_ERROR, message: "Server unreachable")
     return NavigationStack {
-        DetailView(viewModel: DetailViewModel(repository: repository, movieId: 278))
+        DetailView(viewModel: DetailViewModel(repository: repository, watchlist: FakeWatchlistRepository(), movieId: 278))
     }
 }
 #endif

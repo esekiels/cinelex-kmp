@@ -23,6 +23,10 @@ struct AppTabView: View {
                     .tabItem {
                         Label(locale.localized("search"), systemImage: "magnifyingglass")
                     }
+                WatchlistView(viewModel: factory.injectWatchlistViewModel())
+                    .tabItem {
+                        Label(locale.localized("watchlist"), systemImage: "bookmark.fill")
+                    }
             }
         }
     }
