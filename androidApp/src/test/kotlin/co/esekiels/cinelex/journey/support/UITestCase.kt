@@ -17,11 +17,14 @@ import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.UserDataRepository
+import co.esekiels.cinelex.data.WatchlistRepository
 import co.esekiels.cinelex.journey.screens.DetailScreen
 import co.esekiels.cinelex.journey.screens.HomeScreen
 import co.esekiels.cinelex.journey.screens.SearchScreen
+import co.esekiels.cinelex.journey.screens.WatchlistScreen
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.FakeUserDataRepository
+import co.esekiels.cinelex.testing.FakeWatchlistRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import org.junit.After
 import org.junit.Rule
@@ -42,17 +45,22 @@ abstract class UITestCase {
 
 	val preferences = FakeUserDataRepository()
 
+	val savedMovies = FakeWatchlistRepository()
+
 	val home = HomeScreen(compose)
 
 	val detail = DetailScreen(compose)
 
 	val search = SearchScreen(compose)
 
+	val watchlist = WatchlistScreen(compose)
+
 	fun launchApp(scenario: Scenario) {
 		loadKoinModules(
 			module {
 				single<MovieRepository> { scenario.repository() }
 				single<UserDataRepository> { preferences }
+				single<WatchlistRepository> { savedMovies }
 			},
 		)
 		activity = ActivityScenario.launch(MainActivity::class.java)

@@ -7,9 +7,11 @@
 
 package co.esekiels.cinelex.journey.screens
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import co.esekiels.cinelex.core.design.TestTag
 import co.esekiels.cinelex.journey.support.UITestCase.Companion.TIMEOUT_MS
@@ -17,6 +19,8 @@ import co.esekiels.cinelex.journey.support.UITestCase.Companion.TIMEOUT_MS
 class DetailScreen(
 	compose: ComposeTestRule,
 ) : Page(compose) {
+	val watchlistToggle: SemanticsNodeInteraction get() = compose.onNodeWithTag(TestTag.WATCHLIST_TOGGLE)
+
 	fun back() {
 		compose.onNodeWithContentDescription("Back").performClick()
 	}
