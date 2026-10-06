@@ -7,8 +7,6 @@
 
 package co.esekiels.cinelex.data
 
-import co.esekiels.cinelex.common.CinelexException
-import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.mapper.toDomain
 import co.esekiels.cinelex.database.entity.mapper.toDomainOrNull
@@ -20,7 +18,6 @@ import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
 import co.esekiels.cinelex.network.ApiResponse
 import co.esekiels.cinelex.network.service.MovieClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +26,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 internal val MOVIE_CATEGORIES =
 	listOf(
@@ -107,17 +103,3 @@ internal class MovieRepositoryImpl(
 			.distinctUntilChanged()
 			.catch { throw it.toCinelexException() }
 }
-
-@Suppress("TooGenericExceptionCaught")
-private suspend fun <T> CoroutineDispatcher.guarded(block: suspend () -> T): T =
-	try {
-		withContext(this) { block() }
-	} catch (e: CancellationException) {
-		throw e
-	} catch (e: Exception) {
-		throw e.toCinelexException()
-	}
-
-private fun Throwable.toCinelexException(): CinelexException =
-	this as? CinelexException
-		?: CinelexException(ErrorConstants.UNKNOWN_ERROR, message ?: "An unexpected error occurred.", this)

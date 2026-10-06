@@ -53,6 +53,16 @@ data class MovieDetails(
 	val screenwriters: List<Crew> get() = credits.crew.filter { it.job == "Screenplay" || it.job == "Writer" }
 
 	val youtubeTrailers: List<Video> get() = videos.results.filter { it.site == "YouTube" && it.type == "Trailer" }
+
+	fun toMovie(): Movie =
+		Movie(
+			id = id,
+			title = title,
+			backdropPath = backdropPath,
+			posterPath = posterPath,
+			releaseDate = releaseDate,
+			voteAverage = voteAverage,
+		)
 }
 
 data class Length(

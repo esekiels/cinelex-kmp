@@ -20,4 +20,5 @@ val databaseModule: Module =
 
 		single<CinelexDatabase> { buildDatabase(get()) }
 		single { get<CinelexDatabase>().movieDao() }
+		single { get<CinelexDatabase>().watchlistDao() }
 	}

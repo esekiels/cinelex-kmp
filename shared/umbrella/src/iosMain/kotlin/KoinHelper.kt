@@ -1,5 +1,6 @@
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.UserDataRepository
+import co.esekiels.cinelex.data.WatchlistRepository
 import co.esekiels.cinelex.data.di.initKoin
 import co.esekiels.cinelex.model.UserPreferences
 import kotlinx.coroutines.flow.first
@@ -27,6 +28,9 @@ fun movieRepository(): MovieRepository = KoinPlatform.getKoin().get()
 
 @Suppress("unused")
 fun userDataRepository(): UserDataRepository = KoinPlatform.getKoin().get()
+
+@Suppress("unused")
+fun watchlistRepository(): WatchlistRepository = KoinPlatform.getKoin().get()
 
 @Suppress("unused")
 fun currentUserPreferences(repo: UserDataRepository): UserPreferences = runBlocking { repo.userPreferences.first() }

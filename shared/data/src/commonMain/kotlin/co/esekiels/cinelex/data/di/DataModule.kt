@@ -12,6 +12,8 @@ import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.MovieRepositoryImpl
 import co.esekiels.cinelex.data.UserDataRepository
 import co.esekiels.cinelex.data.UserDataRepositoryImpl
+import co.esekiels.cinelex.data.WatchlistRepository
+import co.esekiels.cinelex.data.WatchlistRepositoryImpl
 import co.esekiels.cinelex.data.contentLanguage
 import kotlinx.coroutines.flow.map
 import org.koin.core.module.Module
@@ -28,5 +30,6 @@ val dataModule: Module =
 				ioDispatcher = get(IO_DISPATCHER),
 			)
 		} bind MovieRepository::class
+		single { WatchlistRepositoryImpl(dao = get(), ioDispatcher = get(IO_DISPATCHER)) } bind WatchlistRepository::class
 		single { UserDataRepositoryImpl(dataSource = get()) } bind UserDataRepository::class
 	}
