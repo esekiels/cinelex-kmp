@@ -12,23 +12,33 @@ import androidx.lifecycle.viewModelScope
 import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.data.MovieRepository
+import co.esekiels.cinelex.data.WatchlistRepository
 import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
 	private val repository: MovieRepository,
+	private val watchlist: WatchlistRepository,
 	private val movieId: Int,
 ) : ViewModel() {
 	private val _state = MutableStateFlow<UiState<MovieDetails>>(UiState.Loading)
 	val state: StateFlow<UiState<MovieDetails>> = _state.asStateFlow()
+
+	val isSaved: StateFlow<Boolean> =
+		watchlist
+			.observeIsInWatchlist(movieId)
+			.catch { if (it !is CinelexException) throw it }
+			.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
 	private var refresh: Job? = null
 
@@ -53,6 +63,16 @@ class DetailViewModel(
 					fail(e)
 				}
 			}
+	}
+
+	fun toggleWatchlist() {
+		val details = (_state.value as? UiState.Loaded)?.data ?: return
+		viewModelScope.launch {
+			try {
+				if (isSaved.value) watchlist.remove(movieId) else watchlist.add(details.toMovie())
+			} catch (_: CinelexException) {
+			}
+		}
 	}
 
 	private fun fail(e: CinelexException) {

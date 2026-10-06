@@ -21,6 +21,9 @@ object TestTag {
 	const val SEARCH_RESULT_ROW = "SearchResultRow"
 	const val SEARCH_EMPTY = "SearchEmpty"
 	const val SEARCH_ERROR = "SearchError"
+	const val WATCHLIST_ROW = "WatchlistRow"
+	const val WATCHLIST_EMPTY = "WatchlistEmpty"
+	const val WATCHLIST_TOGGLE = "WatchlistToggle"
 
 	/** Every carousel is fed the same movies, so a card lookup has to be scoped to one section. */
 	fun carousel(title: String) = "Carousel-$title"

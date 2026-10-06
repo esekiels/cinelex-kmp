@@ -39,4 +39,9 @@
     <string name="search_empty">Tidak ada hasil untuk “%1$s”</string>
     <string name="search_error">Gagal mencari film</string>
     <string name="action_clear">Hapus</string>
+    <string name="watchlist">Daftar Tonton</string>
+    <string name="watchlist_empty">Daftar tonton kosong</string>
+    <string name="watchlist_empty_message">Simpan film dari halaman detail untuk ditonton nanti.</string>
+    <string name="watchlist_add">Tambah ke daftar tonton</string>
+    <string name="watchlist_remove">Hapus dari daftar tonton</string>
 </resources>

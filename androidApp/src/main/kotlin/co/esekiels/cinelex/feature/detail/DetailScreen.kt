@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -52,7 +54,8 @@ fun DetailScreen(
 	viewModel: DetailViewModel = koinViewModel { parametersOf(movieId) },
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
-	DetailContent(title, state, onBack, viewModel::load)
+	val isSaved by viewModel.isSaved.collectAsStateWithLifecycle()
+	DetailContent(title, state, isSaved, onBack, viewModel::load, viewModel::toggleWatchlist)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,8 +63,10 @@ fun DetailScreen(
 fun DetailContent(
 	title: String,
 	state: UiState<MovieDetails>,
+	isSaved: Boolean,
 	onBack: () -> Unit,
 	onRetry: () -> Unit,
+	onToggleWatchlist: () -> Unit,
 ) {
 	Scaffold(
 		topBar = {
@@ -70,6 +75,16 @@ fun DetailContent(
 				navigationIcon = {
 					IconButton(onBack) {
 						Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.action_back))
+					}
+				},
+				actions = {
+					if (state is UiState.Loaded) {
+						IconButton(onToggleWatchlist, Modifier.testTag(TestTag.WATCHLIST_TOGGLE)) {
+							Icon(
+								if (isSaved) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+								stringResource(if (isSaved) R.string.watchlist_remove else R.string.watchlist_add),
+							)
+						}
 					}
 				},
 			)
@@ -114,7 +129,7 @@ private val previewDetails =
 @Composable
 private fun LoadedPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Loaded(previewDetails), {}, {})
+		DetailContent(previewDetails.title, UiState.Loaded(previewDetails), isSaved = true, {}, {}, {})
 	}
 }
 
@@ -122,7 +137,7 @@ private fun LoadedPreview() {
 @Composable
 private fun LoadingPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Loading, {}, {})
+		DetailContent(previewDetails.title, UiState.Loading, isSaved = false, {}, {}, {})
 	}
 }
 
@@ -130,6 +145,6 @@ private fun LoadingPreview() {
 @Composable
 private fun ErrorPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Error("E001", "Server unreachable"), {}, {})
+		DetailContent(previewDetails.title, UiState.Error("E001", "Server unreachable"), isSaved = false, {}, {}, {})
 	}
 }

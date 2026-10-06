@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -39,9 +40,11 @@ import co.esekiels.cinelex.core.design.theme.CinelexTheme
 import co.esekiels.cinelex.core.navigation.Detail
 import co.esekiels.cinelex.core.navigation.Home
 import co.esekiels.cinelex.core.navigation.Search
+import co.esekiels.cinelex.core.navigation.Watchlist
 import co.esekiels.cinelex.feature.detail.DetailScreen
 import co.esekiels.cinelex.feature.home.HomeScreen
 import co.esekiels.cinelex.feature.search.SearchScreen
+import co.esekiels.cinelex.feature.watchlist.WatchlistScreen
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.UiTheme
 import co.esekiels.cinelex.model.UserPreferences
@@ -86,6 +89,9 @@ fun CinelexMain(
 							entry<Search> {
 								SearchScreen(onMovieClick = { movie, source -> push(Detail(movie.id, movie.title, source)) })
 							}
+							entry<Watchlist> {
+								WatchlistScreen(onMovieClick = { movie, source -> push(Detail(movie.id, movie.title, source)) })
+							}
 							entry<Detail> {
 								Box(Modifier.zoomBounds(ZoomKey(it.movieId, it.source))) {
 									DetailScreen(it.movieId, it.title, onBack = { pop() })
@@ -98,7 +104,7 @@ fun CinelexMain(
 	}
 }
 
-private val TABS = listOf(Home, Search)
+private val TABS = listOf(Home, Search, Watchlist)
 
 @Composable
 private fun TabBar(
@@ -117,6 +123,12 @@ private fun TabBar(
 			onClick = { onSelect(Search) },
 			icon = { Icon(Icons.Default.Search, contentDescription = null) },
 			label = { Text(stringResource(R.string.search)) },
+		)
+		NavigationBarItem(
+			selected = selected == Watchlist,
+			onClick = { onSelect(Watchlist) },
+			icon = { Icon(Icons.Default.Bookmark, contentDescription = null) },
+			label = { Text(stringResource(R.string.watchlist)) },
 		)
 	}
 }

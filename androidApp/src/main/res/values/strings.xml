@@ -40,4 +40,9 @@
     <string name="search_empty">No results for “%1$s”</string>
     <string name="search_error">Couldn\'t search movies</string>
     <string name="action_clear">Clear</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="watchlist_empty">Your watchlist is empty</string>
+    <string name="watchlist_empty_message">Save movies from their details page to watch later.</string>
+    <string name="watchlist_add">Add to watchlist</string>
+    <string name="watchlist_remove">Remove from watchlist</string>
 </resources>

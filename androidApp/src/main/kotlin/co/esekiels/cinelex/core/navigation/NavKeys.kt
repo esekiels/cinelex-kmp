@@ -17,6 +17,9 @@ internal data object Home : NavKey
 internal data object Search : NavKey
 
 @Serializable
+internal data object Watchlist : NavKey
+
+@Serializable
 internal data class Detail(
 	val movieId: Int,
 	val title: String,
