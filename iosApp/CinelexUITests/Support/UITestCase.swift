@@ -18,6 +18,7 @@ class UITestCase: XCTestCase {
     var home: HomeScreen { HomeScreen(app: app) }
     var detail: DetailScreen { DetailScreen(app: app) }
     var search: SearchScreen { SearchScreen(app: app) }
+    var watchlist: WatchlistScreen { WatchlistScreen(app: app) }
 
     override func setUp() {
         continueAfterFailure = false

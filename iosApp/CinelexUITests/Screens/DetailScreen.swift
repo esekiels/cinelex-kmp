@@ -28,6 +28,10 @@ struct DetailScreen {
         app.descendants(matching: .any)[AccessibilityID.trailerButton].firstMatch
     }
 
+    var watchlistToggle: XCUIElement {
+        app.buttons[AccessibilityID.watchlistToggle].firstMatch
+    }
+
     var backButton: XCUIElement {
         app.navigationBars.buttons.element(boundBy: 0)
     }
