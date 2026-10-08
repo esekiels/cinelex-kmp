@@ -87,6 +87,6 @@ class HomeViewModel(
 		)
 
 	private fun fail(e: CinelexException) {
-		if (_state.value !is UiState.Loaded) _state.value = UiState.Error(e.code, e.message)
+		if (_state.value !is UiState.Loaded) _state.value = UiState.Error(e.code)
 	}
 }

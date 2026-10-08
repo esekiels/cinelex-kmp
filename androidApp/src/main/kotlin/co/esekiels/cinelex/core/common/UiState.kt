@@ -18,6 +18,5 @@ sealed interface UiState<out T> {
 
 	data class Error(
 		val code: String,
-		val message: String,
 	) : UiState<Nothing>
 }

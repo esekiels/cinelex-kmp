@@ -234,7 +234,7 @@ private fun ErrorPreview() {
 	CinelexTheme {
 		SearchContent(
 			"god",
-			UiState.Error("E001", "Server unreachable"),
+			UiState.Error("E001"),
 			emptyList(),
 			isLoadingMore = false,
 			onQueryChange = {},

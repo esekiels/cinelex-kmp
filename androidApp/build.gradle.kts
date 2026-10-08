@@ -20,7 +20,6 @@ composeCompiler {
 
 dependencies {
 	implementation(projects.shared.data)
-	implementation(projects.shared.common)
 
 	implementation(libs.koin.android)
 	implementation(libs.koin.androidx.compose)

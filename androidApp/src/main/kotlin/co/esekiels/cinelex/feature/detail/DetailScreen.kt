@@ -145,6 +145,6 @@ private fun LoadingPreview() {
 @Composable
 private fun ErrorPreview() {
 	CinelexTheme {
-		DetailContent(previewDetails.title, UiState.Error("E001", "Server unreachable"), isSaved = false, {}, {}, {})
+		DetailContent(previewDetails.title, UiState.Error("E001"), isSaved = false, {}, {}, {})
 	}
 }

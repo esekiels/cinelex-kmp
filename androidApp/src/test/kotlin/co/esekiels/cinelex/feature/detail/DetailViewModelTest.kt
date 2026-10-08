@@ -51,7 +51,7 @@ class DetailViewModelTest {
 		val failure = CinelexException(ErrorConstants.NETWORK_ERROR, "Server unreachable")
 		val repository = FakeMovieRepository().apply { detailsFailure = failure }
 
-		assertEquals(UiState.Error(failure.code, failure.message), detail(repository).state.value)
+		assertEquals(UiState.Error(failure.code), detail(repository).state.value)
 	}
 
 	@Test

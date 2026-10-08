@@ -26,6 +26,6 @@ class WatchlistViewModel(
 		repository
 			.observeWatchlist()
 			.map { if (it.isEmpty()) UiState.Empty else UiState.Loaded(it) }
-			.catch { if (it is CinelexException) emit(UiState.Error(it.code, it.message)) else throw it }
+			.catch { if (it is CinelexException) emit(UiState.Error(it.code)) else throw it }
 			.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
 }

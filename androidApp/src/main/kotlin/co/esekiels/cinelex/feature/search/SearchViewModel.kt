@@ -119,7 +119,7 @@ class SearchViewModel(
 			val movies = result.movies.distinctBy { it.id }
 			_state.value = if (movies.isEmpty()) UiState.Empty else UiState.Loaded(movies)
 		} catch (e: CinelexException) {
-			_state.value = UiState.Error(e.code, e.message)
+			_state.value = UiState.Error(e.code)
 		}
 	}
 

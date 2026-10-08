@@ -62,7 +62,7 @@ class HomeViewModelTest {
 		val empty = FakeMovieRepository(emptyList()).apply { this.failure = failure }
 		val cached = FakeMovieRepository(MovieStubs.all).apply { this.failure = failure }
 
-		assertEquals(UiState.Error(failure.code, failure.message), HomeViewModel(empty).state.value)
+		assertEquals(UiState.Error(failure.code), HomeViewModel(empty).state.value)
 		assertIs<UiState.Loaded<Carousels>>(HomeViewModel(cached).state.value)
 	}
 

@@ -12,7 +12,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
 
-@Suppress("SwallowedException")
 fun Context.openUrl(url: String) {
 	try {
 		startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))

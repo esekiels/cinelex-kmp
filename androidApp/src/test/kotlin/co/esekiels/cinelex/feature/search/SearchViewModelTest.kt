@@ -83,7 +83,7 @@ class SearchViewModelTest {
 
 		viewModel.search("god")
 
-		assertEquals(UiState.Error(failure.code, failure.message), viewModel.state.value)
+		assertEquals(UiState.Error(failure.code), viewModel.state.value)
 	}
 
 	@Test

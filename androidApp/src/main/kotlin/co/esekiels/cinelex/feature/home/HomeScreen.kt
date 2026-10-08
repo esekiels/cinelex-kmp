@@ -152,6 +152,6 @@ private fun EmptyPreview() {
 @Composable
 private fun ErrorPreview() {
 	CinelexTheme {
-		HomeContent(UiState.Error("E001", "Server unreachable"), false) {}
+		HomeContent(UiState.Error("E001"), false) {}
 	}
 }
