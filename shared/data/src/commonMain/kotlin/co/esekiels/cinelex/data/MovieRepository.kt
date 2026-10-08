@@ -9,6 +9,7 @@ package co.esekiels.cinelex.data
 
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.model.MovieDetails
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
@@ -20,16 +21,7 @@ data class SearchResult(
 
 interface MovieRepository {
 	@NativeCoroutines
-	fun observeNowPlaying(): Flow<List<Movie>>
-
-	@NativeCoroutines
-	fun observePopular(): Flow<List<Movie>>
-
-	@NativeCoroutines
-	fun observeUpcoming(): Flow<List<Movie>>
-
-	@NativeCoroutines
-	fun observeTopRated(): Flow<List<Movie>>
+	fun observeMovies(category: MovieCategory): Flow<List<Movie>>
 
 	@NativeCoroutines
 	suspend fun refreshMovies()

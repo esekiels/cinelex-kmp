@@ -13,6 +13,7 @@ import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieCategory
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +46,7 @@ class SearchViewModel(
 	// Recommendations are a cached nicety; Home already surfaces cache failures.
 	val recommendations: StateFlow<List<Movie>> =
 		repository
-			.observePopular()
+			.observeMovies(MovieCategory.POPULAR)
 			.catch { if (it !is CinelexException) throw it }
 			.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 

@@ -34,7 +34,7 @@ final class SearchViewModel {
 
     func onAppear() async {
         do {
-            for try await recommendations in asyncSequence(for: repository.observePopular())
+            for try await recommendations in asyncSequence(for: repository.observeMovies(category: .popular))
             where !recommendations.isEmpty {
                 state.recommendations = recommendations
             }

@@ -14,6 +14,7 @@ import co.esekiels.cinelex.database.entity.mapper.toEntities
 import co.esekiels.cinelex.database.entity.mapper.toEntity
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
 import co.esekiels.cinelex.network.ApiResponse
@@ -27,13 +28,16 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-internal val MOVIE_CATEGORIES =
-	listOf(
-		ApiConstants.NOW_PLAYING,
-		ApiConstants.UPCOMING,
-		ApiConstants.TOP_RATED,
-		ApiConstants.POPULAR,
-	)
+private val MovieCategory.path: String
+	get() =
+		when (this) {
+			MovieCategory.NOW_PLAYING -> ApiConstants.NOW_PLAYING
+			MovieCategory.UPCOMING -> ApiConstants.UPCOMING
+			MovieCategory.TOP_RATED -> ApiConstants.TOP_RATED
+			MovieCategory.POPULAR -> ApiConstants.POPULAR
+		}
+
+internal val MOVIE_CATEGORIES = MovieCategory.entries.map { it.path }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieRepositoryImpl(
@@ -44,13 +48,12 @@ internal class MovieRepositoryImpl(
 ) : MovieRepository {
 	private val language = language.distinctUntilChanged()
 
-	override fun observeNowPlaying(): Flow<List<Movie>> = observe(ApiConstants.NOW_PLAYING)
-
-	override fun observePopular(): Flow<List<Movie>> = observe(ApiConstants.POPULAR)
-
-	override fun observeUpcoming(): Flow<List<Movie>> = observe(ApiConstants.UPCOMING)
-
-	override fun observeTopRated(): Flow<List<Movie>> = observe(ApiConstants.TOP_RATED)
+	override fun observeMovies(category: MovieCategory): Flow<List<Movie>> =
+		language
+			.flatMapLatest { dao.observeMovieByCategory(category.path, it.code) }
+			.map { it.toDomain() }
+			.distinctUntilChanged()
+			.catch { throw it.toCinelexException() }
 
 	override suspend fun refreshMovies() =
 		ioDispatcher.guarded {
@@ -95,11 +98,4 @@ internal class MovieRepositoryImpl(
 				is ApiResponse.Failure -> throw response.error
 			}
 		}
-
-	private fun observe(category: String): Flow<List<Movie>> =
-		language
-			.flatMapLatest { dao.observeMovieByCategory(category, it.code) }
-			.map { it.toDomain() }
-			.distinctUntilChanged()
-			.catch { throw it.toCinelexException() }
 }

@@ -13,6 +13,7 @@ import co.esekiels.cinelex.common.CinelexException
 import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -78,10 +79,10 @@ class HomeViewModel(
 
 	private fun carousels(): Flow<Carousels> =
 		combine(
-			repository.observeNowPlaying(),
-			repository.observePopular(),
-			repository.observeUpcoming(),
-			repository.observeTopRated(),
+			repository.observeMovies(MovieCategory.NOW_PLAYING),
+			repository.observeMovies(MovieCategory.POPULAR),
+			repository.observeMovies(MovieCategory.UPCOMING),
+			repository.observeMovies(MovieCategory.TOP_RATED),
 			::Carousels,
 		)
 

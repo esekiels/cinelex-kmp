@@ -30,10 +30,10 @@ final class HomeViewModel {
             return
         }
         tasks = [
-            observe(repository.observeNowPlaying(), into: \.nowPlaying),
-            observe(repository.observePopular(), into: \.popular),
-            observe(repository.observeUpcoming(), into: \.upcoming),
-            observe(repository.observeTopRated(), into: \.topRated),
+            observe(repository.observeMovies(category: .nowPlaying), into: \.nowPlaying),
+            observe(repository.observeMovies(category: .popular), into: \.popular),
+            observe(repository.observeMovies(category: .upcoming), into: \.upcoming),
+            observe(repository.observeMovies(category: .topRated), into: \.topRated),
             Task { await self.refreshOnLanguageChange() }
         ]
         

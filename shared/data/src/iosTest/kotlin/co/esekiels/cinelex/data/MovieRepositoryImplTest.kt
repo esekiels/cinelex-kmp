@@ -12,6 +12,7 @@ import co.esekiels.cinelex.common.ErrorConstants
 import co.esekiels.cinelex.database.dao.MovieDao
 import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.model.Language
+import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.network.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -57,10 +58,10 @@ class MovieRepositoryImplTest {
 
 			repository.refreshMovies()
 
-			assertEquals(1, repository.observeNowPlaying().first().size)
-			assertEquals(1, repository.observeUpcoming().first().size)
-			assertEquals(1, repository.observeTopRated().first().size)
-			assertEquals(1, repository.observePopular().first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.NOW_PLAYING).first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.UPCOMING).first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.TOP_RATED).first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.POPULAR).first().size)
 			assertEquals(MOVIE_CATEGORIES.size, harness.requests.size)
 		}
 
@@ -71,7 +72,7 @@ class MovieRepositoryImplTest {
 			val repository = repository()
 
 			// Reads are database-only; only refreshMovies() is allowed to fetch.
-			repeat(3) { repository.observeNowPlaying().first() }
+			repeat(3) { repository.observeMovies(MovieCategory.NOW_PLAYING).first() }
 
 			assertTrue(harness.requests.isEmpty(), "reads leaked to the network: ${harness.requests}")
 		}
@@ -100,7 +101,7 @@ class MovieRepositoryImplTest {
 			harness.alwaysRespond(MOVIE_PAGE_UPDATED)
 			repository.refreshMovies()
 
-			val popular = repository.observePopular().first()
+			val popular = repository.observeMovies(MovieCategory.POPULAR).first()
 			assertEquals(1, popular.size)
 			assertEquals(999, popular.single().id)
 		}
@@ -125,7 +126,7 @@ class MovieRepositoryImplTest {
 			harness.alwaysOffline()
 
 			assertFailsWith<CinelexException> { repository.refreshMovies() }
-			assertEquals(1, repository.observeNowPlaying().first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.NOW_PLAYING).first().size)
 		}
 
 	@Test
@@ -174,10 +175,10 @@ class MovieRepositoryImplTest {
 
 			language.value = Language.INDONESIAN
 
-			assertTrue(repository.observeNowPlaying().first().isEmpty())
+			assertTrue(repository.observeMovies(MovieCategory.NOW_PLAYING).first().isEmpty())
 			repository.refreshMovies()
 			assertTrue(harness.requests.last().contains("language=id"))
-			assertEquals(1, repository.observeNowPlaying().first().size)
+			assertEquals(1, repository.observeMovies(MovieCategory.NOW_PLAYING).first().size)
 		}
 
 	@Test

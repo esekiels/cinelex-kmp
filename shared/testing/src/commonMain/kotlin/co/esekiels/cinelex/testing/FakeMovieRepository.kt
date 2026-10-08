@@ -12,11 +12,11 @@ import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.SearchResult
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.Movie
+import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.model.MovieDetails
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
@@ -29,10 +29,7 @@ class FakeMovieRepository(
 	/** Swift-only: Kotlin default arguments are not exported across the ObjC bridge. */
 	constructor(nowPlaying: List<Movie>) : this(nowPlaying, isLoading = false)
 
-	private val nowPlayingFlow = MutableStateFlow(nowPlaying)
-	private val upcomingFlow = MutableStateFlow(nowPlaying)
-	private val topRatedFlow = MutableStateFlow(nowPlaying)
-	private val popularFlow = MutableStateFlow(nowPlaying)
+	private val moviesFlow = MutableStateFlow(nowPlaying)
 	private val detailsFlow = MutableStateFlow<Map<Int, MovieDetails>>(emptyMap())
 
 	val contentLanguage = MutableStateFlow(Language.ENGLISH)
@@ -44,13 +41,7 @@ class FakeMovieRepository(
 	var refreshCount: Int = 0
 		private set
 
-	override fun observeNowPlaying(): Flow<List<Movie>> = nowPlayingFlow.orNever()
-
-	override fun observeUpcoming(): Flow<List<Movie>> = upcomingFlow.orNever()
-
-	override fun observeTopRated(): Flow<List<Movie>> = topRatedFlow.orNever()
-
-	override fun observePopular(): Flow<List<Movie>> = popularFlow.orNever()
+	override fun observeMovies(category: MovieCategory): Flow<List<Movie>> = if (isLoading) emptyFlow() else moviesFlow
 
 	override suspend fun refreshMovies() {
 		refreshCount++
@@ -58,8 +49,7 @@ class FakeMovieRepository(
 		failure?.let { throw it }
 	}
 
-	override suspend fun hasCachedMovies(): Boolean =
-		listOf(nowPlayingFlow, popularFlow, upcomingFlow, topRatedFlow).any { it.value.isNotEmpty() }
+	override suspend fun hasCachedMovies(): Boolean = moviesFlow.value.isNotEmpty()
 
 	override fun observeContentLanguage(): Flow<Language> = contentLanguage
 
@@ -75,9 +65,7 @@ class FakeMovieRepository(
 		page: Int,
 	): SearchResult {
 		failure?.let { throw it }
-		val matches = popularFlow.value.filter { it.title.contains(query, ignoreCase = true) }
+		val matches = moviesFlow.value.filter { it.title.contains(query, ignoreCase = true) }
 		return SearchResult(listOfNotNull(matches.getOrNull(page - 1)), totalPages = matches.size)
 	}
-
-	private fun MutableStateFlow<List<Movie>>.orNever(): Flow<List<Movie>> = if (isLoading) emptyFlow() else asStateFlow()
 }
