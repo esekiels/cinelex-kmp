@@ -25,8 +25,6 @@ object MovieStubs {
 			posterPath = "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
 			releaseDate = "1994-09-23",
 			voteAverage = 8.7,
-			voteCount = 28_000,
-			genreIds = listOf(18, 80),
 		)
 
 	val godfather =
@@ -37,8 +35,6 @@ object MovieStubs {
 			posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
 			releaseDate = "1972-03-14",
 			voteAverage = 8.7,
-			voteCount = 21_000,
-			genreIds = listOf(18, 80),
 		)
 
 	val all: List<Movie> = listOf(shawshank, godfather)

@@ -24,12 +24,6 @@ interface MovieDao {
 		language: String,
 	): Flow<List<MovieEntity>>
 
-	@Query("SELECT * FROM MovieEntity WHERE category = :category AND language = :language ORDER BY position")
-	suspend fun fetchByCategory(
-		category: String,
-		language: String,
-	): List<MovieEntity>
-
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun saveMovies(movies: List<MovieEntity>)
 

@@ -31,15 +31,6 @@ class ApiResponseTest {
 		}
 
 	@Test
-	fun mapTransformsSuccessAndKeepsFailure() =
-		runTest {
-			assertEquals(ApiResponse.Success(2), ApiResponse.Success("ok").map { it.length })
-
-			val failure = call(MockClient(status = HttpStatusCode.BadGateway))
-			assertEquals(failure.error(), failure.map { it.length }.error())
-		}
-
-	@Test
 	fun mapsUnauthorizedToFrozenCode() =
 		runTest {
 			val result =

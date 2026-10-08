@@ -6,7 +6,6 @@ kotlin {
 	sourceSets {
 		commonMain.dependencies {
 			implementation(projects.shared.model)
-			implementation(projects.shared.common)
 
 			implementation(libs.datastore.preferences.core)
 			implementation(libs.okio)

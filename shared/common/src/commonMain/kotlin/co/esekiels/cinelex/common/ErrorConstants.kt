@@ -12,6 +12,5 @@ object ErrorConstants {
 	const val HTTP_UNAUTHORIZED = "E002"
 	const val HTTP_TIMEOUT = "E003"
 	const val HTTP_FORBIDDEN = "E004"
-	const val HTTP_EMPTY_BODY = "E005"
 	const val UNKNOWN_ERROR = "E999"
 }

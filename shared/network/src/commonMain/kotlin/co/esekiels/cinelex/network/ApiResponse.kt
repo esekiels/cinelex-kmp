@@ -40,12 +40,6 @@ sealed interface ApiResponse<out T> {
 	) : ApiResponse<Nothing>
 }
 
-inline fun <T, R> ApiResponse<T>.map(transform: (T) -> R): ApiResponse<R> =
-	when (this) {
-		is ApiResponse.Success -> ApiResponse.Success(transform(body))
-		is ApiResponse.Failure -> this
-	}
-
 @Suppress("TooGenericExceptionCaught")
 suspend fun <T> safeApiCall(call: suspend () -> T): ApiResponse<T> =
 	try {

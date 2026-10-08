@@ -22,10 +22,6 @@ data class Movie(
 	val releaseDate: String = "",
 	@SerialName("vote_average")
 	val voteAverage: Double = 0.0,
-	@SerialName("vote_count")
-	val voteCount: Int = 0,
-	@SerialName("genre_ids")
-	val genreIds: List<Int>? = null,
 ) {
 	val posterUrl: String? get() = tmdbImageUrl(posterPath, POSTER_SIZE)
 	val backdropUrl: String? get() = tmdbImageUrl(backdropPath, BACKDROP_SIZE)

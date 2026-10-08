@@ -21,7 +21,7 @@ class MovieService(
 	suspend fun fetchMovies(
 		category: String,
 		language: String,
-		page: Int = 1,
+		page: Int,
 	): MovieResponse =
 		client
 			.get(category) {
@@ -32,7 +32,7 @@ class MovieService(
 	suspend fun searchMovies(
 		query: String,
 		language: String,
-		page: Int = 1,
+		page: Int,
 	): MovieResponse =
 		client
 			.get(ApiConstants.SEARCH) {

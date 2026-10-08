@@ -1,6 +1,5 @@
 plugins {
 	id("esekiels.cinelex.kmp.library")
-	alias(libs.plugins.kotlinSerialization)
 	alias(libs.plugins.ksp)
 	alias(libs.plugins.room)
 }
@@ -13,7 +12,6 @@ kotlin {
 	sourceSets {
 		commonMain.dependencies {
 			implementation(projects.shared.model)
-			implementation(projects.shared.common)
 
 			implementation(libs.room.runtime)
 			implementation(libs.sqlite.bundled)
@@ -29,12 +27,6 @@ kotlin {
 
 		commonTest.dependencies {
 			implementation(libs.kotlinx.coroutines.test)
-			implementation(projects.shared.model)
-		}
-
-		iosTest.dependencies {
-			implementation(libs.kotlinx.coroutines.test)
-			implementation(projects.shared.model)
 		}
 	}
 }

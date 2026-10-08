@@ -21,16 +21,10 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
 				compileSdk = libs.version("android-compileSdk").toInt()
 				minSdk = libs.version("android-minSdk").toInt()
 				compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
-				
-				withHostTest { }
 			}
 			
 			iosArm64()
 			iosSimulatorArm64()
-			
-			compilerOptions {
-				freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
-			}
 			
 			sourceSets.getByName("commonTest").dependencies {
 				implementation(kotlin("test"))

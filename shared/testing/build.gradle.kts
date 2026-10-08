@@ -5,9 +5,7 @@ plugins {
 kotlin {
 	sourceSets {
 		commonMain.dependencies {
-
 			api(projects.shared.data)
-			api(projects.shared.model)
 			implementation(libs.kotlinx.coroutines.core)
 		}
 	}

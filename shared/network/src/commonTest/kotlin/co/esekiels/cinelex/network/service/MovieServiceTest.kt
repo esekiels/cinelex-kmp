@@ -30,7 +30,7 @@ class MovieServiceTest {
 
 			for (category in categories) {
 				val mock = MockClient(body = MOVIE_RESPONSE)
-				val response = MovieService(mock.client).fetchMovies(category, "en")
+				val response = MovieService(mock.client).fetchMovies(category, "en", 1)
 
 				assertEquals(2, response.results.size, "failed for $category")
 				assertEquals("The Shawshank Redemption", response.results.first().title)
@@ -42,7 +42,7 @@ class MovieServiceTest {
 	fun searchPercentEncodesTheQuery() =
 		runTest {
 			val mock = MockClient(body = MOVIE_RESPONSE)
-			val response = MovieService(mock.client).searchMovies("fast & furious", "en")
+			val response = MovieService(mock.client).searchMovies("fast & furious", "en", 1)
 
 			assertEquals(2, response.results.size)
 			val url = mock.requests.single()

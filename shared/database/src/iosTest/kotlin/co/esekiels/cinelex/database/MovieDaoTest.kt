@@ -8,6 +8,7 @@
 package co.esekiels.cinelex.database
 
 import co.esekiels.cinelex.database.entity.MovieEntity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -47,7 +48,7 @@ class MovieDaoTest {
 				),
 			)
 
-			assertEquals(listOf(2, 3, 1), dao.fetchByCategory("popular", "en").map { it.id })
+			assertEquals(listOf(2, 3, 1), dao.observeMovieByCategory("popular", "en").first().map { it.id })
 		}
 
 	@Test
@@ -55,8 +56,8 @@ class MovieDaoTest {
 		runTest {
 			dao.saveMovies(listOf(movie(1, "popular"), movie(1, "top_rated")))
 
-			assertEquals(1, dao.fetchByCategory("popular", "en").size)
-			assertEquals(1, dao.fetchByCategory("top_rated", "en").size)
+			assertEquals(1, dao.observeMovieByCategory("popular", "en").first().size)
+			assertEquals(1, dao.observeMovieByCategory("top_rated", "en").first().size)
 		}
 
 	@Test
@@ -66,7 +67,7 @@ class MovieDaoTest {
 
 			dao.replaceCategory("popular", "en", listOf(movie(3, "popular")))
 
-			val remaining = dao.fetchByCategory("popular", "en")
+			val remaining = dao.observeMovieByCategory("popular", "en").first()
 			assertEquals(listOf(3), remaining.map { it.id })
 		}
 
@@ -77,7 +78,7 @@ class MovieDaoTest {
 
 			dao.replaceCategory("popular", "id", listOf(movie(3, "popular", language = "id")))
 
-			assertEquals(listOf(1), dao.fetchByCategory("popular", "en").map { it.id })
-			assertEquals(listOf(3), dao.fetchByCategory("popular", "id").map { it.id })
+			assertEquals(listOf(1), dao.observeMovieByCategory("popular", "en").first().map { it.id })
+			assertEquals(listOf(3), dao.observeMovieByCategory("popular", "id").first().map { it.id })
 		}
 }

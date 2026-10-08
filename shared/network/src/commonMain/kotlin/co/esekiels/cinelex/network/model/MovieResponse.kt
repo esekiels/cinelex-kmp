@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieResponse(
-	val page: Int,
 	@SerialName("total_pages")
 	val totalPages: Int,
 	val results: List<Movie>,
