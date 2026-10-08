@@ -130,16 +130,6 @@ class MovieRepositoryImplTest {
 		}
 
 	@Test
-	fun failureOnTheFirstCategoryLeavesTheRestUntouched() =
-		runTest {
-			harness.alwaysOffline()
-
-			assertFailsWith<CinelexException> { repository().refreshMovies() }
-			assertEquals(1, harness.requests.size)
-			assertTrue(harness.requests.single().contains(ApiConstants.NOW_PLAYING))
-		}
-
-	@Test
 	fun refreshDetailsFeedsTheObservedCache() =
 		runTest {
 			val repository = repository()

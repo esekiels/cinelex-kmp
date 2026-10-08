@@ -21,12 +21,14 @@ import co.esekiels.cinelex.network.ApiResponse
 import co.esekiels.cinelex.network.service.MovieClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private val MovieCategory.path: String
 	get() =
@@ -58,12 +60,16 @@ internal class MovieRepositoryImpl(
 	override suspend fun refreshMovies() =
 		ioDispatcher.guarded {
 			val code = language.first().code
-			for (category in MOVIE_CATEGORIES) {
-				when (val response = client.fetchMovies(category, code)) {
-					is ApiResponse.Success ->
-						dao.replaceCategory(category, code, response.body.results.toEntities(category, code))
+			coroutineScope {
+				for (category in MOVIE_CATEGORIES) {
+					launch {
+						when (val response = client.fetchMovies(category, code)) {
+							is ApiResponse.Success ->
+								dao.replaceCategory(category, code, response.body.results.toEntities(category, code))
 
-					is ApiResponse.Failure -> throw response.error
+							is ApiResponse.Failure -> throw response.error
+						}
+					}
 				}
 			}
 		}
