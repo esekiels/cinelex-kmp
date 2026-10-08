@@ -41,7 +41,7 @@ object MovieStubs {
 
 	@Suppress("MagicNumber")
 	fun details(id: Int): MovieDetails {
-		val movie = all.first { it.id == id }
+		val movie = all.firstOrNull { it.id == id } ?: shawshank
 		return MovieDetails(
 			id = movie.id,
 			title = movie.title,

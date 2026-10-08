@@ -13,5 +13,5 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 fun buildDatabase(builder: RoomDatabase.Builder<CinelexDatabase>): CinelexDatabase =
 	builder
 		.setDriver(BundledSQLiteDriver())
-		.fallbackToDestructiveMigration(dropAllTables = true)
+		.fallbackToDestructiveMigrationFrom(dropAllTables = true, 1, 2, 3)
 		.build()

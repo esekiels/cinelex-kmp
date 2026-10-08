@@ -11,14 +11,17 @@ import co.esekiels.cinelex.datastore.UserPreferencesDataSource
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.UiTheme
 import co.esekiels.cinelex.model.UserPreferences
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 
 internal class UserDataRepositoryImpl(
 	private val dataSource: UserPreferencesDataSource,
+	private val ioDispatcher: CoroutineDispatcher,
 ) : UserDataRepository {
-	override val userPreferences: Flow<UserPreferences> = dataSource.data
+	override val userPreferences: Flow<UserPreferences> = dataSource.data.catch { throw it.toCinelexException() }
 
-	override suspend fun setLanguage(language: Language?) = dataSource.setLanguage(language)
+	override suspend fun setLanguage(language: Language?) = ioDispatcher.guarded { dataSource.setLanguage(language) }
 
-	override suspend fun setUiTheme(uiTheme: UiTheme) = dataSource.setUiTheme(uiTheme)
+	override suspend fun setUiTheme(uiTheme: UiTheme) = ioDispatcher.guarded { dataSource.setUiTheme(uiTheme) }
 }

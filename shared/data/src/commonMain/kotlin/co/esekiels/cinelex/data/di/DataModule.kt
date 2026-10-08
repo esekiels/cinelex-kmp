@@ -31,5 +31,7 @@ val dataModule: Module =
 			)
 		} bind MovieRepository::class
 		single { WatchlistRepositoryImpl(dao = get(), ioDispatcher = get(IO_DISPATCHER)) } bind WatchlistRepository::class
-		single { UserDataRepositoryImpl(dataSource = get()) } bind UserDataRepository::class
+		single {
+			UserDataRepositoryImpl(dataSource = get(), ioDispatcher = get(IO_DISPATCHER))
+		} bind UserDataRepository::class
 	}
