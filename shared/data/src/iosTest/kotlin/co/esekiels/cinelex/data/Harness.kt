@@ -11,7 +11,6 @@ import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import co.esekiels.cinelex.database.CinelexDatabase
 import co.esekiels.cinelex.network.createHttpClient
-import co.esekiels.cinelex.network.service.MovieClient
 import co.esekiels.cinelex.network.service.MovieService
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockEngineConfig
@@ -60,7 +59,7 @@ internal class Harness {
 			},
 		)
 
-	val movieClient = MovieClient(MovieService(createHttpClient(engine = engine)))
+	val movieService = MovieService(createHttpClient(engine = engine))
 
 	fun alwaysRespond(
 		body: String,

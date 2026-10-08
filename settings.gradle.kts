@@ -31,7 +31,6 @@ dependencyResolutionManagement {
 
 include(":androidApp")
 
-include(":shared:common")
 include(":shared:model")
 include(":shared:network")
 include(":shared:database")

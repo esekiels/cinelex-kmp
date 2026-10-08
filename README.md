@@ -24,14 +24,14 @@ Features: home carousels (now playing, upcoming, top rated, popular), search, mo
   (Ktor → TMDB)     (Room cache)       (DataStore prefs)      │
         └─────────────────┼──────────────────┘                │
                           ▼                                   │
-                 shared/model, shared/common  ◄───────────────┘
+                       shared/model  ◄────────────────────────┘
 ```
 
-`shared/testing` fakes implement the `shared/data` repository interfaces. `shared/data` exposes `model` and `common` as `api`, so `androidApp` reaches them through it; the umbrella exports them to Swift directly (right rail).
+`shared/testing` fakes implement the `shared/data` repository interfaces. `shared/data` exposes `model` as `api`, so `androidApp` reaches `model` through it; the umbrella exports it to Swift directly (right rail).
 
 - **Offline-first repositories.** Carousels (`observeMovies(MovieCategory)`) and details are observed from Room via `Flow`; `refresh*` calls fetch from TMDB and write into the database, so the cache is the single source of truth. Cached content is keyed by language (preference, then device language, then English) and re-queried when it changes. Search is network-only; the watchlist is a local snapshot keyed by movie id.
 - **One error type.** Network, database and preference storage failures are mapped to `CinelexException` with an error code. Both apps show a localized message chosen by that code, never the raw exception text.
-- **Swift interop.** `shared/data` uses KMP-NativeCoroutines so Swift consumes flows and suspend functions as `AsyncSequence` / `async`. `shared/umbrella` exports `data`, `model`, `common` (and `testing` in debug builds) into a static `Shared` framework.
+- **Swift interop.** `shared/data` uses KMP-NativeCoroutines so Swift consumes flows and suspend functions as `AsyncSequence` / `async`. `shared/umbrella` exports `data`, `model` (and `testing` in debug builds) into a static `Shared` framework.
 - **Android UI.** Feature packages (`home`, `search`, `detail`, `watchlist`) with a stateful screen and stateless content composable, ViewModels exposing `StateFlow`, Navigation3 for routing and Koin for injection.
 - **iOS UI.** Matching `Feature/` folders with `@Observable @MainActor` ViewModels, wired through `CinelexDIFactory` in the SwiftUI environment, which resolves repositories from Koin via `KoinHelper`.
 - **Shared fakes.** `shared/testing` holds fake repositories used by Android Robolectric tests, SwiftUI previews and XCUITests, so both apps are tested against the same data. Android test tags and iOS accessibility IDs use the same strings where both platforms have the element.
@@ -43,12 +43,11 @@ Features: home carousels (now playing, upcoming, top rated, popular), search, mo
 | `androidApp/` | Compose UI, Navigation3, Koin view models, Robolectric UI tests |
 | `iosApp/` | SwiftUI app, XCUITests (`CinelexUITests`), test plans, SwiftLint config |
 | `benchmark/` | Android macrobenchmarks and baseline profile generator |
-| `shared/model` | Domain models (`Movie`, `MovieDetails`, `MovieCategory`, preferences) |
+| `shared/model` | Domain models (`Movie`, `MovieDetails`, `MovieCategory`, preferences), `CinelexException` and error codes |
 | `shared/network` | Ktor client for TMDB, error mapping into `CinelexException` |
 | `shared/database` | Room cache for carousels, movie details and the watchlist |
 | `shared/datastore` | DataStore-backed user preferences (theme, language) |
 | `shared/data` | Repositories combining network, cache and preferences; Koin wiring |
-| `shared/common` | `CinelexException`, error codes, IO dispatcher qualifier |
 | `shared/testing` | Fakes and stubs used by unit tests, UI tests and previews |
 | `shared/umbrella` | The `Shared` framework exported to iOS |
 | `build-logic/` | Gradle convention plugins: `esekiels.cinelex.kmp.library` (KMP + Android library + iOS targets) and `esekiels.cinelex.quality` (detekt, ktlint) |

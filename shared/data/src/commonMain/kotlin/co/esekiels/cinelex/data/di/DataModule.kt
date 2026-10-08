@@ -7,7 +7,6 @@
 
 package co.esekiels.cinelex.data.di
 
-import co.esekiels.cinelex.common.di.IO_DISPATCHER
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.data.MovieRepositoryImpl
 import co.esekiels.cinelex.data.UserDataRepository
@@ -24,14 +23,11 @@ val dataModule: Module =
 	module {
 		single {
 			MovieRepositoryImpl(
-				client = get(),
+				service = get(),
 				dao = get(),
 				language = get<UserDataRepository>().userPreferences.map { it.contentLanguage() },
-				ioDispatcher = get(IO_DISPATCHER),
 			)
 		} bind MovieRepository::class
-		single { WatchlistRepositoryImpl(dao = get(), ioDispatcher = get(IO_DISPATCHER)) } bind WatchlistRepository::class
-		single {
-			UserDataRepositoryImpl(dataSource = get(), ioDispatcher = get(IO_DISPATCHER))
-		} bind UserDataRepository::class
+		single { WatchlistRepositoryImpl(dao = get()) } bind WatchlistRepository::class
+		single { UserDataRepositoryImpl(dataSource = get()) } bind UserDataRepository::class
 	}

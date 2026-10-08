@@ -44,7 +44,7 @@ class MovieRepositoryImplTest {
 		dao: MovieDao = harness.dao,
 		language: Flow<Language> = this@MovieRepositoryImplTest.language,
 	) = MovieRepositoryImpl(
-		client = harness.movieClient,
+		service = harness.movieService,
 		dao = dao,
 		language = language,
 		ioDispatcher = UnconfinedTestDispatcher(testScheduler),

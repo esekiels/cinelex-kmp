@@ -12,6 +12,8 @@ import co.esekiels.cinelex.database.entity.mapper.toDomain
 import co.esekiels.cinelex.database.entity.mapper.toWatchlistEntity
 import co.esekiels.cinelex.model.Movie
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -20,7 +22,7 @@ import kotlin.time.Clock
 
 internal class WatchlistRepositoryImpl(
 	private val dao: WatchlistDao,
-	private val ioDispatcher: CoroutineDispatcher,
+	private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WatchlistRepository {
 	override fun observeWatchlist(): Flow<List<Movie>> =
 		dao

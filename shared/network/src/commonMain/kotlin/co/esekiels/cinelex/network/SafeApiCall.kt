@@ -1,6 +1,6 @@
 /*
  * Cinelex
- * ApiResponse
+ * SafeApiCall
  *
  * Created by Esekiel Surbakti on 19/09/26
  */
@@ -30,40 +30,27 @@ private const val HTTP_SERVER_ERROR_END = 599
 private const val TIMEOUT_MESSAGE = "The request timed out. Please try again."
 private const val UNEXPECTED_MESSAGE = "An unexpected error occurred."
 
-sealed interface ApiResponse<out T> {
-	data class Success<T>(
-		val body: T,
-	) : ApiResponse<T>
-
-	data class Failure(
-		val error: CinelexException,
-	) : ApiResponse<Nothing>
-}
-
-@Suppress("TooGenericExceptionCaught")
-suspend fun <T> safeApiCall(call: suspend () -> T): ApiResponse<T> =
+suspend fun <T> safeApiCall(call: suspend () -> T): T =
 	try {
-		ApiResponse.Success(call())
+		call()
 	} catch (e: CancellationException) {
 		throw e
-	} catch (e: ResponseException) {
-		ApiResponse.Failure(e.toCinelexException())
-	} catch (e: IOException) {
-		ApiResponse.Failure(
-			if (e.isTimeout()) {
-				CinelexException(ErrorConstants.HTTP_TIMEOUT, e.message ?: TIMEOUT_MESSAGE, e)
-			} else {
-				CinelexException(ErrorConstants.NETWORK_ERROR, "Please check your internet connection and try again.", e)
-			},
-		)
-	} catch (e: ContentConvertException) {
-		ApiResponse.Failure(CinelexException(ErrorConstants.UNKNOWN_ERROR, UNEXPECTED_MESSAGE, e))
-	} catch (e: SerializationException) {
-		ApiResponse.Failure(CinelexException(ErrorConstants.UNKNOWN_ERROR, UNEXPECTED_MESSAGE, e))
 	} catch (e: Exception) {
-		ApiResponse.Failure(
-			CinelexException(ErrorConstants.UNKNOWN_ERROR, e.message ?: "Unknown error during network request", e),
-		)
+		throw e.asCinelexException()
+	}
+
+private suspend fun Exception.asCinelexException(): CinelexException =
+	when (this) {
+		is ResponseException -> toCinelexException()
+		is IOException ->
+			if (isTimeout()) {
+				CinelexException(ErrorConstants.HTTP_TIMEOUT, message ?: TIMEOUT_MESSAGE, this)
+			} else {
+				CinelexException(ErrorConstants.NETWORK_ERROR, "Please check your internet connection and try again.", this)
+			}
+		is ContentConvertException, is SerializationException ->
+			CinelexException(ErrorConstants.UNKNOWN_ERROR, UNEXPECTED_MESSAGE, this)
+		else -> CinelexException(ErrorConstants.UNKNOWN_ERROR, message ?: "Unknown error during network request", this)
 	}
 
 private fun Throwable.isTimeout(): Boolean =

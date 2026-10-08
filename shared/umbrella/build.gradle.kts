@@ -13,7 +13,6 @@ kotlin {
 			// makes dependency's types VISIBLE to swift.
 			export(projects.shared.data)
 			export(projects.shared.model)
-			export(projects.shared.common)
 			// stubs are for previews/tests only: exported to Swift in debug, dead-stripped in release.
 			if (buildType == NativeBuildType.DEBUG) {
 				export(projects.shared.testing)
@@ -25,7 +24,6 @@ kotlin {
 		commonMain.dependencies {
 			api(projects.shared.data)
 			api(projects.shared.model)
-			api(projects.shared.common)
 			api(projects.shared.testing)
 			implementation(libs.kotlinx.coroutines.core)
 		}

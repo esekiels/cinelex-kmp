@@ -44,7 +44,6 @@ kotlin {
 			kotlin.srcDir(generateBuildKonfig)
 			dependencies {
 				implementation(projects.shared.model)
-				implementation(projects.shared.common)
 
 				implementation(libs.ktor.client.core)
 				implementation(libs.ktor.client.contentNegotiation)

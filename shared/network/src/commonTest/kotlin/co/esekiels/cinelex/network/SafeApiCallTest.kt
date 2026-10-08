@@ -1,6 +1,6 @@
 /*
  * Cinelex
- * ApiResponseTest
+ * SafeApiCallTest
  *
  * Created by Esekiel Surbakti on 19/09/26
  */
@@ -15,33 +15,32 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertFailsWith
 
-class ApiResponseTest {
+class SafeApiCallTest {
 	private suspend fun call(mock: MockClient) = safeApiCall { mock.client.get("anything").bodyAsText() }
 
-	private fun ApiResponse<*>.error(): CinelexException = assertIs<ApiResponse.Failure>(this).error
+	private suspend fun error(mock: MockClient): CinelexException = assertFailsWith<CinelexException> { call(mock) }
 
 	@Test
-	fun wrapsSuccessfulBody() =
+	fun returnsSuccessfulBody() =
 		runTest {
-			val result = call(MockClient(body = """{"status_code":1,"status_message":"ok"}"""))
+			val body = """{"status_code":1,"status_message":"ok"}"""
 
-			assertIs<ApiResponse.Success<String>>(result)
+			assertEquals(body, call(MockClient(body = body)))
 		}
 
 	@Test
 	fun mapsUnauthorizedToFrozenCode() =
 		runTest {
-			val result =
-				call(
+			val error =
+				error(
 					MockClient(
 						status = HttpStatusCode.Unauthorized,
 						body = """{"status_code":7,"status_message":"Invalid API key"}""",
 					),
 				)
 
-			val error = result.error()
 			assertEquals(ErrorConstants.HTTP_UNAUTHORIZED, error.code)
 			assertEquals("Invalid API key", error.message)
 		}
@@ -49,15 +48,15 @@ class ApiResponseTest {
 	@Test
 	fun mapsForbiddenWithOurOwnCopy() =
 		runTest {
-			val result = call(MockClient(status = HttpStatusCode.Forbidden))
+			val error = error(MockClient(status = HttpStatusCode.Forbidden))
 
-			assertEquals(ErrorConstants.HTTP_FORBIDDEN, result.error().code)
+			assertEquals(ErrorConstants.HTTP_FORBIDDEN, error.code)
 		}
 
 	@Test
 	fun mapsServerErrorRange() =
 		runTest {
-			val error = call(MockClient(status = HttpStatusCode.BadGateway)).error()
+			val error = error(MockClient(status = HttpStatusCode.BadGateway))
 
 			assertEquals(ErrorConstants.UNKNOWN_ERROR, error.code)
 			assertEquals("Server error. Please try again later.", error.message)
@@ -66,8 +65,8 @@ class ApiResponseTest {
 	@Test
 	fun survivesUnparseableErrorBody() =
 		runTest {
-			val result = call(MockClient(status = HttpStatusCode.BadRequest, body = "<html>nope</html>"))
+			val error = error(MockClient(status = HttpStatusCode.BadRequest, body = "<html>nope</html>"))
 
-			assertEquals("An unexpected error occurred.", result.error().message)
+			assertEquals("An unexpected error occurred.", error.message)
 		}
 }

@@ -10,6 +10,7 @@ package co.esekiels.cinelex.network.service
 import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
 import co.esekiels.cinelex.network.model.MovieResponse
+import co.esekiels.cinelex.network.safeApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -23,32 +24,38 @@ class MovieService(
 		language: String,
 		page: Int,
 	): MovieResponse =
-		client
-			.get(category) {
-				parameter("language", language)
-				parameter("page", page)
-			}.body()
+		safeApiCall {
+			client
+				.get(category) {
+					parameter("language", language)
+					parameter("page", page)
+				}.body()
+		}
 
 	suspend fun searchMovies(
 		query: String,
 		language: String,
 		page: Int,
 	): MovieResponse =
-		client
-			.get(ApiConstants.SEARCH) {
-				parameter("query", query)
-				parameter("language", language)
-				parameter("page", page)
-			}.body()
+		safeApiCall {
+			client
+				.get(ApiConstants.SEARCH) {
+					parameter("query", query)
+					parameter("language", language)
+					parameter("page", page)
+				}.body()
+		}
 
 	suspend fun fetchDetails(
 		id: Int,
 		language: String,
 	): MovieDetails =
-		client
-			.get("${ApiConstants.MOVIE}/$id") {
-				parameter("language", language)
-				parameter("append_to_response", "credits,videos")
-				parameter("include_video_language", "$language,en,null")
-			}.body()
+		safeApiCall {
+			client
+				.get("${ApiConstants.MOVIE}/$id") {
+					parameter("language", language)
+					parameter("append_to_response", "credits,videos")
+					parameter("include_video_language", "$language,en,null")
+				}.body()
+		}
 }

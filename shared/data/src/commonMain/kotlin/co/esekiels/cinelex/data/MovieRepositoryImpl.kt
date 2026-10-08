@@ -17,10 +17,11 @@ import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.model.MovieDetails
 import co.esekiels.cinelex.network.ApiConstants
-import co.esekiels.cinelex.network.ApiResponse
-import co.esekiels.cinelex.network.service.MovieClient
+import co.esekiels.cinelex.network.service.MovieService
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -43,10 +44,10 @@ internal val MOVIE_CATEGORIES = MovieCategory.entries.map { it.path }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieRepositoryImpl(
-	private val client: MovieClient,
+	private val service: MovieService,
 	private val dao: MovieDao,
 	language: Flow<Language>,
-	private val ioDispatcher: CoroutineDispatcher,
+	private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MovieRepository {
 	private val language = language.distinctUntilChanged()
 
@@ -63,12 +64,8 @@ internal class MovieRepositoryImpl(
 			coroutineScope {
 				for (category in MOVIE_CATEGORIES) {
 					launch {
-						when (val response = client.fetchMovies(category, code)) {
-							is ApiResponse.Success ->
-								dao.replaceCategory(category, code, response.body.results.toEntities(category, code))
-
-							is ApiResponse.Failure -> throw response.error
-						}
+						val movies = service.fetchMovies(category, code, page = 1).results
+						dao.replaceCategory(category, code, movies.toEntities(category, code))
 					}
 				}
 			}
@@ -88,10 +85,7 @@ internal class MovieRepositoryImpl(
 	override suspend fun refreshMovieDetails(id: Int) =
 		ioDispatcher.guarded {
 			val code = language.first().code
-			when (val response = client.fetchDetails(id, code)) {
-				is ApiResponse.Success -> dao.saveDetails(response.body.toEntity(code))
-				is ApiResponse.Failure -> throw response.error
-			}
+			dao.saveDetails(service.fetchDetails(id, code).toEntity(code))
 		}
 
 	override suspend fun searchMovies(
@@ -99,9 +93,7 @@ internal class MovieRepositoryImpl(
 		page: Int,
 	): SearchResult =
 		ioDispatcher.guarded {
-			when (val response = client.searchMovies(query, language.first().code, page)) {
-				is ApiResponse.Success -> SearchResult(response.body.results.distinctBy { it.id }, response.body.totalPages)
-				is ApiResponse.Failure -> throw response.error
-			}
+			val response = service.searchMovies(query, language.first().code, page)
+			SearchResult(response.results.distinctBy { it.id }, response.totalPages)
 		}
 }

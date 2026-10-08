@@ -9,7 +9,6 @@ package co.esekiels.cinelex.network.di
 
 import co.esekiels.cinelex.network.cinelexJson
 import co.esekiels.cinelex.network.createHttpClient
-import co.esekiels.cinelex.network.service.MovieClient
 import co.esekiels.cinelex.network.service.MovieService
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
@@ -23,5 +22,4 @@ fun networkModule(enableLogging: Boolean): Module =
 		single<HttpClient> { createHttpClient(json = get(), enableLogging = enableLogging) }
 
 		singleOf(::MovieService)
-		singleOf(::MovieClient)
 	}
