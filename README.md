@@ -7,30 +7,30 @@ Features: home carousels (now playing, upcoming, top rated, popular), search, mo
 ## Architecture
 
 ```
- androidApp (Compose, ViewModel, Koin)              iosApp (SwiftUI, @Observable ViewModels)
-  │   │    ┊ tests                                            │
-  │   │    ┊                                   shared/umbrella → Shared.framework
-  │   │    ▼              exported in debug builds only       │   │
-  │   │  shared/testing ◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤   │
-  │   │  (fake repositories)                                  │   │
-  │   │    │                                                  │   │
-  │   └────┴──────────────────┬───────────────────────────────┘   │
-  │                           ▼                                   │
-  │                      shared/data   Movie/Watchlist/UserData   │
-  │                           │        repositories + Koin modules│
-  │         ┌─────────────────┼──────────────────┐                │
-  │         ▼                 ▼                  ▼                │
-  │   shared/network    shared/database    shared/datastore       │
-  │   (Ktor → TMDB)     (Room cache)       (DataStore prefs)      │
-  │         └─────────────────┼──────────────────┘                │
-  │                           ▼                                   │
-  └────────────────►  shared/model, shared/common  ◄──────────────┘
+ androidApp (Compose, ViewModel, Koin)          iosApp (SwiftUI, @Observable ViewModels)
+  │    ┊ tests                                            │
+  │    ┊                                   shared/umbrella → Shared.framework
+  │    ▼              exported in debug builds only       │   │
+  │  shared/testing ◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤   │
+  │  (fake repositories)                                  │   │
+  │    │                                                  │   │
+  └────┴──────────────────┬───────────────────────────────┘   │
+                          ▼                                   │
+                     shared/data   Movie/Watchlist/UserData   │
+                          │        repositories + Koin modules│
+        ┌─────────────────┼──────────────────┐                │
+        ▼                 ▼                  ▼                │
+  shared/network    shared/database    shared/datastore       │
+  (Ktor → TMDB)     (Room cache)       (DataStore prefs)      │
+        └─────────────────┼──────────────────┘                │
+                          ▼                                   │
+                 shared/model, shared/common  ◄───────────────┘
 ```
 
-`shared/testing` fakes implement the `shared/data` repository interfaces. Both apps also depend on `shared/common` directly (and the umbrella re-exports `shared/model`), shown by the outer rails.
+`shared/testing` fakes implement the `shared/data` repository interfaces. `shared/data` exposes `model` and `common` as `api`, so `androidApp` reaches them through it; the umbrella exports them to Swift directly (right rail).
 
-- **Offline-first repositories.** Carousels and details are observed from Room via `Flow`; `refresh*` calls fetch from TMDB and write into the database, so the cache is the single source of truth. Cached content is keyed by language (preference, then device language, then English) and re-queried when it changes. Search is network-only; the watchlist is a local snapshot keyed by movie id.
-- **One error type.** Network and database failures are mapped to `CinelexException` with an error code, and both apps render from that.
+- **Offline-first repositories.** Carousels (`observeMovies(MovieCategory)`) and details are observed from Room via `Flow`; `refresh*` calls fetch from TMDB and write into the database, so the cache is the single source of truth. Cached content is keyed by language (preference, then device language, then English) and re-queried when it changes. Search is network-only; the watchlist is a local snapshot keyed by movie id.
+- **One error type.** Network, database and preference storage failures are mapped to `CinelexException` with an error code. Both apps show a localized message chosen by that code, never the raw exception text.
 - **Swift interop.** `shared/data` uses KMP-NativeCoroutines so Swift consumes flows and suspend functions as `AsyncSequence` / `async`. `shared/umbrella` exports `data`, `model`, `common` (and `testing` in debug builds) into a static `Shared` framework.
 - **Android UI.** Feature packages (`home`, `search`, `detail`, `watchlist`) with a stateful screen and stateless content composable, ViewModels exposing `StateFlow`, Navigation3 for routing and Koin for injection.
 - **iOS UI.** Matching `Feature/` folders with `@Observable @MainActor` ViewModels, wired through `CinelexDIFactory` in the SwiftUI environment, which resolves repositories from Koin via `KoinHelper`.
@@ -43,7 +43,7 @@ Features: home carousels (now playing, upcoming, top rated, popular), search, mo
 | `androidApp/` | Compose UI, Navigation3, Koin view models, Robolectric UI tests |
 | `iosApp/` | SwiftUI app, XCUITests (`CinelexUITests`), test plans, SwiftLint config |
 | `benchmark/` | Android macrobenchmarks and baseline profile generator |
-| `shared/model` | Domain models (`Movie`, `MovieDetails`, preferences) |
+| `shared/model` | Domain models (`Movie`, `MovieDetails`, `MovieCategory`, preferences) |
 | `shared/network` | Ktor client for TMDB, error mapping into `CinelexException` |
 | `shared/database` | Room cache for carousels, movie details and the watchlist |
 | `shared/datastore` | DataStore-backed user preferences (theme, language) |
@@ -58,7 +58,7 @@ Features: home carousels (now playing, upcoming, top rated, popular), search, mo
 
 Requirements: JDK 21 for the Gradle daemon (auto-provisioned via `gradle/gradle-daemon-jvm.properties`), Android SDK 36 (min SDK 24), Xcode with an iOS 18.2+ simulator, optionally `swiftlint` (run by an Xcode build phase when installed).
 
-Add a TMDB v4 read access token to `local.properties` (it is git-ignored), or export it as `TMDB_TOKEN`:
+Add a TMDB v4 read access token to `local.properties` (it is git-ignored), or export it as `TMDB_TOKEN`. The key is case-sensitive:
 
 ```properties
 TMDB_TOKEN=eyJhbGciOi...
