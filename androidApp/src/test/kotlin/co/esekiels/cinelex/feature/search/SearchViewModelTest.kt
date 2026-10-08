@@ -168,20 +168,4 @@ class SearchViewModelTest {
 		assertEquals(UiState.Loaded(listOf(MovieStubs.godfather)), viewModel.state.value)
 		assertFalse(viewModel.isLoadingMore.value)
 	}
-
-	@Test
-	fun duplicatesWithinAPageAreDropped() {
-		val repository =
-			object : MovieRepository by FakeMovieRepository() {
-				override suspend fun searchMovies(
-					query: String,
-					page: Int,
-				) = SearchResult(listOf(MovieStubs.godfather, MovieStubs.godfather), totalPages = 1)
-			}
-		val viewModel = SearchViewModel(repository)
-
-		viewModel.search("god")
-
-		assertEquals(UiState.Loaded(listOf(MovieStubs.godfather)), viewModel.state.value)
-	}
 }

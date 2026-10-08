@@ -52,7 +52,10 @@ fun createHttpClient(
 		}
 
 		if (enableLogging) {
-			install(Logging) { level = LogLevel.BODY }
+			install(Logging) {
+				level = LogLevel.BODY
+				sanitizeHeader { it == HttpHeaders.Authorization }
+			}
 		}
 	}
 

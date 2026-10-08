@@ -279,4 +279,15 @@ class MovieRepositoryImplTest {
 			assertEquals(listOf(238), result.movies.map { it.id })
 			assertTrue(harness.requests.single().contains("page=2"))
 		}
+
+	@Test
+	fun searchDropsDuplicatesWithinAPage() =
+		runTest {
+			val godfather = """{ "id": 238, "title": "The Godfather" }"""
+			harness.alwaysRespond("""{ "page": 1, "total_pages": 1, "results": [$godfather, $godfather] }""")
+
+			val result = repository().searchMovies("god", page = 1)
+
+			assertEquals(listOf(238), result.movies.map { it.id })
+		}
 }

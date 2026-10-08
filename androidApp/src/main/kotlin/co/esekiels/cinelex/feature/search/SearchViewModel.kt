@@ -85,9 +85,9 @@ class SearchViewModel(
 						val result = repository.searchMovies(query, next)
 						page = next
 						totalPages = result.totalPages
-						// TMDB repeats movies, even within a page; duplicate keys crash LazyColumn.
+						// TMDB repeats movies across pages; duplicate keys crash LazyColumn.
 						val seen = movies.mapTo(HashSet()) { it.id }
-						val fresh = result.movies.filterNot { it.id in seen }.distinctBy { it.id }
+						val fresh = result.movies.filterNot { it.id in seen }
 						if (fresh.isNotEmpty()) {
 							movies = movies + fresh
 							_state.value = UiState.Loaded(movies)
@@ -116,8 +116,7 @@ class SearchViewModel(
 			searchedQuery = query
 			page = 1
 			totalPages = result.totalPages
-			val movies = result.movies.distinctBy { it.id }
-			_state.value = if (movies.isEmpty()) UiState.Empty else UiState.Loaded(movies)
+			_state.value = if (result.movies.isEmpty()) UiState.Empty else UiState.Loaded(result.movies)
 		} catch (e: CinelexException) {
 			_state.value = UiState.Error(e.code)
 		}

@@ -94,7 +94,7 @@ internal class MovieRepositoryImpl(
 	): SearchResult =
 		ioDispatcher.guarded {
 			when (val response = client.searchMovies(query, language.first().code, page)) {
-				is ApiResponse.Success -> SearchResult(response.body.results, response.body.totalPages)
+				is ApiResponse.Success -> SearchResult(response.body.results.distinctBy { it.id }, response.body.totalPages)
 				is ApiResponse.Failure -> throw response.error
 			}
 		}
