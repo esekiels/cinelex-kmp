@@ -57,7 +57,7 @@ private extension WatchlistView {
                 Text("watchlist.emptyMessage")
             }
             .accessibilityIdentifier(AccessibilityID.watchlistEmpty)
-        case .error(let code, _):
+        case .error(let code):
             ContentUnavailableView(
                 "home.error",
                 systemImage: "exclamationmark.triangle",

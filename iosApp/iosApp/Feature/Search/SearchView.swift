@@ -62,7 +62,7 @@ private extension SearchView {
         case .empty:
             ContentUnavailableView.search(text: viewModel.query)
                 .accessibilityIdentifier(AccessibilityID.searchEmpty)
-        case .error(let code, _):
+        case .error(let code):
             ContentUnavailableView(
                 "search.error",
                 systemImage: "exclamationmark.triangle",

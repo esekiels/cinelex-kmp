@@ -57,7 +57,7 @@ private extension DetailView {
             details(movie)
         case .loading, .empty:
             DetailSkeletonView()
-        case .error(let code, _):
+        case .error(let code):
             ContentUnavailableView {
                 Label("detail.error", systemImage: "exclamationmark.triangle")
             } description: {

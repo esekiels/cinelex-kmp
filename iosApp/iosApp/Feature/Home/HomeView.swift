@@ -102,7 +102,7 @@ private extension HomeView {
                     ContentUnavailableView("home.empty", systemImage: "film")
                         .containerRelativeFrame(.vertical)
                         .accessibilityIdentifier(AccessibilityID.homeEmpty)
-                case .error(let code, _):
+                case .error(let code):
                     ContentUnavailableView(
                         "home.error",
                         systemImage: "exclamationmark.triangle",
@@ -120,21 +120,33 @@ private extension HomeView {
 #Preview("Loaded") {
     let repository = FakeMovieRepository(nowPlaying: MovieStubs.shared.all)
     return HomeView(viewModel: HomeViewModel(repository: repository))
-        .environment(\.factory, CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
+        .environment(\.factory, CinelexDIFactory(
+            movieRepository: repository,
+            userDataRepository: FakeUserDataRepository(),
+            watchlistRepository: FakeWatchlistRepository()
+        ))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Loading") {
     let repository = FakeMovieRepository(nowPlaying: [], isLoading: true)
     return HomeView(viewModel: HomeViewModel(repository: repository))
-        .environment(\.factory, CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
+        .environment(\.factory, CinelexDIFactory(
+            movieRepository: repository,
+            userDataRepository: FakeUserDataRepository(),
+            watchlistRepository: FakeWatchlistRepository()
+        ))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
 #Preview("Empty") {
     let repository = FakeMovieRepository(nowPlaying: [])
     return HomeView(viewModel: HomeViewModel(repository: repository))
-        .environment(\.factory, CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
+        .environment(\.factory, CinelexDIFactory(
+            movieRepository: repository,
+            userDataRepository: FakeUserDataRepository(),
+            watchlistRepository: FakeWatchlistRepository()
+        ))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 
@@ -142,7 +154,11 @@ private extension HomeView {
     let repository = FakeMovieRepository(nowPlaying: [])
     repository.failure = CinelexException(code: ErrorConstants.shared.NETWORK_ERROR, message: "Server unreachable")
     return HomeView(viewModel: HomeViewModel(repository: repository))
-        .environment(\.factory, CinelexDIFactory(movieRepository: repository, userDataRepository: FakeUserDataRepository()))
+        .environment(\.factory, CinelexDIFactory(
+            movieRepository: repository,
+            userDataRepository: FakeUserDataRepository(),
+            watchlistRepository: FakeWatchlistRepository()
+        ))
         .environment(PreferencesStore(repository: FakeUserDataRepository()))
 }
 #endif

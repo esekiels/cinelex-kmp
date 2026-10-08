@@ -7,7 +7,6 @@
 
 import Foundation
 import KMPNativeCoroutinesAsync
-import KMPNativeCoroutinesCore
 import Shared
 
 @Observable

@@ -12,10 +12,8 @@ extension Movie: @retroactive Identifiable {}
 extension Video: @retroactive Identifiable {}
 
 extension Movie {
-    var posterURL: URL? { imageURL(posterUrl) }
-    var backdropURL: URL? { imageURL(backdropUrl) }
-
-    private func imageURL(_ path: String?) -> URL? { stubbableURL(path) }
+    var posterURL: URL? { stubbableURL(posterUrl) }
+    var backdropURL: URL? { stubbableURL(backdropUrl) }
 }
 
 extension MovieDetails {

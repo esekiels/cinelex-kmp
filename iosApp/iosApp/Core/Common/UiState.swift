@@ -12,13 +12,9 @@ enum UiState<T> {
     case loading
     case loaded(T)
     case empty
-    case error(code: String, message: String)
+    case error(code: String)
 
     static func failed(_ error: Error) -> Self {
-        let exception = error.cinelexException
-        return .error(
-            code: exception?.code ?? ErrorConstants.shared.UNKNOWN_ERROR,
-            message: exception?.message ?? error.localizedDescription
-        )
+        .error(code: error.cinelexException?.code ?? ErrorConstants.shared.UNKNOWN_ERROR)
     }
 }

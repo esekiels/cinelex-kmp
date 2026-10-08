@@ -12,7 +12,7 @@ struct HomeState {
     
     var uiState: UiState<Carousels> = .loading
     
-    struct Carousels: Equatable {
+    struct Carousels {
         var nowPlaying: [Movie] = []
         var popular: [Movie] = []
         var upcoming: [Movie] = []
