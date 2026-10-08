@@ -1,6 +1,122 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended"],
+  "enabledManagers": ["gradle", "gradle-wrapper", "github-actions"],
+
+  "timezone": "Asia/Jakarta",
+  "schedule": ["before 6am on Monday"],
+  "prConcurrentLimit": 5,
+  "rebaseWhen": "behind-base-branch",
+
+  "minimumReleaseAge": "7 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "internalChecksFilter": "strict",
+  "ignoreUnstable": true,
+
+  "osvVulnerabilityAlerts": true,
+  "labels": ["dependencies"],
+
+  "vulnerabilityAlerts": {
+    "labels": ["dependencies", "security"],
+    "schedule": ["at any time"],
+    "minimumReleaseAge": "0 days",
+    "groupName": null
+  },
+
+  "packageRules": [
+    {
+      "description": "Minor and patch updates: automerge once CI passes",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["update/patch"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["update/minor"]
+    },
+    {
+      "description": "Major updates: require approval via Dependency Dashboard",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "addLabels": ["update/major", "needs-review"]
+    },
+    {
+      "description": "Hold androidx.core on SDK 36 line until AGP 9.1 + compileSdk 37 (1.19.x requires minCompileSdk=37)",
+      "matchPackageNames": ["/^androidx\\.core/"],
+      "allowedVersions": "<=1.18.0"
+    },
+    {
+      "description": "Hold androidx.lifecycle on SDK 36 line until AGP 9.1 + compileSdk 37 (2.11.x requires minCompileSdk=37)",
+      "matchPackageNames": ["/^androidx\\.lifecycle/"],
+      "allowedVersions": "<=2.10.0"
+    },
+    {
+      "description": "Hold androidx.activity on SDK 36 line until AGP 9.1 + compileSdk 37 (1.13.x requires minCompileSdk=37)",
+      "matchPackageNames": ["/^androidx\\.activity/"],
+      "allowedVersions": "<=1.12.4"
+    },
+    {
+      "description": "Group: Kotlin, kotlinx, KSP and KMP-NativeCoroutines (compiler plugins track Kotlin)",
+      "matchPackageNames": [
+        "/^org\\.jetbrains\\.kotlin/",
+        "/^org\\.jetbrains\\.kotlinx/",
+        "/^com\\.google\\.devtools\\.ksp/",
+        "/^com\\.rickclephas\\.kmp/"
+      ],
+      "groupName": "kotlin"
+    },
+    {
+      "description": "KMP-NativeCoroutines: Swift package in Xcode must be bumped to the same version",
+      "matchPackageNames": ["/^com\\.rickclephas\\.kmp/"],
+      "automerge": false,
+      "addLabels": ["needs-ios-bump"],
+      "prBodyNotes": ["⚠️ Bump the KMP-NativeCoroutines Swift package in Xcode to the same version before merging."]
+    },
+    {
+      "description": "Group: AndroidX (excluding compose and database groups)",
+      "matchPackageNames": [
+        "/^androidx\\./",
+        "!/^androidx\\.compose/",
+        "!/^androidx\\.activity/",
+        "!/^androidx\\.navigation3/",
+        "!/^androidx\\.room/",
+        "!/^androidx\\.sqlite/",
+        "!/^androidx\\.datastore/"
+      ],
+      "groupName": "androidx"
+    },
+    {
+      "description": "Group: Compose (BOM, activity, navigation3)",
+      "matchPackageNames": ["/^androidx\\.compose/", "/^androidx\\.activity/", "/^androidx\\.navigation3/"],
+      "groupName": "compose"
+    },
+    {
+      "description": "Group: Database (Room, SQLite, DataStore)",
+      "matchPackageNames": ["/^androidx\\.room/", "/^androidx\\.sqlite/", "/^androidx\\.datastore/"],
+      "groupName": "database"
+    },
+    {
+      "description": "Group: Ktor",
+      "matchPackageNames": ["/^io\\.ktor/"],
+      "groupName": "ktor"
+    },
+    {
+      "description": "Group: Koin",
+      "matchPackageNames": ["/^io\\.insert-koin/"],
+      "groupName": "koin"
+    },
+    {
+      "description": "Group: Android Gradle Plugin",
+      "matchPackageNames": ["/^com\\.android\\./"],
+      "groupName": "agp"
+    },
+    {
+      "description": "Gradle Wrapper: keep separate from library updates",
+      "matchManagers": ["gradle-wrapper"],
+      "addLabels": ["gradle-wrapper"]
+    }
   ]
 }
