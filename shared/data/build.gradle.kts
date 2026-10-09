@@ -4,6 +4,10 @@ plugins {
 }
 
 kotlin {
+	compilerOptions {
+		optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+	}
+
 	sourceSets {
 		commonMain.dependencies {
 			api(projects.shared.model)

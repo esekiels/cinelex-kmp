@@ -20,7 +20,6 @@ import co.esekiels.cinelex.network.ApiConstants
 import co.esekiels.cinelex.network.service.MovieService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +41,6 @@ private val MovieCategory.path: String
 
 internal val MOVIE_CATEGORIES = MovieCategory.entries.map { it.path }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieRepositoryImpl(
 	private val service: MovieService,
 	private val dao: MovieDao,

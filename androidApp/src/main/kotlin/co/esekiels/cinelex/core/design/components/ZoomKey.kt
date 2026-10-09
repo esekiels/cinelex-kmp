@@ -7,7 +7,6 @@
 
 package co.esekiels.cinelex.core.design.components
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
@@ -21,10 +20,8 @@ data class ZoomKey<T>(
 	val source: String,
 )
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 private val LocalSharedTransitionScope = staticCompositionLocalOf<SharedTransitionScope?> { null }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ZoomTransitionLayout(content: @Composable () -> Unit) {
 	SharedTransitionLayout {
@@ -32,7 +29,6 @@ fun ZoomTransitionLayout(content: @Composable () -> Unit) {
 	}
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun Modifier.zoomBounds(key: ZoomKey<*>): Modifier {
 	val scope = LocalSharedTransitionScope.current ?: return this

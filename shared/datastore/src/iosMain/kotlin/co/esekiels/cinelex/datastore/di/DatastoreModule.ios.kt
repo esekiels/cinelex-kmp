@@ -11,7 +11,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import co.esekiels.cinelex.datastore.DATASTORE_FILE
 import co.esekiels.cinelex.datastore.createDataStore
-import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -25,7 +24,6 @@ actual val datastorePlatformModule: Module =
 		}
 	}
 
-@OptIn(ExperimentalForeignApi::class)
 private fun documentDirectory(): String {
 	val url =
 		NSFileManager.defaultManager.URLForDirectory(

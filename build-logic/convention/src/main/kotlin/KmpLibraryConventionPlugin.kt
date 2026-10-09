@@ -17,7 +17,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
 		
 		extensions.configure<KotlinMultiplatformExtension> {
 			(this as ExtensionAware).extensions.configure<KotlinMultiplatformAndroidLibraryTarget>("android") {
-				namespace = "co.esekiels.cinelex.shared.${target.name}"
+				namespace = "co.esekiels.cineylex.shared.${target.name}"
 				compileSdk = libs.version("android-compileSdk").toInt()
 				minSdk = libs.version("android-minSdk").toInt()
 				compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
@@ -26,6 +26,10 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
 			iosArm64()
 			iosSimulatorArm64()
 			
+			sourceSets.matching { it.name.startsWith("ios") }.configureEach {
+				languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+			}
+
 			sourceSets.getByName("commonTest").dependencies {
 				implementation(kotlin("test"))
 			}

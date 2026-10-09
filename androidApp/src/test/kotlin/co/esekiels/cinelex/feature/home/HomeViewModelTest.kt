@@ -14,7 +14,6 @@ import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -24,7 +23,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
 	@BeforeTest
 	fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())

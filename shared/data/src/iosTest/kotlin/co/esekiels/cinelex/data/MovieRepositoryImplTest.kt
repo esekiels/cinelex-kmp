@@ -14,7 +14,6 @@ import co.esekiels.cinelex.database.entity.MovieDetailsEntity
 import co.esekiels.cinelex.model.Language
 import co.esekiels.cinelex.model.MovieCategory
 import co.esekiels.cinelex.network.ApiConstants
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -31,7 +30,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MovieRepositoryImplTest {
 	private val harness = Harness()
 

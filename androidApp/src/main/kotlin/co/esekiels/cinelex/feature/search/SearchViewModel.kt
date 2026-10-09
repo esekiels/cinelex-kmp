@@ -14,7 +14,6 @@ import co.esekiels.cinelex.core.common.UiState
 import co.esekiels.cinelex.data.MovieRepository
 import co.esekiels.cinelex.model.Movie
 import co.esekiels.cinelex.model.MovieCategory
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,7 +28,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-@OptIn(FlowPreview::class)
 class SearchViewModel(
 	private val repository: MovieRepository,
 ) : ViewModel() {

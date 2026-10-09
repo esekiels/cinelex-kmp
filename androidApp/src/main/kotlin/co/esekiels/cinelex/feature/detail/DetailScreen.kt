@@ -15,7 +15,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -58,7 +57,6 @@ fun DetailScreen(
 	DetailContent(title, state, isSaved, onBack, viewModel::load, viewModel::toggleWatchlist)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailContent(
 	title: String,

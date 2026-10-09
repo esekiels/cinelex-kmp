@@ -11,6 +11,12 @@ plugins {
 kotlin {
 	compilerOptions {
 		jvmTarget = JvmTarget.JVM_11
+		optIn.addAll(
+			"androidx.compose.material3.ExperimentalMaterial3Api",
+			"androidx.compose.animation.ExperimentalSharedTransitionApi",
+			"kotlinx.coroutines.FlowPreview",
+			"kotlinx.coroutines.ExperimentalCoroutinesApi",
+		)
 	}
 }
 

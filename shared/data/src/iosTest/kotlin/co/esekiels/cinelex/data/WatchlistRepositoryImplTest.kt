@@ -8,7 +8,6 @@
 package co.esekiels.cinelex.data
 
 import co.esekiels.cinelex.model.Movie
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.test.TestScope
@@ -20,7 +19,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class WatchlistRepositoryImplTest {
 	private val harness = Harness()
 

@@ -16,7 +16,6 @@ import co.esekiels.cinelex.testing.FakeMovieRepository
 import co.esekiels.cinelex.testing.MovieStubs
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
@@ -29,7 +28,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
 	private lateinit var dispatcher: TestDispatcher
 
