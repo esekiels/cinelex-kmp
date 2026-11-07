@@ -20,8 +20,8 @@ kmpNativeCoroutines = "1.0.6"
 
 # -- android app --
 androidx-activity = "1.12.4"
-androidx-appcompat = "1.7.1"
-androidx-core = "1.17.0"
+androidx-appcompat = "1.8.0"
+androidx-core = "1.18.0"
 androidx-lifecycle = "2.10.0"
 composeBom = "2026.03.01"
 coil = "3.1.0"
